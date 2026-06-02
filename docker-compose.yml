@@ -1,7 +1,7 @@
 services:
   backend:
     build:
-      context: .
+      context: ./dnd-prompt-forge
       dockerfile: backend/Dockerfile
     environment:
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
@@ -12,7 +12,7 @@ services:
     volumes:
       - backend-data:/app/data
     ports:
-      - "${BACKEND_PORT:-8000}:8000"
+      - "${BACKEND_PORT:-8002}:8000"
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
       interval: 30s
@@ -23,13 +23,13 @@ services:
 
   frontend:
     build:
-      context: .
+      context: ./dnd-prompt-forge
       dockerfile: frontend/Dockerfile
     depends_on:
       backend:
         condition: service_healthy
     ports:
-      - "${FRONTEND_PORT:-8080}:80"
+      - "${FRONTEND_PORT:-8081}:80"
     restart: unless-stopped
 
 volumes:

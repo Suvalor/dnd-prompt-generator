@@ -12,6 +12,14 @@ const FEEDBACK_REASONS = ['Too generic', 'Not DND-specific enough', 'Wrong style
 
 /* ---------- Output sub-views ---------- */
 
+const fullPromptText = (result) => [
+  'Positive prompt:',
+  result.main,
+  '',
+  'Negative prompt:',
+  result.negative,
+].join('\n');
+
 const PromptBlock = ({ name, body, tone, prose, onCopy }) => (
   <div className={`pblock ${tone === 'neg' ? 'neg' : ''}`}>
     <div className="ph">
@@ -102,6 +110,14 @@ const SuccessState = ({ result, onRegenerate, onUseful, onNotUseful, fb, toast }
         <div className="sub">{result.subtitle}</div>
       </div>
       <span className="pill ok"><span className="dot" />Ready to copy</span>
+    </div>
+
+    <div className="full-copy">
+      <div>
+        <div className="full-copy-title">Complete prompt</div>
+        <div className="full-copy-sub">Copies positive and negative prompts together.</div>
+      </div>
+      <CopyButton text={fullPromptText(result)} label="Copy full prompt" onCopied={() => toast('Complete prompt copied')} />
     </div>
 
     <PromptBlock name="Main prompt" body={result.main} onCopy={() => toast('Main prompt copied')} />
