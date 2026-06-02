@@ -37,3 +37,4 @@ tests/
 # Editor files
 .vscode/
 .idea/
+.github/

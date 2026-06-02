@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-forge texture-on accent-brass">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}
+    <title>{{ page_data.title | e }}</title>
+    <meta name="description" content="{{ page_data.meta_description | e }}">
+    <link rel="canonical" href="{{ page_data.canonical_url | e }}">
+    {% endblock %}
+    <style>
+        :root {
+            --bg: #F4EEDF;
+            --bg-band: #EDE6D4;
+            --paper: #FAF7EE;
+            --inset: #F0EAD6;
+            --ink: #2B2118;
+            --ink-2: #5C4A3A;
+            --ink-3: #8A7A6A;
+            --line: #D5C9B8;
+            --brass: #C8A857;
+            --brass-hover: #DABB6A;
+            --brass-press: #B89740;
+            --brass-soft: #E8DDB0;
+            --brass-fg: #6B5D3E;
+            --crimson: #A83232;
+            --emerald: #3A6B4A;
+            --focus: #4A90D9;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --sans: 'Manrope', system-ui, -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+            --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px;
+            --r-sm: 6px; --r-md: 9px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+            --t-h1: 700 2rem/1.2 var(--serif);
+            --t-h2: 600 1.5rem/1.3 var(--serif);
+            --t-h3: 600 1.25rem/1.3 var(--serif);
+            --t-body: 400 1rem/1.6 var(--sans);
+            --t-label: 600 .75rem/1.4 var(--sans);
+            --shadow-sm: 0 1px 3px rgba(43,33,24,.08);
+            --shadow-md: 0 4px 12px rgba(43,33,24,.12);
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font: var(--t-body); color: var(--ink); background: var(--bg); min-height: 100vh; }
+        :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+        .wrap { max-width: 960px; margin: 0 auto; padding: 0 var(--s5); }
+    </style>
+</head>
+<body>
+    {% block header %}
+    <header class="hdr" role="banner">
+        <div class="wrap hdr-inner">
+            <a class="brand" href="/" aria-label="DND Prompt Forge home">DND Prompt Forge</a>
+            <nav class="nav" aria-label="Main navigation">
+                <a href="/">Generator</a>
+                <a href="/about">About</a>
+            </nav>
+        </div>
+    </header>
+    {% endblock %}
+
+    {% block hero %}
+    <section class="hero" aria-labelledby="page-h1">
+        <div class="wrap hero-inner">
+            <p class="kicker">DND Prompt Forge</p>
+            <h1 id="page-h1" class="lede">{{ page_data.h1 | e }}</h1>
+            <div class="intro">{{ page_data.intro | e }}</div>
+        </div>
+    </section>
+    {% endblock %}
+
+    {% block content %}
+    <main class="content" role="main">
+        <div class="wrap section">
+            {{ page_data.intro | e }}
+        </div>
+    </main>
+    {% endblock %}
+
+    {% block footer %}
+    <footer class="footer" role="contentinfo">
+        <div class="wrap footer-inner">
+            <div class="legal">
+                <p>DND Prompt Forge &mdash; Free DND prompt generator for tabletop RPG players.</p>
+                <p><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/contact">Contact</a></p>
+            </div>
+        </div>
+    </footer>
+    {% endblock %}
+</body>
+</html>

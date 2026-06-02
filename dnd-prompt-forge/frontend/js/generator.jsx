@@ -150,7 +150,7 @@ const SuccessState = ({ result, onRegenerate, onUseful, onNotUseful, fb, toast }
 
 /* ---------- The Generator ---------- */
 
-const Generator = ({ layout = 'side', forceState = 'auto', initialType }) => {
+const Generator = ({ layout = 'side', forceState = 'auto', initialType, prefill }) => {
   const toast = useToast();
   const [form, setForm] = React.useState({ ...BLANK, type: initialType || BLANK.type });
   const [status, setStatus] = React.useState('empty'); // empty|loading|success|error
@@ -160,6 +160,21 @@ const Generator = ({ layout = 'side', forceState = 'auto', initialType }) => {
   const lastRef = React.useRef(null);
 
   React.useEffect(() => { if (initialType) setForm(f => ({ ...f, type: initialType })); }, [initialType]);
+
+  // prefill 变更时合并到表单状态（覆盖空白字段）
+  React.useEffect(() => {
+    if (prefill) {
+      setForm(f => {
+        var merged = { ...f };
+        for (var key in prefill) {
+          if (prefill[key] && prefill[key] !== '') {
+            merged[key] = prefill[key];
+          }
+        }
+        return merged;
+      });
+    }
+  }, [prefill]);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 

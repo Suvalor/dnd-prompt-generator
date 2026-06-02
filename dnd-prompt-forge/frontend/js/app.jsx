@@ -10,10 +10,87 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 const TYPE_ROUTES = { character: 'portrait', token: 'token', monster: 'monster', scene: 'scene', npc: 'npc' };
 
+// Prefill 字段映射：URL query 参数名 -> Generator 表单字段名
+// 参考 design-spec.md 第4.2节
+const PREFILL_QUERY_MAP = {
+  'type': 'type',
+  'race': 'race',
+  'class': 'klass',
+  'style': 'style',
+  'mood': 'mood',
+  'model': 'model',
+};
+
+/** 验证 prefill 参数值：trim、max 50 chars、reject < > */
+function validatePrefillValue(value) {
+  if (typeof value !== 'string') return null;
+  var cleaned = value.trim();
+  if (cleaned.length === 0 || cleaned.length > 50) return null;
+  if (cleaned.indexOf('<') >= 0 || cleaned.indexOf('>') >= 0) return null;
+  return cleaned;
+}
+
+/** 从 window.location.search 解析 prefill 参数，映射为 Generator 表单初始值 */
+function parsePrefillFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  var prefill = {};
+  for (var queryKey in PREFILL_QUERY_MAP) {
+    var formKey = PREFILL_QUERY_MAP[queryKey];
+    var value = params.get(queryKey);
+    var validated = validatePrefillValue(value);
+    if (validated) {
+      prefill[formKey] = validated;
+    }
+  }
+  // 只有包含至少 type 字段才视为有效 prefill
+  if (prefill.type) {
+    return prefill;
+  }
+  return null;
+}
+
+/** 从页面内嵌 <script type="application/json" id="generator-prefill"> 解析 prefill */
+function parsePrefillFromEmbeddedJSON() {
+  var scriptEl = document.querySelector('script[type="application/json"][id="generator-prefill"]');
+  if (!scriptEl) return null;
+  try {
+    var data = JSON.parse(scriptEl.textContent);
+    // 映射 klass 字段（JSON 中可能使用 klass 或 class_role）
+    if (data.class_role && !data.klass) {
+      data.klass = data.class_role;
+    }
+    // URL 参数使用 class，但表单使用 klass
+    if (data.klass) {
+      // 保持 klass 字段供 Generator 使用
+    }
+    if (data.type) {
+      return data;
+    }
+    return null;
+  } catch (e) {
+    // JSON 解析失败，忽略
+    return null;
+  }
+}
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [route, setRoute] = React.useState('home');
   const [initType, setInitType] = React.useState('portrait');
+  const [prefill, setPrefill] = React.useState(null);
+
+  // mount 时解析 URL 参数和内嵌 JSON，设置 prefill 状态
+  React.useEffect(() => {
+    var urlPrefill = parsePrefillFromURL();
+    if (urlPrefill) {
+      setPrefill(urlPrefill);
+      return;
+    }
+    var embeddedPrefill = parsePrefillFromEmbeddedJSON();
+    if (embeddedPrefill) {
+      setPrefill(embeddedPrefill);
+    }
+  }, []);
 
   // apply theme/accent/texture classes to <html>
   React.useEffect(() => {
@@ -39,9 +116,19 @@ function App() {
   React.useEffect(() => { window.__navigate = handleNav; }, [handleNav]);
   React.useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
 
+  // 当 prefill 含有 type 时，映射为 initType 使 Generator 初始化正确类型
+  React.useEffect(() => {
+    if (prefill && prefill.type) {
+      var mapped = TYPE_ROUTES[prefill.type] || prefill.type;
+      if (FORGE.TYPES && FORGE.TYPES.indexOf(mapped) >= 0) {
+        setInitType(mapped);
+      }
+    }
+  }, [prefill]);
+
   const Home = (
     <React.Fragment>
-      <Generator layout={t.layout} forceState={t.demoState} initialType={initType} />
+      <Generator layout={t.layout} forceState={t.demoState} initialType={initType} prefill={prefill} />
       <AdAfterTool />
       <Examples />
       <PromptGuide />

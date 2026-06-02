@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "{{ page_data.h1 | e }}",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+{% if page_data.faq %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {% for item in page_data.faq %}
+        {
+            "@type": "Question",
+            "name": "{{ item.q | e }}",
+            "acceptedAnswer": { "@type": "Answer", "text": "{{ item.a | e }}" }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+{% endblock %}
+
+{% block hero %}
+<section class="hero" aria-labelledby="page-h1">
+    <div class="wrap hero-inner">
+        <p class="kicker">DND Prompt Forge</p>
+        <h1 id="page-h1" class="lede">{{ page_data.h1 | e }}</h1>
+        <div class="intro">{{ page_data.intro | e }}</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<main class="content" role="main">
+    <div class="wrap section">
+
+        {# Prefill CTA Block #}
+        {% if page_data.prefill %}
+        <section class="cta-block" aria-label="Try this prompt">
+            <h2>Try This Prompt Now</h2>
+            <p>Generate a custom {{ page_data.h1 | e }} with your own details &mdash; free, no signup.</p>
+            <a class="btn-accent" href="/?prefill={{ page_data.prefill | urlencode }}">Open Generator</a>
+        </section>
+        {% endif %}
+
+        {# Examples Block #}
+        {% if page_data.examples %}
+        <section class="examples-block" aria-label="Example prompts">
+            <h2>Example Prompts</h2>
+            {% for ex in page_data.examples %}
+            <article class="example-card">
+                <h3>{{ ex.title | e }}</h3>
+                <p>{{ ex.prompt | e }}</p>
+            </article>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {# FAQ Block - static, no JS toggle #}
+        {% if page_data.faq %}
+        <section class="faq-block" aria-label="Frequently asked questions">
+            <h2>Frequently Asked Questions</h2>
+            {% for item in page_data.faq %}
+            <article class="faq-item">
+                <h3>{{ item.q | e }}</h3>
+                <p>{{ item.a | e }}</p>
+            </article>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {# Internal Links Block #}
+        {% if page_data.internal_links %}
+        <nav class="related-links" aria-label="Related generators">
+            <h2>Related Generators</h2>
+            <ul>
+                {% for link in page_data.internal_links %}
+                <li><a href="{{ link.url | e }}">{{ link.anchor | e }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+        {% endif %}
+
+    </div>
+</main>
+{% endblock %}
