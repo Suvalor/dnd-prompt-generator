@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DND Character Prompt Generator | Free AI Image Prompts</title>
+  <meta name="description" content="Create copy-ready AI image prompts for DND characters, NPCs, monsters, tokens, and fantasy scenes. Free DND prompt generator, no login required." />
+  <link rel="canonical" href="https://dndpromptforge.com/" />
+  <meta property="og:title" content="DND Character Prompt Generator | Free AI Image Prompts" />
+  <meta property="og:description" content="Create copy-ready AI image prompts for DND characters, NPCs, monsters, tokens, and fantasy scenes. Free DND prompt generator, no login required." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dndpromptforge.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DND Character Prompt Generator | Free AI Image Prompts" />
+  <meta name="twitter:description" content="Create copy-ready AI image prompts for DND characters, NPCs, monsters, tokens, and fantasy scenes. Free DND prompt generator, no login required." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- SoftwareApplication JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DND Prompt Forge",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web",
+    "description": "Free DND character prompt generator that turns race, class, style and backstory into copy-ready AI image prompts for portraits, VTT tokens, NPCs, monsters and scenes.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <!-- FAQPage JSON-LD (matches the visible FAQ) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is a DND character prompt generator?", "acceptedAnswer": { "@type": "Answer", "text": "It is a free tool that takes your character details — race, class, style, gear — and writes a structured, copy-ready text prompt you can paste into an AI image model to create portraits, tokens, NPCs, monsters or scenes." } },
+      { "@type": "Question", "name": "Does this tool generate images?", "acceptedAnswer": { "@type": "Answer", "text": "No. It produces prompt text only. You copy the prompt into an image model like Midjourney or ChatGPT, which does the actual image generation." } },
+      { "@type": "Question", "name": "Can I use these prompts in Midjourney or ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Pick your target model and the generator tunes the wording. The prompts also work in Gemini, Leonardo, Stable Diffusion and general-purpose tools." } },
+      { "@type": "Question", "name": "Can it create top-down VTT token prompts?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Choose the Token type and the generator writes a centered, top-down figure with a clean readable outline and 1:1 framing, plus token-specific export notes." } },
+      { "@type": "Question", "name": "Is the DND prompt generator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, it is completely free to use, with no usage caps for the prompt generator itself." } },
+      { "@type": "Question", "name": "Do I need to log in?", "acceptedAnswer": { "@type": "Answer", "text": "No. There is no login or account required — open the page, fill the form, and copy your prompt." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <!-- Babel for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Application scripts -->
+  <script type="text/babel" src="js/prompt-engine.jsx"></script>
+  <script type="text/babel" src="js/tweaks-panel.jsx"></script>
+  <script type="text/babel" src="js/primitives.jsx"></script>
+  <script type="text/babel" src="js/header.jsx"></script>
+  <script type="text/babel" src="js/footer.jsx"></script>
+  <script type="text/babel" src="js/generator.jsx"></script>
+  <script type="text/babel" src="js/content-sections.jsx"></script>
+  <script type="text/babel" src="js/prose-pages.jsx"></script>
+  <script type="text/babel" src="js/app.jsx"></script>
+</body>
+</html>

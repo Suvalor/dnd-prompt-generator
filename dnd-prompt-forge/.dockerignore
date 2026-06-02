@@ -1,0 +1,22 @@
+.git
+.DS_Store
+
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/*.py[cod]
+backend/.pytest_cache/
+backend/prompt_forge.db
+
+# Node/build caches
+node_modules/
+dist/
+build/
+.next/
+out/
+
+# Local config and logs
+.env
+.env.*
+!.env.example
+*.log

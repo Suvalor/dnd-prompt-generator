@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | DND Prompt Forge</title>
+  <meta name="description" content="Contact DND Prompt Forge — feedback, bug reports, and feature requests." />
+  <link rel="canonical" href="https://dndpromptforge.com/contact" />
+  <meta property="og:title" content="Contact | DND Prompt Forge" />
+  <meta property="og:description" content="Contact DND Prompt Forge — feedback, bug reports, and feature requests." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dndpromptforge.com/contact" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="wrap" style="padding-top: var(--s8);">
+    <div class="prose">
+      <h1>Contact</h1>
+      <div class="updated">We usually reply within a couple of days.</div>
+      <p class="lede">Feedback on the prompts, a bug, or a prompt type you wish existed? Send it over.</p>
+      <form style="display: flex; flex-direction: column; gap: var(--s4); margin-top: var(--s5);">
+        <div class="row2">
+          <div class="field">
+            <label for="c-name">Name <span class="req">*</span></label>
+            <input id="c-name" class="ctl" placeholder="Your name" required />
+          </div>
+          <div class="field">
+            <label for="c-email">Email <span class="req">*</span></label>
+            <input id="c-email" type="email" class="ctl" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="c-msg">Message <span class="req">*</span></label>
+          <textarea id="c-msg" class="ctl" rows="5" placeholder="What's on your mind?" required></textarea>
+        </div>
+        <div>
+          <button type="submit" class="btn primary">Send message</button>
+        </div>
+      </form>
+      <div style="margin-top: var(--s6);">
+        <a href="../" class="btn secondary">Back to generator</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

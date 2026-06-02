@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html class="theme-forge texture-on" lang="en" data-screen-label="DND Prompt Forge — Home"><head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DND Character Prompt Generator | Free AI Image Prompts</title>
-  <meta name="description" content="Free DND character prompt generator. Turn race, class, style, weapon and backstory into copy-ready AI image prompts for portraits, VTT tokens, NPCs, monsters and scenes. No login. Works with Midjourney, ChatGPT, Gemini and more.">
-  <link rel="canonical" href="https://dndpromptforge.com/">
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="DND Character Prompt Generator | Free AI Image Prompts">
-  <meta property="og:description" content="Turn your DND character idea into a copy-ready AI image prompt. Portraits, tokens, NPCs, monsters and scenes — free, no login.">
-  <meta property="og:url" content="https://dndpromptforge.com/">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="DND Character Prompt Generator | Free AI Image Prompts">
-  <meta name="twitter:description" content="Copy-ready AI image prompts for DND portraits, tokens, NPCs, monsters and scenes. Free, no login.">
-
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%232A2318'/%3E%3Cpath d='M12 4l6.9 4v8L12 20l-6.9-4V8L12 4z' fill='none' stroke='%239A6E22' stroke-width='1.4'/%3E%3Cpath d='M12 7.5l3.5 2v4L12 15.5l-3.5-2v-4z' fill='%239A6E22'/%3E%3C/svg%3E">
-
-  <style>/* ============================================================
+/* ============================================================
    DND Prompt Forge — design tokens (fantasy reskin of Whatai)
    Restrained "practical fantasy workshop":
    warm parchment base · brass primary · crimson + emerald used sparingly.
@@ -1070,56 +1051,3 @@ i[data-lucide]{width:18px;height:18px;stroke-width:1.85;vertical-align:middle;di
   box-shadow:var(--shadow-md);display:flex;align-items:center;gap:8px;animation:toast-in .2s var(--ease);}
 .toast i{width:16px;height:16px;color:var(--emerald);}
 @keyframes toast-in{from{opacity:0;transform:translate(-50%,8px);}to{opacity:1;transform:translate(-50%,0);}}
-</style>
-
-  <script src="5ad039da-79a4-4cc8-b5dd-b224b6d43dbf" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="d492c713-ff27-4057-8135-c92968d2119d" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="8f4ed6f5-3708-4278-82e0-bd1dc86df058" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-  <script src="df8ed074-cd98-477f-b019-35cdb2a8af4e"></script>
-
-  <!-- SoftwareApplication JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "DND Prompt Forge",
-    "applicationCategory": "DesignApplication",
-    "operatingSystem": "Web",
-    "description": "Free DND character prompt generator that turns race, class, style and backstory into copy-ready AI image prompts for portraits, VTT tokens, NPCs, monsters and scenes.",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
-
-  <!-- FAQPage JSON-LD (matches the visible FAQ) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "What is a DND character prompt generator?", "acceptedAnswer": { "@type": "Answer", "text": "It is a free tool that takes your character details — race, class, style, gear — and writes a structured, copy-ready text prompt you can paste into an AI image model to create portraits, tokens, NPCs, monsters or scenes." } },
-      { "@type": "Question", "name": "Does this tool generate images?", "acceptedAnswer": { "@type": "Answer", "text": "No. It produces prompt text only. You copy the prompt into an image model like Midjourney or ChatGPT, which does the actual image generation." } },
-      { "@type": "Question", "name": "Can I use these prompts in Midjourney or ChatGPT?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Pick your target model and the generator tunes the wording. The prompts also work in Gemini, Leonardo, Stable Diffusion and general-purpose tools." } },
-      { "@type": "Question", "name": "Can it create top-down VTT token prompts?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Choose the Token type and the generator writes a centered, top-down figure with a clean readable outline and 1:1 framing, plus token-specific export notes." } },
-      { "@type": "Question", "name": "Is the DND prompt generator free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, it is completely free to use, with no usage caps for the prompt generator itself." } },
-      { "@type": "Question", "name": "Do I need to log in?", "acceptedAnswer": { "@type": "Answer", "text": "No. There is no login or account required — open the page, fill the form, and copy your prompt." } }
-    ]
-  }
-  </script>
-</head>
-<body>
-  <div id="app"></div>
-
-  <script src="7e1db299-1418-4483-8349-c79a4a4ff03f"></script>
-  <script type="text/babel" src="96e20757-dbbf-4095-8653-9b52fdae2f50"></script>
-  <script type="text/babel" src="4b399cca-8779-4807-842d-246f878d5de1"></script>
-  <script type="text/babel" src="102bb797-81dd-46f3-968e-5d94f994818e"></script>
-  <script type="text/babel" src="db48d1bf-a5f3-46fa-be06-b7fdc1c68942"></script>
-  <script type="text/babel" src="a9070877-d780-496a-8aca-cd939848be0a"></script>
-  <script type="text/babel" src="6a896c16-2aac-4282-94b1-d77a9c21ff56"></script>
-  <script type="text/babel" src="bfc56743-3fc9-4099-8f7c-222a07f3bed8"></script>
-  <script type="text/babel" src="8a24cedd-7fa9-4875-876e-5d961d9195b5"></script>
-
-  
-
-
-</body></html>

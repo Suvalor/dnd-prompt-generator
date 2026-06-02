@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+
+# Logs
+*.log
+.claude-docker-logs/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+tests/
+
+# Local database/runtime files
+*.db
+*.sqlite
+*.sqlite3
+
+# Editor files
+.vscode/
+.idea/
