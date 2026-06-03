@@ -1,11 +1,31 @@
 /* Content sections + reserved ad slots (clearly labeled, never disguised) */
 
-const Ad = ({ variant = 'inline', sizes }) => (
-  <aside className={`ad ${variant}`} role="complementary" aria-label="Advertisement">
-    <span className="ad-lbl">Advertisement</span>
-    <span className="ad-dim">{sizes}</span>
-  </aside>
-);
+const ADSENSE_CLIENT = 'ca-pub-9123849728110588';
+
+const Ad = ({ variant = 'inline', sizes }) => {
+  React.useEffect(() => {
+    if (!window.adsbygoogle) return;
+    try {
+      window.adsbygoogle.push({});
+    } catch (e) {
+      // AdSense can reject duplicate pushes during hot reloads or blocked ads.
+    }
+  }, []);
+
+  return (
+    <aside className={`ad ${variant}`} role="complementary" aria-label="Advertisement">
+      <span className="ad-lbl">Advertisement</span>
+      <ins
+        className="adsbygoogle"
+        style={{ display: 'block' }}
+        data-ad-client={ADSENSE_CLIENT}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <span className="ad-dim">{sizes}</span>
+    </aside>
+  );
+};
 
 const SectionHead = ({ kicker, title, children }) => (
   <div className="section-head">
