@@ -21,7 +21,8 @@ services:
       MIMO_API_KEY: ${MIMO_API_KEY:-}
       MIMO_BASE_URL: ${MIMO_BASE_URL:-https://api.xiaomimimo.com/v1}
       MIMO_MODEL: ${MIMO_MODEL:-mimo-v2.5}
-      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
       DB_PATH: ${DB_PATH:-/app/data/prompt_forge.db}
       SESSION_COOKIE_SECRET: ${SESSION_COOKIE_SECRET:-}
       CSRF_SECRET: ${CSRF_SECRET:-}

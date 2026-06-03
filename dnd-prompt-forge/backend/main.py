@@ -4,6 +4,7 @@ FastAPI 应用配置、中间件注册、路由挂载、生命周期管理
 """
 
 import logging
+import sys
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -15,6 +16,21 @@ from middleware.csrf import CSRFMiddleware
 from middleware.origin import OriginMiddleware
 from routers import health, session, generate, feedback, memory_rules, quota
 
+
+def configure_logging() -> None:
+    """Configure application loggers so module logs appear in container stdout."""
+    level = getattr(logging, settings.log_level.upper(), logging.INFO)
+    root_logger = logging.getLogger()
+    if not root_logger.handlers:
+        handler = logging.StreamHandler(sys.stdout)
+        handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s [%(name)s] %(message)s"))
+        root_logger.addHandler(handler)
+    root_logger.setLevel(level)
+    for logger_name in ("services", "routers", "middleware", "models", "seo_worker"):
+        logging.getLogger(logger_name).setLevel(level)
+
+
+configure_logging()
 logger = logging.getLogger(__name__)
 
 

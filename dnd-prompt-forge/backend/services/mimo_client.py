@@ -4,12 +4,29 @@ OpenAI-compatible API 封装，JSON 输出验证
 """
 
 import json
+import logging
 import re
+import time
 from typing import Dict, Optional
 
-from openai import AsyncOpenAI
+from openai import APIConnectionError, APIStatusError, APITimeoutError, AsyncOpenAI
 
 from config import settings
+
+logger = logging.getLogger(__name__)
+
+
+def _chat_completions_endpoint() -> str:
+    """Return the effective OpenAI-compatible chat completions URL."""
+    return f"{settings.mimo_base_url.rstrip('/')}/chat/completions"
+
+
+def _preview(value: str, limit: int = 500) -> str:
+    """Return a compact single-line log preview without leaking huge payloads."""
+    compact = " ".join((value or "").split())
+    if len(compact) <= limit:
+        return compact
+    return compact[:limit] + "...[truncated]"
 
 
 class MiMoClientError(Exception):
@@ -63,6 +80,23 @@ class MiMoClient:
         system_prompt = self._build_system_prompt()
         user_prompt = self._build_user_prompt(prompt_data)
 
+        endpoint = _chat_completions_endpoint()
+        prompt_preview = _preview(user_prompt)
+
+        # ── 请求日志 ──
+        logger.info(
+            "LLM request start ▸ endpoint=%s base_url=%s model=%s max_tokens=%s timeout_seconds=%s prompt_chars=%s",
+            endpoint,
+            settings.mimo_base_url,
+            settings.mimo_model,
+            settings.mimo_max_completion_tokens,
+            settings.llm_timeout_seconds,
+            len(user_prompt),
+        )
+        logger.debug("LLM request ▸ system_prompt=%s", system_prompt)
+        logger.info("LLM request prompt preview ▸ %s", prompt_preview)
+
+        started_at = time.monotonic()
         try:
             response = await self._client.chat.completions.create(
                 model=settings.mimo_model,
@@ -73,14 +107,86 @@ class MiMoClient:
                 max_completion_tokens=settings.mimo_max_completion_tokens,
                 temperature=0.8,
             )
+        except APITimeoutError as e:
+            elapsed_ms = int((time.monotonic() - started_at) * 1000)
+            logger.error(
+                "LLM request timeout ▸ endpoint=%s model=%s timeout_seconds=%s elapsed_ms=%s error_type=%s error=%s",
+                endpoint,
+                settings.mimo_model,
+                settings.llm_timeout_seconds,
+                elapsed_ms,
+                type(e).__name__,
+                e,
+            )
+            raise MiMoClientError(f"MiMo API timeout after {settings.llm_timeout_seconds}s", category="timeout") from e
+        except APIStatusError as e:
+            elapsed_ms = int((time.monotonic() - started_at) * 1000)
+            response_text = getattr(e.response, "text", "") if getattr(e, "response", None) else ""
+            logger.error(
+                "LLM request HTTP error ▸ endpoint=%s model=%s status_code=%s elapsed_ms=%s response=%s",
+                endpoint,
+                settings.mimo_model,
+                getattr(e, "status_code", None),
+                elapsed_ms,
+                _preview(response_text, 800),
+            )
+            raise MiMoClientError(
+                f"MiMo API HTTP error: status={getattr(e, 'status_code', None)}",
+                category="provider_http_error",
+            ) from e
+        except APIConnectionError as e:
+            elapsed_ms = int((time.monotonic() - started_at) * 1000)
+            logger.error(
+                "LLM request connection error ▸ endpoint=%s model=%s elapsed_ms=%s error_type=%s error=%s",
+                endpoint,
+                settings.mimo_model,
+                elapsed_ms,
+                type(e).__name__,
+                e,
+            )
+            raise MiMoClientError(f"MiMo API connection error: {e}", category="connection_error") from e
         except Exception as e:
+            elapsed_ms = int((time.monotonic() - started_at) * 1000)
+            logger.exception(
+                "LLM request unexpected failure ▸ endpoint=%s model=%s elapsed_ms=%s error_type=%s",
+                endpoint,
+                settings.mimo_model,
+                elapsed_ms,
+                type(e).__name__,
+            )
             raise MiMoClientError(f"MiMo API error: {e}", category="provider_error") from e
+        elapsed_ms = int((time.monotonic() - started_at) * 1000)
 
         # 提取响应内容
         try:
             content = response.choices[0].message.content
         except (IndexError, AttributeError) as e:
+            logger.error(
+                "LLM response malformed ▸ endpoint=%s model=%s elapsed_ms=%s error_type=%s error=%s",
+                endpoint,
+                settings.mimo_model,
+                elapsed_ms,
+                type(e).__name__,
+                e,
+            )
             raise MiMoClientError(f"MiMo API error: {e}", category="provider_error") from e
+
+        # ── 响应日志 ──
+        logger.info(
+            "LLM response received ▸ endpoint=%s model=%s elapsed_ms=%s content_chars=%s",
+            endpoint,
+            settings.mimo_model,
+            elapsed_ms,
+            len(content or ""),
+        )
+        logger.debug("LLM response raw_content ▸ %s", content)
+        if hasattr(response, "usage") and response.usage:
+            logger.info(
+                "LLM response ▸ usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s",
+                response.usage.prompt_tokens,
+                response.usage.completion_tokens,
+                response.usage.total_tokens,
+            )
 
         # 剥离 LLM 返回的 markdown code fence 包裹
         content = content.strip()
@@ -91,6 +197,14 @@ class MiMoClient:
         try:
             result = json.loads(content)
         except (json.JSONDecodeError, TypeError) as e:
+            logger.error(
+                "LLM response JSON parse failed ▸ endpoint=%s model=%s elapsed_ms=%s error=%s content_preview=%s",
+                endpoint,
+                settings.mimo_model,
+                elapsed_ms,
+                e,
+                _preview(content, 800),
+            )
             raise MiMoClientError(
                 f"Failed to parse JSON from MiMo response: {e}",
                 category="parse_error",
@@ -98,6 +212,7 @@ class MiMoClient:
 
         # 验证响应字段
         validated = self._validate_response(result)
+        logger.info("LLM response ▸ validated keys=%s", list(validated.keys()))
         return validated
 
     def _build_system_prompt(self) -> str:

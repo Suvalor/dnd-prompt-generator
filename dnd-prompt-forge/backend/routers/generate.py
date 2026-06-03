@@ -79,13 +79,30 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
     session_id = get_session_id(request)
     fingerprint = req.client_fingerprint_hash or ""
     cookie = request.cookies.get("session_id", "")
+    logger.info(
+        "Generate request received ▸ request_id=%s ip=%s session_present=%s fingerprint_present=%s output_type=%s target_model=%s",
+        request_id,
+        ip,
+        bool(session_id),
+        bool(fingerprint),
+        req.output_type,
+        req.target_model,
+    )
 
     # 配额检查（fail-closed：异常时拒绝请求，防止绕过配额限制）
     try:
         quota_result: QuotaResult = await check_quota(ip, fingerprint or None, session_id or None)
     except Exception:
-        logger.warning("Quota check failed, rejecting request (fail-closed)")
+        logger.exception("Quota check failed, rejecting request (fail-closed) ▸ request_id=%s", request_id)
         quota_result = QuotaResult(allowed=False, limit=0, remaining=0, reset_at="")
+    logger.info(
+        "Quota check result ▸ request_id=%s allowed=%s limit=%s remaining=%s reset_at=%s",
+        request_id,
+        quota_result.allowed,
+        quota_result.limit,
+        quota_result.remaining,
+        quota_result.reset_at,
+    )
 
     # 配额超限时仍返回 fallback（HTTP 200），但标记 quota.remaining=0
     if not quota_result.allowed:
@@ -98,6 +115,10 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
         log_request(
             request_id, ip, "/api/generate-prompt",
             prompt_data, result, "fallback", "Quota exceeded", 0,
+        )
+        logger.info(
+            "Generate response fallback ▸ request_id=%s reason=quota_exceeded elapsed_ms=0",
+            request_id,
         )
         return {
             "mode": "fallback",
@@ -125,6 +146,13 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
     mimo = MiMoClient()
     if mimo.is_available() and quota_result.allowed:
         try:
+            logger.info(
+                "Generate LLM call start ▸ request_id=%s provider=mimo base_url=%s model=%s timeout_seconds=%s",
+                request_id,
+                settings.mimo_base_url,
+                settings.mimo_model,
+                settings.llm_timeout_seconds,
+            )
             result = await mimo.generate_prompt(prompt_data)
             elapsed_ms = int((time.monotonic() - start_time) * 1000)
             mode = "llm"
@@ -137,6 +165,12 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
             log_request(
                 request_id, ip, "/api/generate-prompt",
                 prompt_data, result, "success", None, elapsed_ms,
+            )
+            logger.info(
+                "Generate response success ▸ request_id=%s mode=llm elapsed_ms=%s quota_remaining=%s",
+                request_id,
+                elapsed_ms,
+                max(0, quota_result.remaining - 1),
             )
 
             return {
@@ -155,10 +189,29 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
             }
         except MiMoClientError as e:
             error_msg = f"MiMo API not configured: {e}" if e.category == "no_api_key" else str(e)
-            logger.warning("MiMo generation failed, falling back: %s", e)
+            elapsed_ms = int((time.monotonic() - start_time) * 1000)
+            logger.warning(
+                "Generate LLM call failed, falling back ▸ request_id=%s category=%s elapsed_ms=%s error=%s",
+                request_id,
+                e.category,
+                elapsed_ms,
+                e,
+            )
         except Exception as e:
             error_msg = str(e)
-            logger.warning("MiMo unexpected error, falling back: %s", e)
+            elapsed_ms = int((time.monotonic() - start_time) * 1000)
+            logger.exception(
+                "Generate LLM unexpected error, falling back ▸ request_id=%s elapsed_ms=%s",
+                request_id,
+                elapsed_ms,
+            )
+    else:
+        logger.info(
+            "Generate skips LLM ▸ request_id=%s mimo_available=%s quota_allowed=%s",
+            request_id,
+            mimo.is_available(),
+            quota_result.allowed,
+        )
 
     # Fallback 生成（未消耗 LLM 资源，不扣减配额；仅记录事件用于审计）
     result = build_fallback_prompt(prompt_data)
@@ -171,6 +224,13 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
     log_request(
         request_id, ip, "/api/generate-prompt",
         prompt_data, result, "fallback", error_msg, elapsed_ms,
+    )
+    logger.info(
+        "Generate response fallback ▸ request_id=%s reason=%s elapsed_ms=%s quota_remaining=%s",
+        request_id,
+        error_msg or "llm_unavailable",
+        elapsed_ms,
+        quota_result.remaining,
     )
 
     return {

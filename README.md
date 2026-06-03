@@ -74,10 +74,13 @@ docker compose down
 ```text
 FRONTEND_PORT=8081
 BACKEND_PORT=8002
-DEEPSEEK_API_KEY=
-DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
-DEEPSEEK_MODEL=deepseek-chat
-LLM_TIMEOUT_SECONDS=30
+MIMO_API_KEY=
+MIMO_BASE_URL=https://api.xiaomimimo.com/v1
+MIMO_MODEL=mimo-v2.5
+LLM_TIMEOUT_SECONDS=60
+LOG_LEVEL=INFO
+SESSION_COOKIE_SECRET=
+CSRF_SECRET=
 DB_PATH=/app/data/prompt_forge.db
 ```
 

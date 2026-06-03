@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     mimo_base_url: str = "https://api.xiaomimimo.com/v1"
     mimo_model: str = "mimo-v2.5"
     mimo_max_completion_tokens: int = 1024
-    llm_timeout_seconds: int = 30
+    llm_timeout_seconds: int = 60
 
     # 配额配置
     llm_quota_limit: int = 10

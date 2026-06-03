@@ -86,7 +86,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      return fetchWithTimeout(API_BASE + '/api/generate-prompt', opts, 25000)
+      return fetchWithTimeout(API_BASE + '/api/generate-prompt', opts, 75000)
         .then(function (response) {
           if (!response.ok) {
             if (!isRetry && (response.status === 401 || response.status === 403)) {
