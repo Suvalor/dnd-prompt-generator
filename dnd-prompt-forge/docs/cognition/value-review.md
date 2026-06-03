@@ -25,7 +25,7 @@
 
 ```
 POST /api/session/bootstrap -> 签发 session cookie + CSRF token
-POST /api/generate-prompt  -> 三维度配额检查 -> MiMo LLM -> 审计日志 -> 返回 JSON
+POST /api/generate-prompt  -> 三维度配额检查 -> OpenAI-compatible LLM -> 审计日志 -> 返回 JSON
                                                             | 失败时
                                                     fallback 确定性生成
 GET /api/quota             -> 返回剩余配额 + 可用模式
@@ -47,7 +47,7 @@ GET /api/quota             -> 返回剩余配额 + 可用模式
 
 ### 物理类比
 
-你建了一个自动化厨房（后端），有食材管理系统（配额）、专业厨师站（MiMo LLM）、备用手动料理台（fallback）、出餐记录本（审计日志）。但客人点餐后，服务员（前端按钮）直接在后厨门口手动拼了个三明治递给客人，**根本没进厨房**。厨房里所有设备和流程原封不动地运转，但从未接到过一张真正的订单。
+你建了一个自动化厨房（后端），有食材管理系统（配额）、专业厨师站（OpenAI-compatible LLM）、备用手动料理台（fallback）、出餐记录本（审计日志）。但客人点餐后，服务员（前端按钮）直接在后厨门口手动拼了个三明治递给客人，**根本没进厨房**。厨房里所有设备和流程原封不动地运转，但从未接到过一张真正的订单。
 
 ---
 
@@ -74,7 +74,7 @@ GET /api/quota             -> 返回剩余配额 + 可用模式
 
 ### 矛盾 3：LLM 不可用 vs 业务仍然闭环
 
-**关键发现**：`.env` 文件不存在，`MIMO_API_KEY` 为空。这意味着即使管道接通，LLM 模式也会因 "no_api_key" 直接进入 fallback。
+**关键发现**：`.env` 文件不存在，`LLM_API_KEY` 为空。这意味着即使管道接通，LLM 模式也会因 "no_api_key" 直接进入 fallback。
 
 **是否阻断业务闭环？不阻断。**
 
@@ -112,7 +112,7 @@ GET /api/quota             -> 返回剩余配额 + 可用模式
 后端 generate 端点已有以下防御，前端接入后自动生效：
 
 - **配额检查异常时允许请求**（generate.py 86-88 行）：Redis 挂掉不会阻断用户
-- **LLM 失败时自动 fallback**（generate.py 156-161 行）：MiMo 异常时从 exception 捕获，自动进入 fallback
+- **LLM 失败时自动 fallback**（generate.py 156-161 行）：OpenAI-compatible LLM 异常时从 exception 捕获，自动进入 fallback
 - **CSRF 中间件白名单**（csrf.py 29-31 行）：bootstrap 和 health 端点跳过 CSRF 验证
 - **Session cookie 缺省密钥自动生成**（session.py 18-23 行）：无配置时生成随机密钥并打出 warning
 
@@ -215,7 +215,7 @@ GET /api/quota             -> 返回剩余配额 + 可用模式
 
 ### 对比：为何不采纳"放弃后端，继续纯本地"
 
-这等于废弃整个后端代码库的投资。后端已经实现了 MiMo LLM 集成、三维度配额引擎、fallback 服务、审计日志、feedback 记忆规则——全部就绪，只差前端接入。此时放弃等于承认"后端从来没打算被前端调用"。
+这等于废弃整个后端代码库的投资。后端已经实现了 OpenAI-compatible LLM 集成、三维度配额引擎、fallback 服务、审计日志、feedback 记忆规则——全部就绪，只差前端接入。此时放弃等于承认"后端从来没打算被前端调用"。
 
 ### 对比：为何不采纳"不接 API，后端单独做 SEO 页面生成"
 

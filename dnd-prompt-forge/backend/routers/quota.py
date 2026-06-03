@@ -18,7 +18,7 @@ class QuotaResponse(BaseModel):
     limit: int
     remaining: int
     reset_at: str
-    mode_available: str = "mimo"
+    mode_available: str = "llm"
 
 
 @router.get("/api/quota", response_model=QuotaResponse)
@@ -32,7 +32,7 @@ async def get_quota(request: Request):
 
     quota_result = await check_quota(ip, fingerprint or None, session_id or None)
 
-    mode_available = "mimo" if quota_result.allowed else "fallback"
+    mode_available = "llm" if quota_result.allowed else "fallback"
 
     return QuotaResponse(
         limit=quota_result.limit,

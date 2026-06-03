@@ -40,14 +40,14 @@ class WorkerConfig(BaseSettings):
     @property
     def llm_api_key(self) -> str:
         """获取 LLM API key，复用主配置。"""
-        return main_settings.mimo_api_key
+        return main_settings.llm_api_key
 
     @property
     def llm_base_url(self) -> str:
         """获取 LLM base URL，复用主配置。"""
-        return main_settings.mimo_base_url
+        return main_settings.llm_base_url
 
     @property
     def llm_model(self) -> str:
         """获取 LLM 模型名，复用主配置。"""
-        return main_settings.mimo_model
+        return main_settings.llm_model

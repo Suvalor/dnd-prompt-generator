@@ -16,10 +16,12 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     environment:
-      MIMO_API_KEY: ${MIMO_API_KEY:-}
-      MIMO_BASE_URL: ${MIMO_BASE_URL:-https://api.xiaomimimo.com/v1}
-      MIMO_MODEL: ${MIMO_MODEL:-mimo-v2.5}
-      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_MAX_COMPLETION_TOKENS: ${LLM_MAX_COMPLETION_TOKENS:-2048}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
       LLM_QUOTA_LIMIT: ${LLM_QUOTA_LIMIT:-10}
       SESSION_COOKIE_SECRET: ${SESSION_COOKIE_SECRET:-}
       CSRF_SECRET: ${CSRF_SECRET:-}

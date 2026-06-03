@@ -116,7 +116,7 @@ class TestGeneratePrompt:
             mock_redis.get = AsyncMock(return_value="3")  # 配额充足
             mock_get_redis.return_value = mock_redis
 
-            with patch("services.mimo_client.MiMoClient.is_available", return_value=False):
+            with patch("services.llm_client.LLMClient.is_available", return_value=False):
                 response = client.post(
                     "/api/generate-prompt",
                     json={
@@ -133,7 +133,7 @@ class TestGeneratePrompt:
                 )
                 assert response.status_code == 200
                 data = response.json()
-                assert data["mode"] == "fallback"  # MiMo 不可用，fallback
+                assert data["mode"] == "fallback"  # LLM 不可用，fallback
                 assert "main_prompt" in data
                 assert "request_id" in data
                 assert "quota" in data

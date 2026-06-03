@@ -58,8 +58,8 @@ class TestAC1QuotaControl:
             assert data["quota"]["remaining"] == 0
 
 
-class TestAC2MiMoGeneration:
-    """AC-2: MiMo 文本生成 — 返回包含所有必需字段的 JSON"""
+class TestAC2LLMGeneration:
+    """AC-2: LLM 文本生成 — 返回包含所有必需字段的 JSON"""
 
     def _bootstrap_session(self):
         session_id = generate_session_id()
@@ -78,7 +78,7 @@ class TestAC2MiMoGeneration:
             mock_redis.get = AsyncMock(return_value="3")  # 配额充足
             mock_get_redis.return_value = mock_redis
 
-            with patch("services.mimo_client.MiMoClient.is_available", return_value=False):
+            with patch("services.llm_client.LLMClient.is_available", return_value=False):
                 response = client.post(
                     "/api/generate-prompt",
                     json={
@@ -100,7 +100,7 @@ class TestAC2MiMoGeneration:
                 assert "negative_prompt" in data
                 assert "style_notes" in data
                 assert "usage_tip" in data
-                assert data["mode"] == "fallback"  # MiMo 未配置，走 fallback
+                assert data["mode"] == "fallback"  # LLM 未配置，走 fallback
 
     def test_response_contains_dnd_terms(self):
         """提示词应包含 D&D 特定术语。"""
@@ -135,7 +135,7 @@ class TestAC2MiMoGeneration:
 
 
 class TestAC3Fallback:
-    """AC-3: Fallback 降级 — MiMo 不可用时返回 fallback"""
+    """AC-3: Fallback 降级 — LLM 不可用时返回 fallback"""
 
     def _bootstrap_session(self):
         session_id = generate_session_id()
@@ -144,8 +144,8 @@ class TestAC3Fallback:
         signed_csrf = sign_csrf_token(session_id, csrf_token)
         return signed_session, signed_csrf
 
-    def test_fallback_when_mimo_not_configured(self):
-        """MiMo API 密钥缺失时应返回 HTTP 200 + fallback 模式。"""
+    def test_fallback_when_llm_not_configured(self):
+        """OpenAI-compatible LLM API 密钥缺失时应返回 HTTP 200 + fallback 模式。"""
         signed_session, signed_csrf = self._bootstrap_session()
         client = TestClient(app)
 
@@ -154,11 +154,11 @@ class TestAC3Fallback:
             mock_redis.get = AsyncMock(return_value="3")
             mock_get_redis.return_value = mock_redis
 
-            with patch("services.mimo_client.settings") as mock_settings:
-                mock_settings.mimo_api_key = ""
-                mock_settings.mimo_base_url = "https://test.com"
-                mock_settings.mimo_model = "test-model"
-                mock_settings.mimo_max_completion_tokens = 1024
+            with patch("services.llm_client.settings") as mock_settings:
+                mock_settings.llm_api_key = ""
+                mock_settings.llm_base_url = "https://test.com"
+                mock_settings.llm_model = "test-model"
+                mock_settings.llm_max_completion_tokens = 1024
                 mock_settings.llm_timeout_seconds = 30
 
                 response = client.post(
@@ -197,7 +197,7 @@ class TestAC4Security:
         api_key_patterns = [
             r"api[_-]?key\s*=\s*['\"]sk-",
             r"api[_-]?key\s*=\s*['\"][a-zA-Z0-9]{20,}['\"]",
-            r"mimo_api_key\s*=\s*['\"][^'\"]+['\"]",
+            r"llm_api_key\s*=\s*['\"][^'\"]+['\"]",
         ]
 
         import re
@@ -218,11 +218,11 @@ class TestAC4Security:
     def test_config_reads_from_env(self):
         """配置应从环境变量读取 API 密钥。"""
         from config import settings
-        # mimo_api_key 默认为空字符串，从环境变量读取
-        assert settings.mimo_api_key == ""
+        # llm_api_key 默认为空字符串，从环境变量读取
+        assert settings.llm_api_key == ""
         # 验证其他配置也是环境变量驱动
-        assert hasattr(settings, "mimo_base_url")
-        assert hasattr(settings, "mimo_model")
+        assert hasattr(settings, "llm_base_url")
+        assert hasattr(settings, "llm_model")
 
     def test_audit_log_hashes_ip(self):
         """审计日志应对 IP 进行哈希处理。"""
@@ -363,8 +363,8 @@ class TestAC6DockerCompose:
         """后端环境变量配置应完整。"""
         with open("/workspace/dnd-prompt-forge/docker-compose.yml", "r") as f:
             content = f.read()
-        assert "MIMO_API_KEY" in content
-        assert "MIMO_BASE_URL" in content
+        assert "LLM_API_KEY" in content
+        assert "LLM_BASE_URL" in content
         assert "LLM_QUOTA_LIMIT" in content
         assert "REDIS_URL" in content
 

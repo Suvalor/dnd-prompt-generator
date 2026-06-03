@@ -18,7 +18,7 @@
 
 ### P1: 部署配置（重要但可延后）
 6. **Nginx API proxy**：在 nginx.conf 中添加 /api/ location 代理到 backend:8000
-7. **.env.example**：包含所有 MiMo 变量的示例环境变量文件
+7. **.env.example**：包含所有 LLM 变量的示例环境变量文件
 8. **docker-compose.yml 更新**：确保环境变量和端口配置正确
 
 ### P2: 集成测试（锦上添花）

@@ -1,44 +1,44 @@
 """
-DND Prompt Forge - MiMo 客户端响应验证测试
-覆盖 MiMoClient 的响应解析与验证逻辑
+DND Prompt Forge - LLM 客户端响应验证测试
+覆盖 LLMClient 的响应解析与验证逻辑
 """
 
 import json
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
-from services.mimo_client import MiMoClient, MiMoClientError
+from services.llm_client import LLMClient, LLMClientError
 
 
-class TestMiMoClientInit:
-    """测试 MiMoClient 初始化。"""
+class TestLLMClientInit:
+    """测试 LLMClient 初始化。"""
 
     def test_init_without_api_key(self):
         """未配置 API key 时 client 属性应为 None。"""
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = ""
-            client = MiMoClient()
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = ""
+            client = LLMClient()
             assert client.client is None
 
     def test_is_available_without_api_key(self):
         """未配置 API key 时 is_available 返回 False。"""
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = ""
-            client = MiMoClient()
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = ""
+            client = LLMClient()
             assert client.is_available() is False
 
     def test_is_available_with_api_key(self):
         """配置 API key 时 is_available 返回 True。"""
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = "test-key"
-            mock_settings.mimo_base_url = "https://test.com"
-            mock_settings.mimo_model = "test-model"
-            mock_settings.mimo_max_completion_tokens = 1024
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = "test-key"
+            mock_settings.llm_base_url = "https://test.com"
+            mock_settings.llm_model = "test-model"
+            mock_settings.llm_max_completion_tokens = 1024
             mock_settings.llm_timeout_seconds = 30
-            client = MiMoClient()
+            client = LLMClient()
             assert client.is_available() is True
 
 
-class TestMiMoClientGeneratePrompt:
+class TestLLMClientGeneratePrompt:
     """测试 generate_prompt 方法。"""
 
     def _create_mock_response(self, content_dict):
@@ -65,13 +65,13 @@ class TestMiMoClientGeneratePrompt:
         mock_client = MagicMock()
         mock_client.chat.completions.create = AsyncMock(return_value=mock_response)
 
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = "test-key"
-            mock_settings.mimo_base_url = "https://test.com"
-            mock_settings.mimo_model = "test-model"
-            mock_settings.mimo_max_completion_tokens = 1024
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = "test-key"
+            mock_settings.llm_base_url = "https://test.com"
+            mock_settings.llm_model = "test-model"
+            mock_settings.llm_max_completion_tokens = 1024
             mock_settings.llm_timeout_seconds = 30
-            client = MiMoClient()
+            client = LLMClient()
             client._client = mock_client
 
             result = await client.generate_prompt({"output_type": "portrait"})
@@ -83,29 +83,29 @@ class TestMiMoClientGeneratePrompt:
 
     @pytest.mark.asyncio
     async def test_generate_prompt_missing_fields(self):
-        """缺少必需字段应抛出 MiMoClientError。"""
+        """缺少必需字段应抛出 LLMClientError。"""
         # 只返回部分字段
         mock_response = self._create_mock_response({"main_prompt": "only this"})
         mock_client = MagicMock()
         mock_client.chat.completions.create = AsyncMock(return_value=mock_response)
 
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = "test-key"
-            mock_settings.mimo_base_url = "https://test.com"
-            mock_settings.mimo_model = "test-model"
-            mock_settings.mimo_max_completion_tokens = 1024
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = "test-key"
+            mock_settings.llm_base_url = "https://test.com"
+            mock_settings.llm_model = "test-model"
+            mock_settings.llm_max_completion_tokens = 1024
             mock_settings.llm_timeout_seconds = 30
-            client = MiMoClient()
+            client = LLMClient()
             client._client = mock_client
 
-            with pytest.raises(MiMoClientError) as exc_info:
+            with pytest.raises(LLMClientError) as exc_info:
                 await client.generate_prompt({"output_type": "portrait"})
             assert "Missing required fields" in str(exc_info.value)
             assert exc_info.value.category == "schema_error"
 
     @pytest.mark.asyncio
     async def test_generate_prompt_invalid_json(self):
-        """无效 JSON 响应应抛出 MiMoClientError。"""
+        """无效 JSON 响应应抛出 LLMClientError。"""
         mock_message = MagicMock()
         mock_message.content = "not-json"
         mock_choice = MagicMock()
@@ -115,60 +115,60 @@ class TestMiMoClientGeneratePrompt:
         mock_client = MagicMock()
         mock_client.chat.completions.create = AsyncMock(return_value=mock_response)
 
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = "test-key"
-            mock_settings.mimo_base_url = "https://test.com"
-            mock_settings.mimo_model = "test-model"
-            mock_settings.mimo_max_completion_tokens = 1024
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = "test-key"
+            mock_settings.llm_base_url = "https://test.com"
+            mock_settings.llm_model = "test-model"
+            mock_settings.llm_max_completion_tokens = 1024
             mock_settings.llm_timeout_seconds = 30
-            client = MiMoClient()
+            client = LLMClient()
             client._client = mock_client
 
-            with pytest.raises(MiMoClientError) as exc_info:
+            with pytest.raises(LLMClientError) as exc_info:
                 await client.generate_prompt({"output_type": "portrait"})
             assert "Failed to parse JSON" in str(exc_info.value)
             assert exc_info.value.category == "parse_error"
 
     @pytest.mark.asyncio
     async def test_generate_prompt_api_error(self):
-        """API 调用失败应抛出 MiMoClientError。"""
+        """API 调用失败应抛出 LLMClientError。"""
         mock_client = MagicMock()
         mock_client.chat.completions.create = AsyncMock(side_effect=Exception("API Error"))
 
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = "test-key"
-            mock_settings.mimo_base_url = "https://test.com"
-            mock_settings.mimo_model = "test-model"
-            mock_settings.mimo_max_completion_tokens = 1024
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = "test-key"
+            mock_settings.llm_base_url = "https://test.com"
+            mock_settings.llm_model = "test-model"
+            mock_settings.llm_max_completion_tokens = 1024
             mock_settings.llm_timeout_seconds = 30
-            client = MiMoClient()
+            client = LLMClient()
             client._client = mock_client
 
-            with pytest.raises(MiMoClientError) as exc_info:
+            with pytest.raises(LLMClientError) as exc_info:
                 await client.generate_prompt({"output_type": "portrait"})
-            assert "MiMo API error" in str(exc_info.value)
+            assert "OpenAI-compatible LLM API error" in str(exc_info.value)
             assert exc_info.value.category == "provider_error"
 
     @pytest.mark.asyncio
     async def test_generate_prompt_not_available(self):
-        """客户端不可用时调用应抛出 MiMoClientError。"""
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = ""
-            client = MiMoClient()
-            with pytest.raises(MiMoClientError) as exc_info:
+        """客户端不可用时调用应抛出 LLMClientError。"""
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = ""
+            client = LLMClient()
+            with pytest.raises(LLMClientError) as exc_info:
                 await client.generate_prompt({"output_type": "portrait"})
             assert "not configured" in str(exc_info.value)
             assert exc_info.value.category == "no_api_key"
 
 
-class TestMiMoClientValidateResponse:
+class TestLLMClientValidateResponse:
     """测试 _validate_response 方法。"""
 
     def test_validates_all_string_fields(self):
         """所有字段应为字符串类型。"""
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = ""
-            client = MiMoClient()
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = ""
+            client = LLMClient()
             result = client._validate_response({
                 "main_prompt": "test",
                 "short_prompt": "test",
@@ -180,9 +180,9 @@ class TestMiMoClientValidateResponse:
 
     def test_converts_non_string_to_string(self):
         """非字符串字段应转换为字符串。"""
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = ""
-            client = MiMoClient()
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = ""
+            client = LLMClient()
             result = client._validate_response({
                 "main_prompt": 123,
                 "short_prompt": "test",
@@ -193,24 +193,24 @@ class TestMiMoClientValidateResponse:
             assert result["main_prompt"] == "123"
 
     def test_missing_fields_raises_error(self):
-        """缺少必需字段应抛出 MiMoClientError。"""
-        with patch("services.mimo_client.settings") as mock_settings:
-            mock_settings.mimo_api_key = ""
-            client = MiMoClient()
-            with pytest.raises(MiMoClientError) as exc_info:
+        """缺少必需字段应抛出 LLMClientError。"""
+        with patch("services.llm_client.settings") as mock_settings:
+            mock_settings.llm_api_key = ""
+            client = LLMClient()
+            with pytest.raises(LLMClientError) as exc_info:
                 client._validate_response({"main_prompt": "test"})
             assert "Missing required fields" in str(exc_info.value)
 
 
-class TestMiMoClientError:
-    """测试 MiMoClientError 异常类。"""
+class TestLLMClientError:
+    """测试 LLMClientError 异常类。"""
 
     def test_default_category(self):
         """默认类别应为 provider_error。"""
-        err = MiMoClientError("test error")
+        err = LLMClientError("test error")
         assert err.category == "provider_error"
 
     def test_custom_category(self):
         """自定义类别应正确存储。"""
-        err = MiMoClientError("test error", category="timeout")
+        err = LLMClientError("test error", category="timeout")
         assert err.category == "timeout"

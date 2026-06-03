@@ -84,8 +84,8 @@ class TestAC1QuotaFailClosed:
                         )
 
     @pytest.mark.asyncio
-    async def test_mimo_unavailable_fallback_does_not_call_increment_quota(self):
-        """MiMo 不可用时的 fallback 路径也不应调用 increment_quota。"""
+    async def test_llm_unavailable_fallback_does_not_call_increment_quota(self):
+        """LLM 不可用时的 fallback 路径也不应调用 increment_quota。"""
         signed_session, signed_csrf = _bootstrap_session()
         client = TestClient(app)
 
@@ -93,7 +93,7 @@ class TestAC1QuotaFailClosed:
             return_value=QuotaResult(allowed=True, limit=10, remaining=9, reset_at="2026-01-01T00:00:00")
         )):
             with patch("routers.generate.increment_quota", new=AsyncMock()) as mock_increment:
-                with patch("services.mimo_client.MiMoClient.is_available", return_value=False):
+                with patch("services.llm_client.LLMClient.is_available", return_value=False):
                     with patch("routers.generate.persist_quota_usage", new=AsyncMock()):
                         with patch("routers.generate.log_request"):
                             response = client.post(
@@ -105,7 +105,7 @@ class TestAC1QuotaFailClosed:
                             assert response.status_code == 200
                             assert response.json()["mode"] == "fallback"
                             mock_increment.assert_not_called(), (
-                                "increment_quota was called when MiMo unavailable -- "
+                                "increment_quota was called when LLM unavailable -- "
                                 "no LLM resources consumed, quota should not be decremented"
                             )
 
@@ -188,8 +188,8 @@ class TestAC4CoreSuiteCoverage:
         mod = importlib.import_module("tests.test_session")
         assert mod is not None
 
-    def test_mimo_client_tests_available(self):
-        """test_mimo_client.py 应存在且可导入。"""
+    def test_llm_client_tests_available(self):
+        """test_llm_client.py 应存在且可导入。"""
         import importlib
-        mod = importlib.import_module("tests.test_mimo_client")
+        mod = importlib.import_module("tests.test_llm_client")
         assert mod is not None

@@ -12,7 +12,7 @@ Scope:
 
 Not accepted.
 
-The backend now contains a MiMo LLM route, session/CSRF middleware, origin checks, audit logging, and quota logic. However, the frontend prompt generator is still fully browser-local and never calls the backend API. Therefore, the main business flow is not connected:
+The backend now contains a LLM route, session/CSRF middleware, origin checks, audit logging, and quota logic. However, the frontend prompt generator is still fully browser-local and never calls the backend API. Therefore, the main business flow is not connected:
 
 ```text
 User clicks Generate prompt
@@ -63,7 +63,7 @@ no matches
 
 Impact:
 
-- MiMo is not called from the actual UI.
+- LLM is not called from the actual UI.
 - API quota does not apply to real user prompt generation.
 - Cookie/session protection is not exercised by real user prompt generation.
 - Browser fingerprint is never generated or sent.
@@ -164,7 +164,7 @@ Required fix:
 - For LLM calls, quota check failure should fail closed into fallback mode.
 - Recommended behavior:
   - return deterministic fallback;
-  - do not call MiMo;
+  - do not call LLM;
   - log quota failure;
   - expose `mode: fallback`, `quota.remaining: 0`, and a non-sensitive reason.
 
@@ -186,19 +186,19 @@ Evidence:
 Current root compose only passes:
 
 ```text
-MIMO_API_KEY
+LLM_API_KEY
 DB_PATH
-MIMO_BASE_URL
-MIMO_MODEL
+LLM_BASE_URL
+LLM_MODEL
 LLM_TIMEOUT_SECONDS
 ```
 
-Current root `.env.example` still documents old DeepSeek variables:
+Current root `.env.example` still documents old OpenAI-compatible LLM variables:
 
 ```text
-DEEPSEEK_API_KEY
-DEEPSEEK_BASE_URL
-DEEPSEEK_MODEL
+LLM_API_KEY
+LLM_BASE_URL
+LLM_MODEL
 ```
 
 Impact:
@@ -226,7 +226,7 @@ Targeted backend tests pass when run with `PYTHONPATH=.`:
 PYTHONPATH=. python -m pytest tests/test_generate.py tests/test_quota.py tests/test_csrf.py tests/test_session.py -q
 44 passed
 
-PYTHONPATH=. python -m pytest tests/test_mimo_client.py -q
+PYTHONPATH=. python -m pytest tests/test_llm_client.py -q
 13 passed
 ```
 
@@ -260,13 +260,13 @@ Implemented.
 Evidence:
 
 - `dnd-prompt-forge/backend/routers/generate.py:70-190`
-- `dnd-prompt-forge/backend/services/mimo_client.py:24-168`
+- `dnd-prompt-forge/backend/services/llm_client.py:24-168`
 
 Behavior:
 
 - Checks quota.
-- Calls MiMo when configured and allowed.
-- Falls back to deterministic prompt generation when MiMo is unavailable or quota is exceeded.
+- Calls LLM when configured and allowed.
+- Falls back to deterministic prompt generation when LLM is unavailable or quota is exceeded.
 - Returns `mode`, `request_id`, `quota`, `main_prompt`, `short_prompt`, `negative_prompt`, `style_notes`, and `usage_tip`.
 
 ### CSRF and signed cookie session
@@ -330,7 +330,7 @@ Evidence:
 | Requirement | Status | Reason |
 | --- | --- | --- |
 | Frontend prompt generation calls backend LLM | Failed | No frontend API call exists. |
-| Backend calls MiMo/LLM | Partially passed | Backend route and client exist, but not used by frontend. |
+| Backend calls LLM/LLM | Partially passed | Backend route and client exist, but not used by frontend. |
 | No API key exposed in frontend | Passed | No frontend provider key found. |
 | API requires session cookie | Backend passed, business flow failed | Backend requires it; frontend never bootstraps it. |
 | API requires CSRF token | Backend passed, business flow failed | Backend requires it; frontend never sends it. |

@@ -141,7 +141,7 @@ class TestAC1BackendRunnable:
         test_dir = Path(BACKEND_ROOT) / "tests"
         original_files = [
             "test_csrf.py", "test_fallback.py", "test_generate.py",
-            "test_integration_ac.py", "test_mimo_client.py", "test_quota.py",
+            "test_integration_ac.py", "test_llm_client.py", "test_quota.py",
             "test_session.py",
         ]
         found = [f for f in original_files if (test_dir / f).exists()]

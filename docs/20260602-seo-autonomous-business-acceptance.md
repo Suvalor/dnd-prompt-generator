@@ -56,7 +56,7 @@ Commands run:
 
 ```bash
 find . -maxdepth 5 -type f
-rg "seo|SEO|trend|sitemap|canonical|Astro|fingerprint|helpful|quota|MIMO|LLM|feedback|memory_rules|prefill"
+rg "seo|SEO|trend|sitemap|canonical|Astro|fingerprint|helpful|quota|LLM|LLM|feedback|memory_rules|prefill"
 docker compose config
 pytest -q
 node -e "<sitemap URL to local HTML existence check>"

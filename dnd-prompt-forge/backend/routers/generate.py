@@ -12,7 +12,7 @@ from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
 
 from config import settings
-from services.mimo_client import MiMoClient, MiMoClientError
+from services.llm_client import LLMClient, LLMClientError
 from services.fallback import build_fallback_prompt
 from services.quota import check_quota, increment_quota, persist_quota_usage, QuotaResult
 from services.audit import log_request
@@ -138,29 +138,29 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
     # 构建提示词数据
     prompt_data = req.model_dump()
 
-    # 尝试 MiMo 生成
+    # 尝试 LLM 生成
     start_time = time.monotonic()
     mode = "fallback"
     error_msg: Optional[str] = None
 
-    mimo = MiMoClient()
-    if mimo.is_available() and quota_result.allowed:
+    llm = LLMClient()
+    if llm.is_available() and quota_result.allowed:
         try:
             logger.info(
-                "Generate LLM call start ▸ request_id=%s provider=mimo base_url=%s model=%s timeout_seconds=%s",
+                "Generate LLM call start ▸ request_id=%s protocol=openai-compatible base_url=%s model=%s timeout_seconds=%s",
                 request_id,
-                settings.mimo_base_url,
-                settings.mimo_model,
+                settings.llm_base_url,
+                settings.llm_model,
                 settings.llm_timeout_seconds,
             )
-            result = await mimo.generate_prompt(prompt_data)
+            result = await llm.generate_prompt(prompt_data)
             elapsed_ms = int((time.monotonic() - start_time) * 1000)
             mode = "llm"
 
             await increment_quota(ip, fingerprint or None, cookie or None)
             await persist_quota_usage(
                 request_id, ip, fingerprint or None, cookie or None,
-                "/api/generate-prompt", "mimo",
+                "/api/generate-prompt", "llm",
             )
             log_request(
                 request_id, ip, "/api/generate-prompt",
@@ -187,8 +187,8 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
                 "style_notes": result["style_notes"],
                 "usage_tip": result["usage_tip"],
             }
-        except MiMoClientError as e:
-            error_msg = f"MiMo API not configured: {e}" if e.category == "no_api_key" else str(e)
+        except LLMClientError as e:
+            error_msg = f"OpenAI-compatible LLM API not configured: {e}" if e.category == "no_api_key" else str(e)
             elapsed_ms = int((time.monotonic() - start_time) * 1000)
             logger.warning(
                 "Generate LLM call failed, falling back ▸ request_id=%s category=%s elapsed_ms=%s error=%s",
@@ -207,9 +207,9 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
             )
     else:
         logger.info(
-            "Generate skips LLM ▸ request_id=%s mimo_available=%s quota_allowed=%s",
+            "Generate skips LLM ▸ request_id=%s llm_available=%s quota_allowed=%s",
             request_id,
-            mimo.is_available(),
+            llm.is_available(),
             quota_result.allowed,
         )
 

@@ -2,14 +2,14 @@
 
 Date: 2026-06-01
 Status: Draft for implementation
-Backend requirement: Simple Python backend with DeepSeek LLM API integration
+Backend requirement: Simple Python backend with OpenAI-compatible LLM LLM API integration
 
 ## 1. Recommended Architecture
 
 Use a lightweight two-part architecture:
 
 - Frontend: landing application and generator UI.
-- Backend: Python API service that calls DeepSeek and stores feedback memory.
+- Backend: Python API service that calls OpenAI-compatible LLM and stores feedback memory.
 
 Recommended stack for 1-2 day MVP:
 
@@ -19,7 +19,7 @@ Recommended stack for 1-2 day MVP:
 - Backend:
   - Python FastAPI.
   - SQLite for feedback memory.
-  - Environment variable for DeepSeek API key.
+  - Environment variable for OpenAI-compatible LLM API key.
 - Deployment:
   - Frontend: static host or same server.
   - Backend: small VPS, Render, Railway, Fly.io, or similar.
@@ -31,7 +31,7 @@ flowchart TD
   A["User opens SEO landing page"] --> B["Generator form"]
   B --> C["POST /api/generate-prompt"]
   C --> D["Load active memory rules"]
-  D --> E["Call DeepSeek LLM API"]
+  D --> E["Call OpenAI-compatible LLM LLM API"]
   E --> F["Validate JSON output"]
   F --> G["Return prompt result"]
   G --> H["User copies prompt"]
@@ -90,7 +90,7 @@ Validation:
 
 Failure behavior:
 
-- If DeepSeek fails, return a friendly error.
+- If OpenAI-compatible LLM fails, return a friendly error.
 - Do not expose API keys or raw provider errors.
 - Optionally return a deterministic fallback template.
 
@@ -207,7 +207,7 @@ Start simple:
 
 ### Prompt assembly
 
-DeepSeek system instruction should include:
+OpenAI-compatible LLM system instruction should include:
 
 - Product role.
 - Safety rules.
@@ -223,13 +223,13 @@ Active correction memory:
 - For token prompts, always specify top-down view, centered full-body figure, readable outline, simple background, and VTT usability.
 ```
 
-## 6. DeepSeek Integration
+## 6. OpenAI-compatible LLM Integration
 
 Configuration:
 
-- `DEEPSEEK_API_KEY`
-- `DEEPSEEK_BASE_URL`
-- `DEEPSEEK_MODEL`
+- `LLM_API_KEY`
+- `LLM_BASE_URL`
+- `LLM_MODEL`
 - `LLM_TIMEOUT_SECONDS`
 
 Security:
@@ -323,7 +323,7 @@ Purpose:
 - Build landing page.
 - Build generator form.
 - Build Python `/api/generate-prompt`.
-- Connect DeepSeek.
+- Connect OpenAI-compatible LLM.
 - Generate JSON output.
 - Add copy buttons.
 - Add About, Privacy, Terms, Contact.
@@ -340,7 +340,7 @@ Purpose:
 
 ## 11. Launch Checklist
 
-- DeepSeek API key configured.
+- OpenAI-compatible LLM API key configured.
 - API does not leak secrets.
 - Prompt generation works.
 - Feedback saves.

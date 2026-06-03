@@ -10,7 +10,7 @@ Add backend-controlled LLM prompt generation for DND Prompt Forge while keeping 
 
 The new backend must support:
 
-- Text-to-prompt generation with MiMo.
+- Text-to-prompt generation with OpenAI-compatible LLM.
 - Image analysis input for prompt generation.
 - Video analysis input for prompt generation.
 - API interface authentication and abuse protection.
@@ -18,11 +18,11 @@ The new backend must support:
 
 ## External API Notes
 
-Official MiMo docs reviewed:
+OpenAI-compatible provider docs should be reviewed for the selected provider:
 
-- Token Plan subscription docs: https://platform.xiaomimimo.com/docs/zh-CN/price/tokenplan/subscription
-- Image understanding docs: https://platform.xiaomimimo.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding
-- Video understanding docs: https://platform.xiaomimimo.com/docs/zh-CN/usage-guide/multimodal-understanding/video-understanding
+- Provider subscription or billing docs
+- Provider image understanding docs
+- Provider video understanding docs
 
 Important constraints from the docs:
 
@@ -32,14 +32,14 @@ Important constraints from the docs:
 - Video understanding supports video URL and Base64 input.
 - Video URL file size must not exceed 300 MB.
 - Video Base64 payload must include `data:{MIME_TYPE};base64,$BASE64_VIDEO`; converted Base64 string size must not exceed 50 MB.
-- Image/video understanding currently supports `mimo-v2.5` and `mimo-v2-omni`.
+- Image/video understanding currently supports `llm-v2.5` and `llm-v2-omni`.
 - Token Plan docs state that Token Plan quota is intended for AI coding tools and prohibit API-call usage in custom application backends or other obvious non-coding scenarios.
 
 Compliance requirement:
 
-- Do not use a Token Plan subscription API key for the production public app unless Xiaomi explicitly permits this use case.
+- Do not use a Token Plan subscription API key for the production public app unless provider explicitly permits this use case.
 - Prefer ordinary API billing credentials for the deployed application.
-- Keep the provider configuration generic so either a permitted Token Plan-compatible endpoint or ordinary MiMo API endpoint can be selected by environment variables.
+- Keep the provider configuration generic so either a permitted Token Plan-compatible endpoint or OpenAI-compatible LLM API endpoint can be selected by environment variables.
 
 ## LLM Credential Modes
 
@@ -58,12 +58,12 @@ Allowed values:
 Purpose:
 
 - Public deployed web application.
-- Backend may call MiMo for anonymous end users after quota/auth checks pass.
+- Backend may call OpenAI-compatible LLM for anonymous end users after quota/auth checks pass.
 - Use only API credentials that are permitted for custom application backend usage.
 
 Rules:
 
-- Requires `MIMO_API_KEY`.
+- Requires `LLM_API_KEY`.
 - Requires strict origin/CORS allowlist.
 - Requires signed session cookie and nonce.
 - Requires hourly quota enforcement.
@@ -78,7 +78,7 @@ Purpose:
 Rules:
 
 - Must not be used for a public deployed endpoint.
-- Backend may call MiMo only when `APP_ENV=local` or `APP_ENV=staging`.
+- Backend may call OpenAI-compatible LLM only when `APP_ENV=local` or `APP_ENV=staging`.
 - Backend must reject LLM calls when `APP_ENV=production`.
 - Backend should expose a clear runtime warning: `subscription_dev mode is not allowed for public production traffic`.
 - Optional extra guard: require an admin-only header or local-only network check for LLM calls.
@@ -91,15 +91,15 @@ Purpose:
 
 Rules:
 
-- Backend must not call MiMo.
+- Backend must not call OpenAI-compatible LLM.
 - `/api/generate-prompt` always returns `mode: "fallback"`.
 - Frontend continues using deterministic no-LLM generation.
 
 Mode safety rule:
 
 - If `LLM_CREDENTIAL_MODE` is missing or unknown, backend must default to `disabled`.
-- If `APP_ENV=production` and `LLM_CREDENTIAL_MODE=subscription_dev`, backend must fail closed and never call MiMo.
-- If `APP_ENV=production` and `LLM_CREDENTIAL_MODE=production_api` but `MIMO_API_KEY` is missing, backend must return fallback mode and log a safe configuration error.
+- If `APP_ENV=production` and `LLM_CREDENTIAL_MODE=subscription_dev`, backend must fail closed and never call OpenAI-compatible LLM.
+- If `APP_ENV=production` and `LLM_CREDENTIAL_MODE=production_api` but `LLM_API_KEY` is missing, backend must return fallback mode and log a safe configuration error.
 - The provider key type should be documented in deployment notes, but never exposed to the frontend.
 
 ## Current State
@@ -108,7 +108,7 @@ The current frontend generates prompts in-browser through `window.FORGE.build(da
 
 The current Docker deployment has been simplified to static frontend only. To add LLM support safely, the backend service must be reintroduced for API calls, quota enforcement, and secret isolation.
 
-Backend code already exists under `dnd-prompt-forge/backend/`, but it currently uses a simple FastAPI API and DeepSeek-style environment variable names. It should be refactored or replaced to support MiMo, multimodal input, and stronger security controls.
+Backend code already exists under `dnd-prompt-forge/backend/`, but it currently uses a simple FastAPI API and OpenAI-compatible LLM environment variable names. It should be refactored or replaced to support OpenAI-compatible LLM, multimodal input, and stronger security controls.
 
 ## Target Architecture
 
@@ -117,14 +117,14 @@ Use a backend-controlled hybrid generation flow:
 1. Frontend submits form data and optional media metadata to backend.
 2. Backend identifies the caller by IP, browser fingerprint hash, and signed cookie.
 3. Backend checks hourly quota.
-4. If quota remains, backend calls MiMo and returns LLM-enhanced prompt output.
-5. If quota is exhausted, backend does not call MiMo and returns `mode: "fallback"` plus enough context for frontend deterministic generation.
+4. If quota remains, backend calls OpenAI-compatible LLM and returns LLM-enhanced prompt output.
+5. If quota is exhausted, backend does not call OpenAI-compatible LLM and returns `mode: "fallback"` plus enough context for frontend deterministic generation.
 6. Frontend renders either LLM output or local no-LLM output with a visible mode indicator.
 
 High-level components:
 
 - `frontend`: static UI, deterministic fallback generator, upload/media controls.
-- `backend`: FastAPI service for auth, quota, MiMo calls, encryption, audit logging.
+- `backend`: FastAPI service for auth, quota, OpenAI-compatible LLM calls, encryption, audit logging.
 - `storage`: SQLite for local/dev or Postgres/Redis for production. Redis is preferred for rate-limit counters.
 - `secret manager`: environment variables locally; production should use platform secret storage.
 
@@ -196,10 +196,10 @@ Implementation:
   - `quota:ip:{ip_hash}:{hour_bucket}`
   - `quota:fingerprint:{fingerprint_hash}:{hour_bucket}`
   - `quota:cookie:{session_id_hash}:{hour_bucket}`
-- Before calling MiMo, load all three counters.
+- Before calling OpenAI-compatible LLM, load all three counters.
 - If any counter is `>= 10`, deny LLM usage for this request and return fallback mode.
-- If all are `< 10`, atomically increment all three counters before calling MiMo.
-- If MiMo call fails due to provider outage, still record the attempt unless the failure happened before outbound call dispatch.
+- If all are `< 10`, atomically increment all three counters before calling OpenAI-compatible LLM.
+- If OpenAI-compatible LLM call fails due to provider outage, still record the attempt unless the failure happened before outbound call dispatch.
 
 Storage:
 
@@ -230,13 +230,13 @@ Cookie:
 
 ### Secret Isolation
 
-- MiMo API Key must exist only on the backend.
-- Never expose MiMo credentials in frontend JS, HTML, Docker image layers, logs, or error responses.
+- OpenAI-compatible LLM API Key must exist only on the backend.
+- Never expose OpenAI-compatible LLM credentials in frontend JS, HTML, Docker image layers, logs, or error responses.
 - Environment variable names:
-  - `MIMO_API_KEY`
-  - `MIMO_BASE_URL`
-  - `MIMO_MODEL=mimo-v2.5`
-  - `MIMO_MAX_COMPLETION_TOKENS=1024`
+  - `LLM_API_KEY`
+  - `LLM_BASE_URL`
+  - `LLM_MODEL=`
+  - `LLM_MAX_COMPLETION_TOKENS=1024`
 
 ### API Authentication
 
@@ -274,13 +274,13 @@ Optional but recommended:
 - Reject unsupported `media.kind`, `source_type`, and MIME types.
 - Allow image MIME types only: `image/png`, `image/jpeg`, `image/webp`.
 - Allow video MIME types only: `video/mp4`, `video/webm`, `video/quicktime`.
-- Enforce documented provider size limits before sending to MiMo.
+- Enforce documented provider size limits before sending to OpenAI-compatible LLM.
 - For Base64 uploads, enforce a smaller product limit than provider maximum for cost control, for example:
   - image base64 max 10 MB product limit
   - video base64 max 30 MB product limit
 - For URL media, validate scheme is `https`.
 - Block private network targets and localhost to prevent SSRF if backend fetches URLs.
-- Prefer passing user-provided public media URL directly to MiMo instead of server-side fetching.
+- Prefer passing user-provided public media URL directly to OpenAI-compatible LLM instead of server-side fetching.
 
 ### Output Safety
 
@@ -317,22 +317,22 @@ Do not log:
 
 ### Text Only
 
-- Backend builds a structured MiMo prompt from the current form fields.
-- MiMo returns JSON with main, short, negative, notes, and tip.
+- Backend builds a structured OpenAI-compatible LLM prompt from the current form fields.
+- OpenAI-compatible LLM returns JSON with main, short, negative, notes, and tip.
 - Backend validates JSON and returns response.
 
 ### Image Analysis
 
 - Frontend allows upload or URL input.
 - Backend receives either a Base64 data URL or HTTPS media URL.
-- Backend asks MiMo to analyze visible subject, style, composition, color, mood, and DND-relevant visual details.
+- Backend asks OpenAI-compatible LLM to analyze visible subject, style, composition, color, mood, and DND-relevant visual details.
 - Backend converts analysis into prompt output.
 
 ### Video Analysis
 
 - Frontend allows video upload or URL input.
 - Backend receives either a Base64 data URL or HTTPS media URL.
-- Backend asks MiMo to summarize key frames, subject, action, environment, mood, and DND-relevant visual details.
+- Backend asks OpenAI-compatible LLM to summarize key frames, subject, action, environment, mood, and DND-relevant visual details.
 - Use `fps: 2` and `media_resolution: "default"` unless future testing shows cost/performance issues.
 - Backend converts analysis into prompt output.
 
@@ -351,14 +351,14 @@ Required UI changes:
 - If backend returns fallback mode, show a subtle notice: "Hourly LLM quota reached. Generated locally without LLM."
 - Keep the existing deterministic generator as the fallback and offline path.
 
-Do not let frontend call MiMo directly.
+Do not let frontend call OpenAI-compatible LLM directly.
 
 ## Docker Deployment Changes
 
 Reintroduce backend service only when this scope is implemented:
 
 - `frontend`: Nginx static frontend, proxies `/api/` to backend.
-- `backend`: FastAPI service with MiMo credentials and quota control.
+- `backend`: FastAPI service with OpenAI-compatible LLM credentials and quota control.
 - Optional `redis`: quota store for production-like local testing.
 
 Nginx should restore `/api/` reverse proxy only after backend endpoints exist.
@@ -370,10 +370,10 @@ FRONTEND_PORT=8081
 BACKEND_PORT=8002
 APP_ENV=production
 LLM_CREDENTIAL_MODE=production_api
-MIMO_API_KEY=
-MIMO_BASE_URL=https://api.xiaomimimo.com/v1
-MIMO_MODEL=mimo-v2.5
-MIMO_MAX_COMPLETION_TOKENS=1024
+LLM_API_KEY=
+LLM_BASE_URL=
+LLM_MODEL=
+LLM_MAX_COMPLETION_TOKENS=1024
 LLM_QUOTA_LIMIT=10
 LLM_QUOTA_WINDOW_SECONDS=3600
 SESSION_COOKIE_SECRET=
@@ -386,15 +386,15 @@ REDIS_URL=
 - Frontend can generate prompt with LLM when quota is available.
 - Frontend automatically falls back to no-LLM generation after quota exhaustion.
 - Backend enforces the 10/hour limit independently for IP, fingerprint, and cookie.
-- If any one identifier exceeds 10/hour, no MiMo API call is made.
-- MiMo API key is never exposed to frontend or logs.
+- If any one identifier exceeds 10/hour, no OpenAI-compatible LLM API call is made.
+- OpenAI-compatible LLM API key is never exposed to frontend or logs.
 - `/api/generate-prompt` rejects missing/invalid session cookie and nonce.
 - CORS is limited to configured frontend origin in production.
 - Media input supports image URL, image Base64, video URL, and video Base64 subject to size/MIME limits.
-- Backend validates MiMo response shape before returning it.
+- Backend validates OpenAI-compatible LLM response shape before returning it.
 - Docker deployment includes backend only after the API is implemented.
 - Production deployment uses `LLM_CREDENTIAL_MODE=production_api` with credentials permitted for public app backend usage.
-- `LLM_CREDENTIAL_MODE=subscription_dev` cannot call MiMo when `APP_ENV=production`.
+- `LLM_CREDENTIAL_MODE=subscription_dev` cannot call OpenAI-compatible LLM when `APP_ENV=production`.
 - Missing or unknown `LLM_CREDENTIAL_MODE` fails closed to fallback/no-LLM mode.
 
 ## Implementation Phases
@@ -407,12 +407,12 @@ REDIS_URL=
 - Add deterministic fallback API response.
 - Add `APP_ENV` and `LLM_CREDENTIAL_MODE` checks that fail closed.
 
-### Phase 2: MiMo Text LLM
+### Phase 2: OpenAI-compatible LLM Text LLM
 
-- Add MiMo OpenAI-compatible client.
+- Add OpenAI-compatible client.
 - Add structured prompt contract.
 - Add JSON validation and fallback-on-error.
-- Allow MiMo calls only when credential mode policy permits it.
+- Allow OpenAI-compatible LLM calls only when credential mode policy permits it.
 
 ### Phase 3: Multimodal
 
@@ -440,7 +440,7 @@ REDIS_URL=
 
 ## Open Questions
 
-- Confirm which Xiaomi/MiMo credential type is permitted for public app backend usage. Use that with `production_api`; keep Token Plan or subscription-style credentials in `subscription_dev` only unless Xiaomi explicitly permits production app usage.
+- Confirm which provider credential type is permitted for public app backend usage. Use that with `production_api`; keep Token Plan or subscription-style credentials in `subscription_dev` only unless provider explicitly permits production app usage.
 - Decide production quota store: Redis recommended; SQLite acceptable only for small single-instance deployment.
 - Decide whether media uploads are kept in memory only or temporarily stored.
 - Decide product-side media limits below provider maximum to control cost.

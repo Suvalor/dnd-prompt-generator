@@ -24,10 +24,10 @@ Key Constraints:
 | Aspect | Current State |
 |--------|--------------|
 | Backend Framework | Python FastAPI (single file: main.py ~270 lines) |
-| Backend Source Status | PARTIAL LOSS — mimo_client.py, fallback.py, data models exist only as .pyc |
+| Backend Source Status | PARTIAL LOSS — llm_client.py, fallback.py, data models exist only as .pyc |
 | Frontend | Standalone HTML + Babel JSX |
 | Database | SQLite (feedback memory system) |
-| LLM Integration | DeepSeek API (primary) + MiMo (fallback) |
+| LLM Integration | OpenAI-compatible LLM API (primary) + OpenAI-compatible LLM (fallback) |
 | Containerization | Docker Compose: backend + frontend (Nginx) |
 | Dependencies | fastapi, uvicorn, httpx, pydantic, python-dotenv, deepseek-sdk |
 
@@ -65,7 +65,7 @@ Key Constraints:
 dnd-prompt-forge/backend/
 ├── main.py                          # EXISTING — FastAPI app (DO NOT MODIFY endpoints)
 ├── requirements.txt                 # EXISTING — Add: jinja2, scikit-learn
-├── mimo_client.py                   # REWRITE — MiMo LLM client
+├── llm_client.py                   # REWRITE — OpenAI-compatible LLM client
 ├── fallback.py                      # REWRITE — Fallback LLM orchestrator
 ├── models.py                        # REWRITE — Pydantic data models
 ├── quota.py                         # REWRITE — Session quota tracker
@@ -269,7 +269,7 @@ update_existing_only: can only update existing pages, not create new ones
 ## 8. Sprint Planning
 
 ### Sprint 1: Pre-requisite Fixes + Architecture Setup (2 days)
-- Rewrite mimo_client.py, fallback.py, models.py, quota.py from test specs
+- Rewrite llm_client.py, fallback.py, models.py, quota.py from test specs
 - Create seo_worker/ package skeleton
 - Add jinja2, scikit-learn to requirements.txt
 - Create seo_data/ directory with initial JSON files
@@ -305,7 +305,7 @@ update_existing_only: can only update existing pages, not create new ones
 - Worker file lock MUST be checked at startup
 
 ### Known Pitfalls
-1. DeepSeek may return JSON wrapped in markdown code fences — strip before parsing
+1. OpenAI-compatible LLM may return JSON wrapped in markdown code fences — strip before parsing
 2. sitemap.xml is XML — parse properly, don't regex
 3. Jinja2 template inheritance requires `{% extends "base.html" %}`
 4. TF-IDF on HTML must strip tags first

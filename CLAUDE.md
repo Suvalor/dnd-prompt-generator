@@ -46,7 +46,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Backend (Planned)
 - **Framework**: Python FastAPI
 - **Database**: SQLite for feedback memory
-- **LLM**: DeepSeek API for prompt generation
+- **LLM**: OpenAI-compatible LLM API for prompt generation
 - **Key Endpoints**:
   - `POST /api/generate-prompt` — Generate DND prompts
   - `POST /api/feedback` — Store user feedback
@@ -90,9 +90,9 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 - No `meta keywords` tag, no keyword stuffing
 
 ### LLM Integration
-- **Provider**: DeepSeek
+- **Protocol**: OpenAI-compatible Chat Completions
 - **Output Format**: JSON with `main_prompt`, `short_prompt`, `negative_prompt`, `style_notes`, `usage_tip`
-- **Environment Variables**: `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, `DEEPSEEK_MODEL`
+- **Environment Variables**: `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL`
 - **Timeout**: 20-40 seconds, retry once on transient failures
 
 ### Feedback Memory System
@@ -147,7 +147,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 - ✅ Frontend UI designed (standalone HTML)
 - ✅ SEO strategy defined
 - ❌ Backend API not yet implemented
-- ❌ DeepSeek integration not yet implemented
+- ✅ OpenAI-compatible LLM integration implemented
 - ❌ Feedback memory system not yet implemented
 - ❌ Long-tail pages not yet created
 - ❌ Sitemap/robots.txt not yet created

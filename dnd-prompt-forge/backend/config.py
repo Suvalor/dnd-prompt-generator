@@ -15,11 +15,11 @@ class Settings(BaseSettings):
     app_env: str = "development"
     log_level: str = "INFO"
 
-    # MiMo LLM 配置
-    mimo_api_key: str = ""
-    mimo_base_url: str = "https://api.xiaomimimo.com/v1"
-    mimo_model: str = "mimo-v2.5"
-    mimo_max_completion_tokens: int = 2048
+    # OpenAI-compatible LLM 配置
+    llm_api_key: str = ""
+    llm_base_url: str = ""
+    llm_model: str = ""
+    llm_max_completion_tokens: int = 2048
     llm_timeout_seconds: int = 60
 
     # 配额配置

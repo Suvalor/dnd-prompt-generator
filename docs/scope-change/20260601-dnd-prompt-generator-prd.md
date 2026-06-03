@@ -46,7 +46,7 @@ Turn your DND character idea into a copy-ready AI image prompt for portraits, to
 
 - SEO landing homepage.
 - Free DND prompt generator form.
-- DeepSeek LLM API integration through a simple Python backend.
+- OpenAI-compatible LLM LLM API integration through a simple Python backend.
 - Prompt output for:
   - Character portrait.
   - Full-body character art.
@@ -85,7 +85,7 @@ Turn your DND character idea into a copy-ready AI image prompt for portraits, to
 3. User selects output type: portrait, token, NPC, monster, scene.
 4. User fills basic DND details.
 5. User clicks generate.
-6. Python backend sends structured request to DeepSeek.
+6. Python backend sends structured request to OpenAI-compatible LLM.
 7. LLM returns:
    - Main prompt.
    - Short prompt.
@@ -193,9 +193,9 @@ Output blocks:
 
 ## 7. LLM Behavior
 
-### DeepSeek API role
+### OpenAI-compatible LLM API role
 
-DeepSeek is used to transform structured user inputs into high-quality, model-ready English prompts.
+OpenAI-compatible LLM is used to transform structured user inputs into high-quality, model-ready English prompts.
 
 The backend should send a structured prompt instruction that includes:
 
@@ -275,7 +275,7 @@ Recommended MVP:
    - Negative prompt too weak.
    - Prompt too long.
 3. Convert repeated patterns into correction rules.
-4. Add active correction rules into future DeepSeek system prompt.
+4. Add active correction rules into future OpenAI-compatible LLM system prompt.
 5. Track rule version.
 
 ### Example correction rule
@@ -368,7 +368,7 @@ Required points:
 
 - Homepage loads fast on mobile.
 - Tool is usable without login.
-- DeepSeek API generation works through Python backend.
+- OpenAI-compatible LLM API generation works through Python backend.
 - Errors are shown clearly when API fails.
 - Feedback can be recorded.
 - Negative feedback can influence later prompt generation through memory rules.

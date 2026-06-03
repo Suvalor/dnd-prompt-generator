@@ -42,7 +42,7 @@ async def bootstrap_session(response: Response):
     return {
         "csrf_token": signed_csrf,
         "features": {
-            "llm_enabled": bool(settings.mimo_api_key),
+            "llm_enabled": bool(settings.llm_api_key and settings.llm_base_url and settings.llm_model),
             "image_enabled": False,
             "video_enabled": False,
             "quota_limit": settings.llm_quota_limit,

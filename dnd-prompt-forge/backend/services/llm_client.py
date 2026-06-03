@@ -1,5 +1,5 @@
 """
-DND Prompt Forge - MiMo 客户端
+DND Prompt Forge - LLM 客户端
 OpenAI-compatible API 封装，JSON 输出验证
 """
 
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 def _chat_completions_endpoint() -> str:
     """Return the effective OpenAI-compatible chat completions URL."""
-    return f"{settings.mimo_base_url.rstrip('/')}/chat/completions"
+    return f"{settings.llm_base_url.rstrip('/')}/chat/completions"
 
 
 def _preview(value: str, limit: int = 500) -> str:
@@ -35,7 +35,8 @@ def _safe_model_dump(value) -> dict:
         return {}
     if hasattr(value, "model_dump"):
         try:
-            return value.model_dump()
+            dumped = value.model_dump()
+            return dumped if isinstance(dumped, dict) else {}
         except Exception:
             return {}
     if isinstance(value, dict):
@@ -43,8 +44,8 @@ def _safe_model_dump(value) -> dict:
     return {}
 
 
-class MiMoClientError(Exception):
-    """MiMo 客户端异常，包含错误类别。"""
+class LLMClientError(Exception):
+    """LLM 客户端异常，包含错误类别。"""
 
     def __init__(self, message: str, category: str = "provider_error") -> None:
         """初始化异常。"""
@@ -52,15 +53,15 @@ class MiMoClientError(Exception):
         self.category = category
 
 
-class MiMoClient:
-    """MiMo LLM 客户端，封装 OpenAI-compatible API 调用。"""
+class LLMClient:
+    """LLM 客户端，封装 OpenAI-compatible API 调用。"""
 
     def __init__(self) -> None:
         """初始化客户端，根据配置创建 OpenAI 异步客户端。"""
-        if settings.mimo_api_key:
+        if settings.llm_api_key and settings.llm_base_url and settings.llm_model:
             self._client = AsyncOpenAI(
-                api_key=settings.mimo_api_key,
-                base_url=settings.mimo_base_url,
+                api_key=settings.llm_api_key,
+                base_url=settings.llm_base_url,
                 timeout=settings.llm_timeout_seconds,
             )
         else:
@@ -72,12 +73,12 @@ class MiMoClient:
         return self._client
 
     def is_available(self) -> bool:
-        """检查 MiMo 客户端是否可用（已配置 API key）。"""
+        """检查 LLM 客户端是否可用（已配置 API key）。"""
         return self._client is not None
 
     async def generate_prompt(self, prompt_data: dict) -> Dict[str, str]:
         """
-        调用 MiMo API 生成 DND 提示词。
+        调用 OpenAI-compatible LLM API 生成 DND 提示词。
 
         Args:
             prompt_data: 包含生成参数的字典
@@ -86,10 +87,10 @@ class MiMoClient:
             包含 main_prompt, short_prompt, negative_prompt, style_notes, usage_tip 的字典
 
         Raises:
-            MiMoClientError: 当客户端不可用、API 调用失败或响应格式错误时
+            LLMClientError: 当客户端不可用、API 调用失败或响应格式错误时
         """
         if not self.is_available():
-            raise MiMoClientError("MiMo API not configured", category="no_api_key")
+            raise LLMClientError("OpenAI-compatible LLM API not configured", category="no_api_key")
 
         system_prompt = self._build_system_prompt()
         user_prompt = self._build_user_prompt(prompt_data)
@@ -101,9 +102,9 @@ class MiMoClient:
         logger.info(
             "LLM request start ▸ endpoint=%s base_url=%s model=%s max_tokens=%s timeout_seconds=%s prompt_chars=%s",
             endpoint,
-            settings.mimo_base_url,
-            settings.mimo_model,
-            settings.mimo_max_completion_tokens,
+            settings.llm_base_url,
+            settings.llm_model,
+            settings.llm_max_completion_tokens,
             settings.llm_timeout_seconds,
             len(user_prompt),
         )
@@ -113,12 +114,12 @@ class MiMoClient:
         started_at = time.monotonic()
         try:
             response = await self._client.chat.completions.create(
-                model=settings.mimo_model,
+                model=settings.llm_model,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
                 ],
-                max_completion_tokens=settings.mimo_max_completion_tokens,
+                max_completion_tokens=settings.llm_max_completion_tokens,
                 temperature=0.8,
                 extra_body={"thinking": {"type": "disabled"}},
             )
@@ -127,26 +128,26 @@ class MiMoClient:
             logger.error(
                 "LLM request timeout ▸ endpoint=%s model=%s timeout_seconds=%s elapsed_ms=%s error_type=%s error=%s",
                 endpoint,
-                settings.mimo_model,
+                settings.llm_model,
                 settings.llm_timeout_seconds,
                 elapsed_ms,
                 type(e).__name__,
                 e,
             )
-            raise MiMoClientError(f"MiMo API timeout after {settings.llm_timeout_seconds}s", category="timeout") from e
+            raise LLMClientError(f"OpenAI-compatible LLM API timeout after {settings.llm_timeout_seconds}s", category="timeout") from e
         except APIStatusError as e:
             elapsed_ms = int((time.monotonic() - started_at) * 1000)
             response_text = getattr(e.response, "text", "") if getattr(e, "response", None) else ""
             logger.error(
                 "LLM request HTTP error ▸ endpoint=%s model=%s status_code=%s elapsed_ms=%s response=%s",
                 endpoint,
-                settings.mimo_model,
+                settings.llm_model,
                 getattr(e, "status_code", None),
                 elapsed_ms,
                 _preview(response_text, 800),
             )
-            raise MiMoClientError(
-                f"MiMo API HTTP error: status={getattr(e, 'status_code', None)}",
+            raise LLMClientError(
+                f"OpenAI-compatible LLM API HTTP error: status={getattr(e, 'status_code', None)}",
                 category="provider_http_error",
             ) from e
         except APIConnectionError as e:
@@ -154,22 +155,22 @@ class MiMoClient:
             logger.error(
                 "LLM request connection error ▸ endpoint=%s model=%s elapsed_ms=%s error_type=%s error=%s",
                 endpoint,
-                settings.mimo_model,
+                settings.llm_model,
                 elapsed_ms,
                 type(e).__name__,
                 e,
             )
-            raise MiMoClientError(f"MiMo API connection error: {e}", category="connection_error") from e
+            raise LLMClientError(f"OpenAI-compatible LLM API connection error: {e}", category="connection_error") from e
         except Exception as e:
             elapsed_ms = int((time.monotonic() - started_at) * 1000)
             logger.exception(
                 "LLM request unexpected failure ▸ endpoint=%s model=%s elapsed_ms=%s error_type=%s",
                 endpoint,
-                settings.mimo_model,
+                settings.llm_model,
                 elapsed_ms,
                 type(e).__name__,
             )
-            raise MiMoClientError(f"MiMo API error: {e}", category="provider_error") from e
+            raise LLMClientError(f"OpenAI-compatible LLM API error: {e}", category="provider_error") from e
         elapsed_ms = int((time.monotonic() - started_at) * 1000)
 
         # 提取响应内容
@@ -181,12 +182,12 @@ class MiMoClient:
             logger.error(
                 "LLM response malformed ▸ endpoint=%s model=%s elapsed_ms=%s error_type=%s error=%s",
                 endpoint,
-                settings.mimo_model,
+                settings.llm_model,
                 elapsed_ms,
                 type(e).__name__,
                 e,
             )
-            raise MiMoClientError(f"MiMo API error: {e}", category="provider_error") from e
+            raise LLMClientError(f"OpenAI-compatible LLM API error: {e}", category="provider_error") from e
 
         message_dump = _safe_model_dump(message)
         reasoning_content = message_dump.get("reasoning_content") or ""
@@ -199,7 +200,7 @@ class MiMoClient:
         logger.info(
             "LLM response received ▸ endpoint=%s model=%s elapsed_ms=%s finish_reason=%s content_chars=%s reasoning_chars=%s reasoning_tokens=%s",
             endpoint,
-            settings.mimo_model,
+            settings.llm_model,
             elapsed_ms,
             finish_reason,
             len(content or ""),
@@ -211,7 +212,7 @@ class MiMoClient:
             logger.warning(
                 "LLM response empty content ▸ endpoint=%s model=%s finish_reason=%s message=%s",
                 endpoint,
-                settings.mimo_model,
+                settings.llm_model,
                 finish_reason,
                 _preview(json.dumps(message_dump, ensure_ascii=False, default=str), 1200),
             )
@@ -235,13 +236,13 @@ class MiMoClient:
             logger.error(
                 "LLM response JSON parse failed ▸ endpoint=%s model=%s elapsed_ms=%s error=%s content_preview=%s",
                 endpoint,
-                settings.mimo_model,
+                settings.llm_model,
                 elapsed_ms,
                 e,
                 _preview(content, 800),
             )
-            raise MiMoClientError(
-                f"Failed to parse JSON from MiMo response: {e}",
+            raise LLMClientError(
+                f"Failed to parse JSON from LLM response: {e}",
                 category="parse_error",
             ) from e
 
@@ -300,12 +301,12 @@ class MiMoClient:
             验证后的字典，所有值转为字符串
 
         Raises:
-            MiMoClientError: 当缺少必需字段时
+            LLMClientError: 当缺少必需字段时
         """
         required = {"main_prompt", "short_prompt", "negative_prompt", "style_notes", "usage_tip"}
         missing = required - set(result.keys())
         if missing:
-            raise MiMoClientError(
+            raise LLMClientError(
                 f"Missing required fields: {', '.join(sorted(missing))}",
                 category="schema_error",
             )

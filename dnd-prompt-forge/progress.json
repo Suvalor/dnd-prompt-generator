@@ -1,7 +1,7 @@
 {
   "project": "DND Prompt Forge — LLM Multimodal Security",
   "task_level": "L3",
-  "requirement": "Add backend-controlled LLM prompt generation for DND Prompt Forge while keeping the existing browser-only deterministic generator as the fallback path. Support text-to-prompt generation with MiMo, image analysis, video analysis, API authentication, abuse protection, and server-side quota control (10 calls/hour per IP/fingerprint/cookie). Reintroduce backend service for API calls, quota enforcement, and secret isolation.",
+  "requirement": "Add backend-controlled LLM prompt generation for DND Prompt Forge while keeping the existing browser-only deterministic generator as the fallback path. Support text-to-prompt generation with OpenAI-compatible LLM, image analysis, video analysis, API authentication, abuse protection, and server-side quota control (10 calls/hour per IP/fingerprint/cookie). Reintroduce backend service for API calls, quota enforcement, and secret isolation.",
   "source_task_document": "/workspace/docs/scope-change/20260602-llm-multimodal-security.md",
   "task_document_status": "in_progress",
   "current_phase": 0,

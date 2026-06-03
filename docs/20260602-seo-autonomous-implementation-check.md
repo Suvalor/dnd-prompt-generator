@@ -181,12 +181,12 @@ No `generator-prefill` handling was found.
 
 ### 6. Backend exists, but it is not the SEO automation backend
 
-Current backend is still a prompt generation API using DeepSeek-style environment variables:
+Current backend is still a prompt generation API using OpenAI-compatible LLM environment variables:
 
 ```text
-DEEPSEEK_API_KEY
-DEEPSEEK_BASE_URL
-DEEPSEEK_MODEL
+LLM_API_KEY
+LLM_BASE_URL
+LLM_MODEL
 ```
 
 It has SQLite tables for:
@@ -214,7 +214,7 @@ tests/test_csrf.py
 tests/test_fallback.py
 tests/test_generate.py
 tests/test_integration_ac.py
-tests/test_mimo_client.py
+tests/test_llm_client.py
 tests/test_quota.py
 tests/test_session.py
 ```

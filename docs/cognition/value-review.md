@@ -79,7 +79,7 @@ These are independent concerns. Frontend deployment architecture and SEO content
 
 ### Effect 1: LLM dependency injection into the core product loop
 
-Currently, the project has one LLM dependency: DeepSeek/MiMo for prompt generation (per user request). The scope adds a second, completely separate LLM dependency: autonomous content generation (per daily cron). These two LLM flows share no code, no budget, no error handling. If the daily SEO LLM call fails, the site silently degrades (no new content) with no user-visible impact. If it succeeds but produces bad content, it publishes low-quality pages that harm SEO.
+Currently, the project has one LLM dependency: OpenAI-compatible LLM for prompt generation (per user request). The scope adds a second, completely separate LLM dependency: autonomous content generation (per daily cron). These two LLM flows share no code, no budget, no error handling. If the daily SEO LLM call fails, the site silently degrades (no new content) with no user-visible impact. If it succeeds but produces bad content, it publishes low-quality pages that harm SEO.
 
 ### Effect 2: Git history pollution
 
@@ -117,7 +117,7 @@ The scope says to "recalibrate thresholds after the first 25 generated pages." W
 If the generator creates `/x.html` but the sitemap updater adds `/x` (without `.html`), or the canonical tag references a URL that differs from the sitemap URL, or the static host serves `/x/index.html` vs `/x.html` — URL canonicalization becomes a silent failure mode. The scope says "canonical is invalid" is a gate failure, but the gate only checks format, not resolution.
 
 ### Edge Case 5: SEO Worker runtime isolation
-The scope uses GitHub Actions as the scheduler. GitHub Actions has a 6-hour job timeout (for private repos) and rate limits on API calls. If the LLM decision + generation takes longer than expected (DeepSeek can be slow), the job could time out mid-run, leaving partial state. The scope has no checkpoint/resume mechanism for partial runs.
+The scope uses GitHub Actions as the scheduler. GitHub Actions has a 6-hour job timeout (for private repos) and rate limits on API calls. If the LLM decision + generation takes longer than expected (OpenAI-compatible LLM can be slow), the job could time out mid-run, leaving partial state. The scope has no checkpoint/resume mechanism for partial runs.
 
 ### Hidden Assumption: Static pages will rank
 The entire system assumes that creating a static page targeting a keyword will result in Google ranking. But ranking depends on domain authority, backlinks, content quality, competition, and dozens of other factors. A new domain with 16 thin pages and no backlinks may not rank for ANY of these keywords regardless of how well the autonomous system operates. The system measures itself on content output, not on ranking outcomes (which is a Phase 3 feature).

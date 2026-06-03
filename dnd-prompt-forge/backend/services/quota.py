@@ -230,7 +230,7 @@ async def persist_quota_usage(
     fingerprint: str | None = None,
     cookie: str | None = None,
     endpoint: str = "/api/generate-prompt",
-    mode: str = "mimo",
+    mode: str = "llm",
 ) -> None:
     """将配额使用记录持久化到 SQLite。"""
     ip_hash = _hash_identifier(ip)

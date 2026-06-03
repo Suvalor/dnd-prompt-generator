@@ -14,7 +14,7 @@ The repository contains some completed items, especially `.gitignore`, README no
 - Docker frontend is not using `npm run build` production output.
 - `ads.txt` does not exist and is not mapped by Compose.
 - Autonomous SEO scope documents and daily-run simulation documents are not present in the repository.
-- MiMo/security/quota work exists as a scope document only; the current backend implementation still uses DeepSeek-style configuration and does not expose the required MiMo/session/quota architecture.
+- LLM/security/quota work exists as a scope document only; the current backend implementation still uses OpenAI-compatible LLM configuration and does not expose the required OpenAI-compatible LLM/session/quota architecture.
 - Backend tests exist on disk but fail collection, and `.gitignore` currently ignores `tests/`.
 
 ## Acceptance Matrix
@@ -32,7 +32,7 @@ The repository contains some completed items, especially `.gitignore`, README no
 | README standard open-source structure | Passed | Root `README.md` contains project description, features, deployment, env vars, backend notes, non-commercial use, third-party service rules, and license section. | Good enough for source-available non-commercial notice. |
 | Non-commercial rule | Passed | `README.md` explicitly says non-commercial use only and prohibits paid SaaS/commercial API/resale. | No separate `LICENSE` file exists. Consider adding one if publishing. |
 | LLM multimodal/security scope document | Passed as documentation | `docs/scope-change/20260602-llm-multimodal-security.md` exists. | Implementation is not fully landed. |
-| MiMo backend integration | Failed | Current `backend/main.py` still uses `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, `DEEPSEEK_MODEL`. | No current `MIMO_API_KEY`, credential modes, or MiMo client source files are present in tracked current state. |
+| OpenAI-compatible LLM backend integration | Failed | Current `backend/main.py` still uses `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL`. | No current `LLM_API_KEY`, credential modes, or OpenAI-compatible LLM client source files are present in tracked current state. |
 | API auth / session / CSRF / quota | Failed | No present source files under `backend/middleware`, `backend/services`, `backend/routers`, or `backend/models`; pytest errors import these modules. | Tests reference missing modules. |
 | 10/hour quota by IP/fingerprint/cookie | Failed | No implementation found in current source. | Only described in scope document. |
 | Image/video analysis endpoints | Failed | No implementation found in current source. | Scope document only. |
@@ -95,7 +95,7 @@ There is no root `ads.txt`, and no Compose bind mount to:
 
 ### 4. Backend advanced LLM/security implementation is not landed
 
-The existing backend has a DeepSeek-style single-file implementation. It does not currently match the MiMo/security/quota architecture described in the scope document.
+The existing backend has a OpenAI-compatible LLM single-file implementation. It does not currently match the LLM/security/quota architecture described in the scope document.
 
 ### 5. Tests are not currently usable
 
@@ -157,7 +157,7 @@ Current failing/not-landed items:
 - frontend not deployed to Docker
 - production `npm run build` frontend Docker deployment
 - `ads.txt` root file and Compose mapping
-- MiMo implementation
+- OpenAI-compatible LLM implementation
 - API auth/session/CSRF/quota implementation
 - image/video endpoints
 - autonomous SEO plan documents and simulation

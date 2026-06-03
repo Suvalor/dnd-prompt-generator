@@ -343,10 +343,10 @@ class TestAC3LLMModeDisplay:
             mock_redis.get = AsyncMock(return_value="3")
             mock_get_redis.return_value = mock_redis
 
-            # Mock MiMo to return LLM result
-            with patch("services.mimo_client.MiMoClient.is_available", return_value=True):
+            # Mock LLM to return LLM result
+            with patch("services.llm_client.LLMClient.is_available", return_value=True):
                 with patch(
-                    "services.mimo_client.MiMoClient.generate_prompt",
+                    "services.llm_client.LLMClient.generate_prompt",
                     new_callable=AsyncMock,
                 ) as mock_gen:
                     mock_gen.return_value = {
@@ -417,7 +417,7 @@ class TestAC4FallbackModeDisplay:
             mock_redis.get = AsyncMock(return_value="3")
             mock_get_redis.return_value = mock_redis
 
-            with patch("services.mimo_client.MiMoClient.is_available", return_value=False):
+            with patch("services.llm_client.LLMClient.is_available", return_value=False):
                 response = client.post(
                     "/api/generate-prompt",
                     json={
@@ -569,7 +569,7 @@ class TestAC6FingerprintHash:
             mock_redis.get = AsyncMock(return_value="3")
             mock_get_redis.return_value = mock_redis
 
-            with patch("services.mimo_client.MiMoClient.is_available", return_value=False):
+            with patch("services.llm_client.LLMClient.is_available", return_value=False):
                 # Send with null fingerprint
                 response = client.post(
                     "/api/generate-prompt",
@@ -677,7 +677,7 @@ class TestAC7ModeAndQuotaDisplay:
             mock_redis.get = AsyncMock(return_value="3")
             mock_get_redis.return_value = mock_redis
 
-            with patch("services.mimo_client.MiMoClient.is_available", return_value=False):
+            with patch("services.llm_client.LLMClient.is_available", return_value=False):
                 response = client.post(
                     "/api/generate-prompt",
                     json={"output_type": "portrait", "race": "Tiefling"},
