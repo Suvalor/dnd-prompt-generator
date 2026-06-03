@@ -23,10 +23,15 @@ const legacyFiles = [
 const prelude = [
   "import React from 'react';",
   "import { createRoot } from 'react-dom/client';",
-  "import * as lucide from 'lucide';",
+  "import { createIcons, icons } from 'lucide';",
   "import '../css/style.css';",
   '',
   'const ReactDOM = { createRoot };',
+  'const lucide = {',
+  '  createIcons(options = {}) {',
+  '    return createIcons({ icons, ...options });',
+  '  }',
+  '};',
   'window.React = React;',
   'window.ReactDOM = ReactDOM;',
   'window.lucide = lucide;',
@@ -46,4 +51,3 @@ await writeFile(
   `${prelude}${chunks.join('\n')}`,
   'utf8'
 );
-
