@@ -29,6 +29,20 @@ def _preview(value: str, limit: int = 500) -> str:
     return compact[:limit] + "...[truncated]"
 
 
+def _safe_model_dump(value) -> dict:
+    """Best-effort dump for SDK response objects used only in diagnostics."""
+    if value is None:
+        return {}
+    if hasattr(value, "model_dump"):
+        try:
+            return value.model_dump()
+        except Exception:
+            return {}
+    if isinstance(value, dict):
+        return value
+    return {}
+
+
 class MiMoClientError(Exception):
     """MiMo 客户端异常，包含错误类别。"""
 
@@ -106,6 +120,7 @@ class MiMoClient:
                 ],
                 max_completion_tokens=settings.mimo_max_completion_tokens,
                 temperature=0.8,
+                extra_body={"thinking": {"type": "disabled"}},
             )
         except APITimeoutError as e:
             elapsed_ms = int((time.monotonic() - started_at) * 1000)
@@ -159,7 +174,9 @@ class MiMoClient:
 
         # 提取响应内容
         try:
-            content = response.choices[0].message.content
+            choice = response.choices[0]
+            message = choice.message
+            content = message.content or ""
         except (IndexError, AttributeError) as e:
             logger.error(
                 "LLM response malformed ▸ endpoint=%s model=%s elapsed_ms=%s error_type=%s error=%s",
@@ -171,15 +188,33 @@ class MiMoClient:
             )
             raise MiMoClientError(f"MiMo API error: {e}", category="provider_error") from e
 
+        message_dump = _safe_model_dump(message)
+        reasoning_content = message_dump.get("reasoning_content") or ""
+        finish_reason = getattr(choice, "finish_reason", None)
+        usage_dump = _safe_model_dump(getattr(response, "usage", None))
+        completion_details = usage_dump.get("completion_tokens_details") or {}
+        reasoning_tokens = completion_details.get("reasoning_tokens")
+
         # ── 响应日志 ──
         logger.info(
-            "LLM response received ▸ endpoint=%s model=%s elapsed_ms=%s content_chars=%s",
+            "LLM response received ▸ endpoint=%s model=%s elapsed_ms=%s finish_reason=%s content_chars=%s reasoning_chars=%s reasoning_tokens=%s",
             endpoint,
             settings.mimo_model,
             elapsed_ms,
+            finish_reason,
             len(content or ""),
+            len(reasoning_content or ""),
+            reasoning_tokens,
         )
         logger.debug("LLM response raw_content ▸ %s", content)
+        if not content:
+            logger.warning(
+                "LLM response empty content ▸ endpoint=%s model=%s finish_reason=%s message=%s",
+                endpoint,
+                settings.mimo_model,
+                finish_reason,
+                _preview(json.dumps(message_dump, ensure_ascii=False, default=str), 1200),
+            )
         if hasattr(response, "usage") and response.usage:
             logger.info(
                 "LLM response ▸ usage: prompt_tokens=%s completion_tokens=%s total_tokens=%s",
