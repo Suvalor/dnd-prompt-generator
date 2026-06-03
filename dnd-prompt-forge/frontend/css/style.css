@@ -307,6 +307,18 @@ i[data-lucide]{width:18px;height:18px;stroke-width:1.85;vertical-align:middle;di
 .banner i{flex:none;margin-top:1px;width:17px;height:17px;}
 .banner.err{background:var(--crimson-soft);color:var(--crimson-fg);border:1px solid color-mix(in oklab,var(--crimson) 30%,transparent);}
 .banner.ok{background:var(--emerald-soft);color:var(--emerald-fg);border:1px solid color-mix(in oklab,var(--emerald) 30%,transparent);}
+.banner.warn{background:var(--brass-soft);color:var(--brass-fg);border:1px solid color-mix(in oklab,var(--brass) 30%,transparent);}
+
+/* === Mode Badge Pills === */
+.pill.llm{color:var(--emerald-fg);background:var(--emerald-soft);}
+.pill.llm .dot{width:6px;height:6px;border-radius:999px;background:var(--emerald);}
+.pill.fallback{color:var(--brass-fg);background:var(--brass-soft);}
+.pill.fallback .dot{width:6px;height:6px;border-radius:999px;background:var(--brass);}
+.pill.local{color:var(--ink-3);background:var(--inset);}
+
+/* === Quota Display === */
+.out-meta .quota-low{color:var(--brass-fg);}
+.out-meta .quota-exhausted{color:var(--crimson-fg);}
 
 /* trust line */
 .trust{display:flex;flex-wrap:wrap;align-items:center;gap:7px 14px;font:var(--t-small);color:var(--ink-2);}

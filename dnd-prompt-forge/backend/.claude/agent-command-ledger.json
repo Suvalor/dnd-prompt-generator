@@ -1,0 +1,31 @@
+{
+  "records": [
+    {
+      "cwd": "/workspace/dnd-prompt-forge/backend",
+      "command_key": "python3 -m pytest tests/test_integration_ac.py",
+      "raw_command": "python3 -m pytest tests/test_integration_ac.py -v --tb=short",
+      "result": "PASSED",
+      "exit_code": 0,
+      "output_summary": "20 passed, 9 warnings in 0.42s",
+      "ran_at": "2026-06-03T00:01:00Z"
+    },
+    {
+      "cwd": "/workspace/dnd-prompt-forge/backend",
+      "command_key": "python3 -m pytest tests/test_business_acceptance.py",
+      "raw_command": "python3 -m pytest tests/test_business_acceptance.py -v --tb=short",
+      "result": "PASSED",
+      "exit_code": 0,
+      "output_summary": "74 passed, 33 warnings in 2.15s",
+      "ran_at": "2026-06-03T00:02:00Z"
+    },
+    {
+      "cwd": "/workspace/dnd-prompt-forge/backend",
+      "command_key": "python3 -m pytest tests/ (both suites)",
+      "raw_command": "python3 -m pytest tests/test_integration_ac.py tests/test_business_acceptance.py -v --tb=short",
+      "result": "PASSED",
+      "exit_code": 0,
+      "output_summary": "94 passed, 42 warnings in 2.81s",
+      "ran_at": "2026-06-03T00:03:00Z"
+    }
+  ]
+}

@@ -20,6 +20,58 @@ const fullPromptText = (result) => [
   result.negative,
 ].join('\n');
 
+/** 渲染模式徽章：LLM/Fallback/Local */
+const ModeBadge = ({ mode }) => {
+  var label = 'Offline';
+  var cls = 'pill local';
+  if (mode === 'llm') { label = 'AI Enhanced'; cls = 'pill llm'; }
+  else if (mode === 'fallback') { label = 'Standard'; cls = 'pill fallback'; }
+  return (
+    <span className={cls} aria-label={'Generation mode: ' + label}>
+      {(mode === 'llm' || mode === 'fallback') && <span className="dot" />}
+      {label}
+    </span>
+  );
+};
+
+/** 渲染配额显示 */
+const QuotaDisplay = ({ quota, mode }) => {
+  if (!quota || mode === 'local') return null;
+  var remaining = quota.remaining;
+  var limit = quota.limit;
+  var colorClass = '';
+  var ariaLabel = 'Quota: ' + remaining + ' of ' + limit + ' remaining';
+  if (remaining === 0) { colorClass = 'quota-exhausted'; ariaLabel = 'Quota exhausted: 0 of ' + limit + ' remaining'; }
+  else if (remaining <= 2) { colorClass = 'quota-low'; }
+  return (
+    <span className={colorClass} aria-label={ariaLabel}>
+      <b>Quota</b> {remaining} / {limit}
+    </span>
+  );
+};
+
+/** 配额耗尽提示横幅 */
+const QuotaExhaustedBanner = ({ quota, mode }) => {
+  if (mode !== 'fallback' || !quota || quota.remaining !== 0) return null;
+  return (
+    <div className="banner warn" role="status">
+      <Icon name="alert-circle" size={17} />
+      <div>AI-enhanced prompts have reached the hourly limit. Using standard generation. Limit resets each hour.</div>
+    </div>
+  );
+};
+
+/** 离线模式提示横幅 */
+const OfflineBanner = ({ show }) => {
+  if (!show) return null;
+  return (
+    <div className="banner warn" role="status">
+      <Icon name="wifi-off" size={17} />
+      <div>Using offline mode — prompts are generated locally from templates.</div>
+    </div>
+  );
+};
+
 const PromptBlock = ({ name, body, tone, prose, onCopy }) => (
   <div className={`pblock ${tone === 'neg' ? 'neg' : ''}`}>
     <div className="ph">
@@ -102,15 +154,21 @@ const Feedback = ({ phase, reasons, onToggleReason, comment, onComment, onSubmit
   );
 };
 
-const SuccessState = ({ result, onRegenerate, onUseful, onNotUseful, fb, toast }) => (
+const SuccessState = ({ result, onRegenerate, onUseful, onNotUseful, fb, toast, mode, quota, offlineMode }) => (
   <div aria-live="polite">
+    <OfflineBanner show={offlineMode} />
     <div className="out-head">
       <div>
         <div className="title">{result.title}</div>
         <div className="sub">{result.subtitle}</div>
       </div>
-      <span className="pill ok"><span className="dot" />Ready to copy</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <ModeBadge mode={mode} />
+        <span className="pill ok"><span className="dot" />Ready to copy</span>
+      </div>
     </div>
+
+    <QuotaExhaustedBanner quota={quota} mode={mode} />
 
     <div className="full-copy">
       <div>
@@ -127,8 +185,9 @@ const SuccessState = ({ result, onRegenerate, onUseful, onNotUseful, fb, toast }
       <Collapse label="Show short prompt, style notes & tips" openLabel="Hide extra detail">
         <PromptBlock name="Short prompt" body={result.short} onCopy={() => toast('Short prompt copied')} />
         {result.tokenNote && <PromptBlock name="Token notes (VTT)" body={result.tokenNote} prose />}
-        <PromptBlock name="Style notes" body={result.styleNote} prose />
-        <PromptBlock name="Usage tip" body={result.tip} prose />
+        {/* LLM/fallback 模式下不使用 dangerouslySetInnerHTML 渲染，防止 XSS */}
+        <PromptBlock name="Style notes" body={result.styleNote} prose={mode === 'local'} />
+        <PromptBlock name="Usage tip" body={result.tip} prose={mode === 'local'} />
       </Collapse>
     </div>
 
@@ -136,6 +195,7 @@ const SuccessState = ({ result, onRegenerate, onUseful, onNotUseful, fb, toast }
       <span><b>Model</b> {result.meta.model}</span>
       <span><b>Template</b> {result.meta.template}</span>
       <span><b>Rules</b> {result.meta.rules}</span>
+      <QuotaDisplay quota={quota} mode={mode} />
     </div>
 
     <div className="out-actions">
@@ -150,7 +210,13 @@ const SuccessState = ({ result, onRegenerate, onUseful, onNotUseful, fb, toast }
 
 /* ---------- The Generator ---------- */
 
-const Generator = ({ layout = 'side', forceState = 'auto', initialType, prefill }) => {
+/** 最小加载时长常量（ms），防止闪烁 */
+var MIN_LOADING_MS = 600;
+
+/** 连续失败阈值，达到后显示离线横幅 */
+var OFFLINE_THRESHOLD = 3;
+
+const Generator = ({ layout = 'side', forceState = 'auto', initialType, prefill, apiConfig }) => {
   const toast = useToast();
   const [form, setForm] = React.useState({ ...BLANK, type: initialType || BLANK.type });
   const [status, setStatus] = React.useState('empty'); // empty|loading|success|error
@@ -158,6 +224,33 @@ const Generator = ({ layout = 'side', forceState = 'auto', initialType, prefill 
   const [errors, setErrors] = React.useState({});
   const [fb, setFb] = React.useState({ phase: null, reasons: [], comment: '' });
   const lastRef = React.useRef(null);
+
+  /** 生成模式：llm / fallback / local */
+  const [mode, setMode] = React.useState('local');
+  /** 配额信息：{ remaining, limit } */
+  const [quota, setQuota] = React.useState(null);
+  /** 离线模式标记：3+ 连续失败后为 true，或 bootstrap 失败时从 apiConfig 继承 */
+  const [offlineMode, setOfflineMode] = React.useState(
+    !!(apiConfig && apiConfig.offlineMode)
+  );
+  /** 连续失败计数器 */
+  const failCountRef = React.useRef(0);
+  /** 上一次请求的 requestId，用于反馈提交 */
+  const requestIdRef = React.useRef(null);
+
+  /** 组件卸载时清理 timer，防止内存泄漏 */
+  React.useEffect(() => {
+    return function () {
+      clearTimeout(lastRef.current);
+    };
+  }, []);
+
+  /** apiConfig 变更时同步离线模式状态 */
+  React.useEffect(() => {
+    if (apiConfig && apiConfig.offlineMode) {
+      setOfflineMode(true);
+    }
+  }, [apiConfig]);
 
   React.useEffect(() => { if (initialType) setForm(f => ({ ...f, type: initialType })); }, [initialType]);
 
@@ -187,14 +280,123 @@ const Generator = ({ layout = 'side', forceState = 'auto', initialType, prefill 
     return Object.keys(e).length === 0;
   };
 
-  const runGenerate = (data) => {
+  /** 记录一次失败，更新离线模式状态 */
+  function recordFailure() {
+    failCountRef.current += 1;
+    if (failCountRef.current >= OFFLINE_THRESHOLD) {
+      setOfflineMode(true);
+    }
+  }
+
+  /** 记录一次成功，重置失败计数和离线模式 */
+  function recordSuccess() {
+    failCountRef.current = 0;
+    setOfflineMode(false);
+  }
+
+  /** 异步生成提示词：优先调用后端 API，支持重试和 403 re-bootstrap，最终 fallback 到本地 FORGE.build() */
+  const runGenerate = async (data) => {
     setStatus('loading');
     setFb({ phase: null, reasons: [], comment: '' });
     clearTimeout(lastRef.current);
-    lastRef.current = setTimeout(() => {
-      setResult(FORGE.build(data));
+
+    var startTime = Date.now();
+    var apiAvailable = apiConfig && apiConfig.apiAvailable;
+    var features = apiConfig && apiConfig.features;
+    var llmEnabled = features && features.llm_enabled;
+
+    /** 补齐最小加载时长，防止闪烁 */
+    function ensureMinLoad(callback) {
+      var elapsed = Date.now() - startTime;
+      var remaining = MIN_LOADING_MS - elapsed;
+      if (remaining > 0) {
+        lastRef.current = setTimeout(callback, remaining);
+      } else {
+        callback();
+      }
+    }
+
+    /** 使用本地 FORGE.build() 生成结果 */
+    function localBuild() {
+      var localResult = FORGE.build(data);
+      setMode('local');
+      setQuota(null);
+      requestIdRef.current = null;
+      setResult(localResult);
       setStatus('success');
-    }, 850);
+      recordFailure();
+    }
+
+    /** 如果 API 不可用或 LLM 未启用，直接走本地生成 */
+    if (!apiAvailable || !llmEnabled) {
+      ensureMinLoad(localBuild);
+      return;
+    }
+
+    /** 获取指纹哈希（best-effort） */
+    var fingerprintHash = '';
+    try {
+      fingerprintHash = await ApiClient.getFingerprintHash();
+    } catch (e) { /* fingerprint 失败时传空 */ }
+
+    /** 映射表单字段到 API 字段，传入指纹哈希 */
+    var apiForm = ApiClient.mapFormToApi(data, fingerprintHash);
+
+    /** 尝试调用后端生成 API 并处理结果 */
+    async function handleApiSuccess(apiResponse) {
+      var mapped = ApiClient.mapApiToResult(apiResponse);
+      var localMeta = FORGE.build(data);
+      mapped.title = localMeta.title;
+      mapped.subtitle = localMeta.subtitle;
+      mapped.tokenNote = localMeta.tokenNote;
+      mapped.meta = localMeta.meta;
+      ensureMinLoad(function () {
+        setMode(mapped.mode);
+        setQuota(mapped.quota);
+        requestIdRef.current = mapped.requestId;
+        setResult(mapped);
+        setStatus('success');
+        recordSuccess();
+      });
+    }
+
+    try {
+      /** 调用后端生成 API */
+      var apiResponse = await ApiClient.generatePrompt(apiForm);
+      await handleApiSuccess(apiResponse);
+    } catch (err) {
+      /** 403 错误：尝试 re-bootstrap 一次，成功后重试 generate */
+      if (err && err.status === 403) {
+        try {
+          await ApiClient.bootstrap();
+          var retryResponse = await ApiClient.generatePrompt(apiForm);
+          await handleApiSuccess(retryResponse);
+          return;
+        } catch (bootstrapOrRetryErr) {
+          /** re-bootstrap 或重试失败，fallback 到本地 */
+          ensureMinLoad(localBuild);
+          return;
+        }
+      }
+
+      /** 网络错误（非 403）：延迟 1 秒后重试一次 */
+      var isNetworkError = !err || !err.status;
+      if (isNetworkError) {
+        try {
+          await new Promise(function (resolve) { setTimeout(resolve, 1000); });
+          var retryResp = await ApiClient.generatePrompt(apiForm);
+          await handleApiSuccess(retryResp);
+          return;
+        } catch (retryErr) {
+          /** 重试仍失败，fallback 到本地 */
+          ensureMinLoad(localBuild);
+          return;
+        }
+      }
+
+      /** 其他错误（如 4xx/5xx），直接 fallback */
+      ensureMinLoad(localBuild);
+    }
   };
 
   const onGenerate = () => { if (validate()) runGenerate(form); };
@@ -216,7 +418,23 @@ const Generator = ({ layout = 'side', forceState = 'auto', initialType, prefill 
   const onNotUseful = () => setFb(s => ({ ...s, phase: 'asking' }));
   const onUseful = () => toast('Thanks — glad it helped');
   const toggleReason = (r) => setFb(s => ({ ...s, reasons: s.reasons.includes(r) ? s.reasons.filter(x => x !== r) : [...s.reasons, r] }));
-  const submitFb = () => setFb(s => ({ ...s, phase: 'done' }));
+
+  /** 提交反馈：若有 requestId 且 session 就绪则调后端 API，失败时仅 console.warn */
+  const submitFb = async () => {
+    setFb(s => ({ ...s, phase: 'done' }));
+    if (requestIdRef.current && ApiClient.isSessionReady()) {
+      try {
+        await ApiClient.submitFeedback({
+          request_id: requestIdRef.current,
+          feedback: 'not_useful',
+          reason: fb.reasons.length > 0 ? fb.reasons.join(', ') : null,
+          comment: fb.comment || null,
+        });
+      } catch (e) {
+        console.warn('Feedback submission failed:', e);
+      }
+    }
+  };
 
   // demo override from tweaks
   const effStatus = forceState !== 'auto' ? forceState : status;
@@ -329,7 +547,8 @@ const Generator = ({ layout = 'side', forceState = 'auto', initialType, prefill 
                 {effStatus === 'error' && <ErrorState onRetry={onRetry} />}
                 {effStatus === 'success' && (
                   <SuccessState result={demoResult} onRegenerate={onRegenerate}
-                    onUseful={onUseful} onNotUseful={onNotUseful} fb={fb} toast={toast} />
+                    onUseful={onUseful} onNotUseful={onNotUseful} fb={fb} toast={toast}
+                    mode={mode} quota={quota} offlineMode={offlineMode} />
                 )}
               </div>
             </div>

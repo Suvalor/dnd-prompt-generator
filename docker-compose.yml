@@ -1,14 +1,36 @@
 services:
+  # Nginx 前端服务，反向代理 /api/ 到后端
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./dnd-prompt-forge/frontend:/usr/share/nginx/html:ro
+      - ./dnd-prompt-forge/deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "${FRONTEND_PORT:-8081}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # FastAPI 后端服务
   backend:
     build:
       context: ./dnd-prompt-forge
       dockerfile: backend/Dockerfile
     environment:
       MIMO_API_KEY: ${MIMO_API_KEY:-}
-      DB_PATH: ${DB_PATH:-/app/data/prompt_forge.db}
       MIMO_BASE_URL: ${MIMO_BASE_URL:-https://api.xiaomimimo.com/v1}
       MIMO_MODEL: ${MIMO_MODEL:-mimo-v2.5}
       LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      DB_PATH: ${DB_PATH:-/app/data/prompt_forge.db}
+      SESSION_COOKIE_SECRET: ${SESSION_COOKIE_SECRET:-}
+      CSRF_SECRET: ${CSRF_SECRET:-}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      REDIS_ENABLED: ${REDIS_ENABLED:-true}
+      LLM_QUOTA_LIMIT: ${LLM_QUOTA_LIMIT:-10}
+      LLM_QUOTA_WINDOW_SECONDS: ${LLM_QUOTA_WINDOW_SECONDS:-3600}
+      APP_ENV: ${APP_ENV:-production}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://dndpromptforge.com,https://www.dndpromptforge.com}
     volumes:
       - backend-data:/app/data
     ports:
@@ -19,6 +41,19 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Redis 配额存储服务
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     restart: unless-stopped
 
 volumes:

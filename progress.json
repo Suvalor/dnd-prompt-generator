@@ -1,162 +1,78 @@
 {
-  "project": "SEO Autonomous Static Content System",
-  "task_level": "L3",
-  "requirement": "Build an automated SEO growth system that increases Google exposure for DND Prompt Forge by discovering rising long-tail keywords and using an LLM to create or update useful static content. Phase 1 MVP: daily keyword collection, LLM selection and scoring, generate run report, create/update at most 1 static page/day, update sitemap, run automated gates, commit generated page, use current static HTML build, track SEO pages in seo-pages.json, track failed candidates in seo-failures.json, enforce daily LLM token and cost budgets.",
-  "source_task_document": "/workspace/docs/scope-change/20260602-seo-autonomous-static-content-system.md",
-  "task_document_status": "completed",
-  "current_phase": 6,
-  "created_at": "2026-06-02T00:00:00Z",
-  "updated_at": "2026-06-02T00:00:00Z",
+  "project": "Frontend-Backend Integration — Wire the Generator to the API",
+  "task_level": "L2",
+  "requirement": "前端接入后端API，打通业务链路：前端API Client、浏览器指纹、Generate按钮改造、字段映射、quota fail-closed、部署配置更新、业务联通测试。核心目标：前端Generate按钮调用后端LLM而非仅本地生成，后端不可用时本地兜底。",
+  "source_task_document": null,
+  "task_document_status": null,
+  "current_phase": 5,
+  "created_at": "2026-06-02T08:00:00Z",
+  "updated_at": "2026-06-03T08:00:00Z",
   "phases": {
     "1": {
       "name": "PM需求沟通+PRD落盘",
       "agent": "pm",
       "status": "completed",
       "deliverables": ["requirements.md"],
-      "started_at": "2026-06-02T00:00:00Z",
-      "completed_at": "2026-06-02T00:30:00Z",
-      "notes": "L3定级确认，三问完成，PRD已由scribe落盘"
+      "notes": "PM完成三问确认+PRD编写"
     },
     "1.5": {
       "name": "价值审查",
       "agent": "gemini-thinking-protocol",
       "status": "completed",
-      "verdict": "SIMPLER_PROPOSAL",
+      "verdict": "PASS",
       "deliverables": ["docs/cognition/value-review.md"],
-      "started_at": "2026-06-02T00:30:00Z",
-      "completed_at": "2026-06-02T00:45:00Z",
-      "notes": "硬熔断：scope将紧急问题(填补16个sitemap空白页)与远期问题(自动化管线)捆绑；更轻方案：3天手动生成替代9天自动化；用户决策：坚持原方案"
+      "notes": "VERDICT: PASS — 核心问题是数据管道断裂而非后端能力缺失"
     },
     "2": {
       "name": "设计+架构",
       "agent": "product-designer ∥ architect",
       "status": "completed",
       "deliverables": ["docs/design/design-spec.md", "docs/architecture/architecture-spec.md"],
-      "started_at": "2026-06-02T01:00:00Z",
-      "completed_at": "2026-06-02T02:00:00Z",
-      "notes": "并行完成；产物均经由scribe落盘；用户已确认坚持原方案"
+      "notes": "并行完成；4个ADR+4个API契约+字段映射+3层fallback+mode badge+quota display+UI状态矩阵"
     },
     "3": {
       "name": "Sprint迭代编码",
       "agent": "developer",
-      "status": "pending",
-      "deliverables": [],
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "status": "completed",
+      "deliverables": ["frontend/js/api-client.jsx", "frontend/js/generator.jsx", "frontend/js/app.jsx", "frontend/index.html", "frontend/css/style.css", "deploy/nginx.conf", ".env.example", "docker-compose.yml"],
+      "notes": "Sprint1(P0闭环)+Sprint2(P1部署)+修复轮完成"
     },
     "4": {
       "name": "代码审查",
       "agent": "code-reviewer",
-      "status": "pending",
+      "status": "completed",
       "deliverables": [],
-      "started_at": null,
-      "completed_at": null,
-      "notes": ""
+      "notes": "4个P0+5个P1已修复；3个P2记入技术债（fetchWithTimeout流超时/FORGE.TYPES数组/console.warn）"
     },
     "5": {
       "name": "业务验收",
       "agent": "business-tester",
       "status": "completed",
-      "deliverables": ["reports/business-test/test_ac_acceptance.py"],
-      "started_at": "2026-06-02T06:00:00Z",
-      "completed_at": "2026-06-02T07:00:00Z",
-      "notes": "14个AC验收：12 PASS + 2 FAIL(BT-001 Dockerfile未重命名, BT-002 DriftDetector浮点精度) → 修复后重新验收 PASS"
-    },
-    "6": {
-      "name": "部署",
-      "agent": "devops",
-      "status": "completed",
-      "deliverables": ["部署验证报告"],
-      "started_at": "2026-06-02T07:00:00Z",
-      "completed_at": "2026-06-02T07:30:00Z",
-      "notes": "Docker Compose验证通过, GitHub Actions语法正确, SEO Worker入口点可用, 部署就绪"
+      "deliverables": ["backend/tests/test_business_acceptance.py"],
+      "notes": "9/9 AC通过，94/94测试0失败；APPROVED"
     }
   },
   "sprints": [
     {
       "id": 1,
       "status": "completed",
-      "scope": "前置修复+架构搭建：后端源码恢复、docker-compose修改、SEO Worker骨架、HTML模板、注册表schema",
-      "tasks": {
-        "completed": [
-          "S1-T1: 后端源码恢复（94/94测试通过）",
-          "S1-T2: docker-compose.yml移除frontend",
-          "S1-T3: SEO Worker项目骨架",
-          "S1-T4: Jinja2 HTML模板",
-          "S1-T5: 注册表schema文件",
-          "审查修复: C-01~C-04 CRITICAL, M-01~M-06 MAJOR, m-01~m-02 MINOR"
-        ],
-        "failed": [],
-        "pending": []
-      },
+      "scope": "P0业务闭环核心",
       "review_status": "passed",
       "test_status": "passed"
     },
     {
       "id": 2,
       "status": "completed",
-      "scope": "核心流水线：关键词发现、分类评分、页面生成、质量门禁、注册表管理",
-      "tasks": {
-        "completed": [
-          "S2-T1: discoverer.py + seed_keywords.txt",
-          "S2-T2: classifier.py + LLM决策合约",
-          "S2-T3: generator.py + Jinja2渲染",
-          "S2-T4: quality_gate.py + 8个gate",
-          "S2-T5: registry.py + sitemap更新",
-          "S2-T5b: publisher.py（审查新增）",
-          "审查修复: C-01~C-05, M-01~M-08",
-          "124/124 测试通过（94后端 + 30 SEO Worker）"
-        ],
-        "failed": [],
-        "pending": []
-      },
+      "scope": "P1部署配置",
       "review_status": "passed",
-      "test_status": "passed"
-    },
-    {
-      "id": 3,
-      "status": "completed",
-      "scope": "集成+前端+部署",
-      "tasks": {
-        "completed": [
-          "S3-T1~T6: 全部完成",
-          "审查修复: C-02,C-04, M-02~M-06, m-01~m-02",
-          "159/159 测试通过"
-        ],
-        "failed": [],
-        "pending": []
-      },
-      "review_status": "passed",
-      "test_status": "passed"
-    },
-    {
-      "id": 4,
-      "status": "completed",
-      "scope": "测试+验收+修复",
-      "tasks": {
-        "completed": [
-          "S4-T1~T3: 端到端测试、AC检查、Bug修复",
-          "BT-001 BT-002: 修复 Dockerfile重命名 + DriftDetector浮点clamp"
-        ],
-        "failed": [],
-        "pending": []
-      },
-      "review_status": "passed",
-      "test_status": "passed"
+      "test_status": null
     }
   ],
   "skipped_commands": [],
-  "blockers": [
-    {
-      "id": "B1",
-      "phase": "1.5",
-      "type": "value_review_melt",
-      "description": "价值审查返回 SIMPLER_PROPOSAL",
-      "verdict": "SIMPLER_PROPOSAL",
-      "user_decision": "坚持原方案",
-      "resolved_at": "2026-06-02T01:00:00Z",
-      "requires_user_decision": false
-    }
+  "blockers": [],
+  "tech_debt": [
+    "m-01: fetchWithTimeout响应流超时（低风险）",
+    "m-02: FORGE.TYPES.indexOf对象数组（不影响核心闭环）",
+    "m-03: console.warn在生产代码中（MVP可接受）"
   ]
 }

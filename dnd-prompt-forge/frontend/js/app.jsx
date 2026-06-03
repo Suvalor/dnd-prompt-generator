@@ -79,6 +79,9 @@ function App() {
   const [initType, setInitType] = React.useState('portrait');
   const [prefill, setPrefill] = React.useState(null);
 
+  /** API 配置状态：bootstrap 结果 + apiAvailable 标记 */
+  const [apiConfig, setApiConfig] = React.useState({ apiAvailable: false, features: null });
+
   // mount 时解析 URL 参数和内嵌 JSON，设置 prefill 状态
   React.useEffect(() => {
     var urlPrefill = parsePrefillFromURL();
@@ -90,6 +93,17 @@ function App() {
     if (embeddedPrefill) {
       setPrefill(embeddedPrefill);
     }
+  }, []);
+
+  /** mount 时调用 ApiClient.bootstrap()，初始化 session 和 CSRF token */
+  React.useEffect(() => {
+    if (!window.ApiClient || !window.ApiClient.bootstrap) return;
+    window.ApiClient.bootstrap().then(function (result) {
+      setApiConfig({ apiAvailable: true, features: result.features });
+    }).catch(function () {
+      /** bootstrap 失败：标记 API 不可用且进入离线模式 */
+      setApiConfig({ apiAvailable: false, features: null, offlineMode: true });
+    });
   }, []);
 
   // apply theme/accent/texture classes to <html>
@@ -128,7 +142,7 @@ function App() {
 
   const Home = (
     <React.Fragment>
-      <Generator layout={t.layout} forceState={t.demoState} initialType={initType} prefill={prefill} />
+      <Generator layout={t.layout} forceState={t.demoState} initialType={initType} prefill={prefill} apiConfig={apiConfig} />
       <AdAfterTool />
       <Examples />
       <PromptGuide />
