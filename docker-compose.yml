@@ -1,11 +1,11 @@
 services:
-  # 静态前端服务，挂载 dnd-prompt-forge/frontend 并反向代理 /api/ 到后端
+  # 生产前端服务：构建 Vite dist 后由 Nginx 提供静态文件，并反向代理 /api/ 到后端
   frontend:
-    image: nginx:alpine
+    build:
+      context: ./dnd-prompt-forge
+      dockerfile: frontend/Dockerfile
     volumes:
-      - ./dnd-prompt-forge/frontend:/usr/share/nginx/html
       - ./ads.txt:/usr/share/nginx/html/ads.txt:ro
-      - ./dnd-prompt-forge/deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "${FRONTEND_PORT:-8081}:80"
     depends_on:

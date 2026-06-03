@@ -36,7 +36,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
 
   <!-- SoftwareApplication JSON-LD -->
   <script type="application/ld+json">
@@ -70,24 +69,6 @@
 <body>
   <div id="app"></div>
 
-  <!-- React & ReactDOM -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-  <!-- Babel for JSX -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <!-- Lucide icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-
-  <!-- Application scripts -->
-  <script type="text/babel" src="js/prompt-engine.jsx"></script>
-  <script type="text/babel" src="js/tweaks-panel.jsx"></script>
-  <script type="text/babel" src="js/primitives.jsx"></script>
-  <script type="text/babel" src="js/header.jsx"></script>
-  <script type="text/babel" src="js/footer.jsx"></script>
-  <script type="text/babel" src="js/api-client.jsx"></script>
-  <script type="text/babel" src="js/generator.jsx"></script>
-  <script type="text/babel" src="js/content-sections.jsx"></script>
-  <script type="text/babel" src="js/prose-pages.jsx"></script>
-  <script type="text/babel" src="js/app.jsx"></script>
+  <script type="module" src="/src/legacy-app.jsx"></script>
 </body>
 </html>

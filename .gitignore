@@ -13,6 +13,9 @@
 # Dependencies
 node_modules/
 
+# Generated frontend build entry
+dnd-prompt-forge/frontend/src/legacy-app.jsx
+
 # Build output
 dist/
 build/
