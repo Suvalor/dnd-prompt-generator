@@ -1,31 +1,4 @@
-/* Content sections + reserved ad slots (clearly labeled, never disguised) */
-
-const ADSENSE_CLIENT = 'ca-pub-9123849728110588';
-
-const Ad = ({ variant = 'inline', sizes }) => {
-  React.useEffect(() => {
-    if (!window.adsbygoogle) return;
-    try {
-      window.adsbygoogle.push({});
-    } catch (e) {
-      // AdSense can reject duplicate pushes during hot reloads or blocked ads.
-    }
-  }, []);
-
-  return (
-    <aside className={`ad ${variant}`} role="complementary" aria-label="Advertisement">
-      <span className="ad-lbl">Advertisement</span>
-      <ins
-        className="adsbygoogle"
-        style={{ display: 'block' }}
-        data-ad-client={ADSENSE_CLIENT}
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      />
-      <span className="ad-dim">{sizes}</span>
-    </aside>
-  );
-};
+/* Content sections */
 
 const SectionHead = ({ kicker, title, children }) => (
   <div className="section-head">
@@ -35,16 +8,7 @@ const SectionHead = ({ kicker, title, children }) => (
   </div>
 );
 
-/* --- Ad slot 1: after the tool, before examples --- */
-const AdAfterTool = () => (
-  <div className="band">
-    <div className="wrap" style={{ padding: 'var(--s7) var(--s5)' }}>
-      <Ad variant="leaderboard" sizes="728×90 · responsive · 320×100 on mobile" />
-    </div>
-  </div>
-);
-
-/* --- Examples gallery (with mid-gallery native ad) --- */
+/* --- Examples gallery --- */
 const useExample = (fill) => {
   if (window.__forgeLoadExample) window.__forgeLoadExample(fill);
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -67,10 +31,9 @@ const Examples = () => {
                 <div className="ex-excerpt">{e.excerpt}</div>
                 <div className="ex-foot">
                   <Button variant="secondary" size="sm" iconLeft="wand-2" onClick={() => useExample(e.fill)}>Use this example</Button>
-                  <a href={e.route} onClick={ev => ev.preventDefault()}>Guide →</a>
+                  <a href={e.route}>Guide →</a>
                 </div>
               </article>
-              {i === 2 && <Ad variant="inline" sizes="Native · in-feed · 300×250 / fluid" />}
             </React.Fragment>
           ))}
         </div>
@@ -150,13 +113,6 @@ const Limitations = () => (
   </div>
 );
 
-/* --- Ad slot 3: before FAQ / links --- */
-const AdBeforeFaq = () => (
-  <div className="wrap" style={{ padding: 'var(--s6) var(--s5)' }}>
-    <Ad variant="footer" sizes="728×90 · responsive in-content" />
-  </div>
-);
-
 /* --- FAQ --- */
 const FAQS = [
   { q: 'What is a DND character prompt generator?', a: 'It’s a free tool that takes your character details — race, class, style, gear — and writes a structured, copy-ready text prompt you can paste into an AI image model to create portraits, tokens, NPCs, monsters or scenes.' },
@@ -205,7 +161,7 @@ const InternalLinks = () => (
       <SectionHead kicker="Explore" title="More DND prompt generators" />
       <div className="links-grid">
         {LINKS.map(l => (
-          <a key={l.href} href={l.href} onClick={e => e.preventDefault()}>
+          <a key={l.href} href={l.href}>
             <Icon name="arrow-up-right" size={15} />{l.label}
           </a>
         ))}
@@ -214,4 +170,4 @@ const InternalLinks = () => (
   </div>
 );
 
-Object.assign(window, { Ad, AdAfterTool, Examples, PromptGuide, HowItWorks, Limitations, AdBeforeFaq, FAQ, InternalLinks });
+Object.assign(window, { Examples, PromptGuide, HowItWorks, Limitations, FAQ, InternalLinks });

@@ -143,12 +143,10 @@ function App() {
   const Home = (
     <React.Fragment>
       <Generator layout={t.layout} forceState={t.demoState} initialType={initType} prefill={prefill} apiConfig={apiConfig} />
-      <AdAfterTool />
       <Examples />
       <PromptGuide />
       <HowItWorks />
       <Limitations />
-      <AdBeforeFaq />
       <FAQ />
       <InternalLinks />
     </React.Fragment>

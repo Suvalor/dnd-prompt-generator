@@ -34,7 +34,7 @@ const Footer = ({ onNav }) => (
       </div>
       <div className="fcol">
         <h4>Examples</h4>
-        <ul>{FOOTER_GUIDES.map(t => <li key={t.href}><a href={t.href} onClick={e => e.preventDefault()}>{t.label}</a></li>)}</ul>
+        <ul>{FOOTER_GUIDES.map(t => <li key={t.href}><a href={t.href}>{t.label}</a></li>)}</ul>
       </div>
       <div className="fcol">
         <h4>Site</h4>
