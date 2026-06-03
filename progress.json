@@ -4,9 +4,9 @@
   "requirement": "前端接入后端API，打通业务链路：前端API Client、浏览器指纹、Generate按钮改造、字段映射、quota fail-closed、部署配置更新、业务联通测试。核心目标：前端Generate按钮调用后端LLM而非仅本地生成，后端不可用时本地兜底。",
   "source_task_document": null,
   "task_document_status": null,
-  "current_phase": 5,
+  "current_phase": 7,
   "created_at": "2026-06-02T08:00:00Z",
-  "updated_at": "2026-06-03T08:00:00Z",
+  "updated_at": "2026-06-03T12:00:00Z",
   "phases": {
     "1": {
       "name": "PM需求沟通+PRD落盘",
@@ -35,21 +35,21 @@
       "agent": "developer",
       "status": "completed",
       "deliverables": ["frontend/js/api-client.jsx", "frontend/js/generator.jsx", "frontend/js/app.jsx", "frontend/index.html", "frontend/css/style.css", "deploy/nginx.conf", ".env.example", "docker-compose.yml"],
-      "notes": "Sprint1(P0闭环)+Sprint2(P1部署)+修复轮完成"
+      "notes": "Sprint1+2+3全部完成；验收阻塞问题已修复"
     },
     "4": {
       "name": "代码审查",
       "agent": "code-reviewer",
       "status": "completed",
       "deliverables": [],
-      "notes": "4个P0+5个P1已修复；3个P2记入技术债（fetchWithTimeout流超时/FORGE.TYPES数组/console.warn）"
+      "notes": "第二轮审查 APPROVED；5/5 修复项验证通过"
     },
     "5": {
       "name": "业务验收",
       "agent": "business-tester",
       "status": "completed",
-      "deliverables": ["backend/tests/test_business_acceptance.py"],
-      "notes": "9/9 AC通过，94/94测试0失败；APPROVED"
+      "deliverables": ["backend/tests/test_business_acceptance.py", "backend/tests/test_sprint3_acceptance.py"],
+      "notes": "APPROVED；132 测试全部通过（48核心+74业务验收+10 Sprint3专项）"
     }
   },
   "sprints": [
@@ -66,6 +66,24 @@
       "scope": "P1部署配置",
       "review_status": "passed",
       "test_status": null
+    },
+    {
+      "id": 3,
+      "status": "completed",
+      "scope": "验收阻塞修复：quota fail-closed + ALLOWED_ORIGINS配置分离 + 测试路径修复",
+      "tasks": {
+        "completed": [
+          "修复 generate.py quota 异常处理：fail-open -> fail-closed",
+          "修复 docker-compose.yml：本地/线上 ALLOWED_ORIGINS 配置分离",
+          "修复 test_business_acceptance.py：硬编码路径改为相对路径",
+          "修复 .gitignore：添加后端测试目录排除规则",
+          "验证修复：132 测试全部通过"
+        ],
+        "failed": [],
+        "pending": []
+      },
+      "review_status": "passed",
+      "test_status": "passed"
     }
   ],
   "skipped_commands": [],
@@ -73,6 +91,7 @@
   "tech_debt": [
     "m-01: fetchWithTimeout响应流超时（低风险）",
     "m-02: FORGE.TYPES.indexOf对象数组（不影响核心闭环）",
-    "m-03: console.warn在生产代码中（MVP可接受）"
+    "m-03: console.warn在生产代码中（MVP可接受）",
+    "m-04: 8个测试文件未被git staged（建议提交前git add）"
   ]
 }

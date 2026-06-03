@@ -1,6 +1,6 @@
 services:
-  # Nginx 前端服务，反向代理 /api/ 到后端
-  nginx:
+  # 静态前端服务，挂载 dnd-prompt-forge/frontend 并反向代理 /api/ 到后端
+  frontend:
     image: nginx:alpine
     volumes:
       - ./dnd-prompt-forge/frontend:/usr/share/nginx/html:ro

@@ -80,12 +80,12 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
     fingerprint = req.client_fingerprint_hash or ""
     cookie = request.cookies.get("session_id", "")
 
-    # 配额检查
+    # 配额检查（fail-closed：异常时拒绝请求，防止绕过配额限制）
     try:
         quota_result: QuotaResult = await check_quota(ip, fingerprint or None, session_id or None)
     except Exception:
-        # 配额检查失败时允许请求
-        quota_result = QuotaResult(allowed=True, limit=10, remaining=10, reset_at="")
+        logger.warning("Quota check failed, rejecting request (fail-closed)")
+        quota_result = QuotaResult(allowed=False, limit=0, remaining=0, reset_at="")
 
     # 配额超限时仍返回 fallback（HTTP 200），但标记 quota.remaining=0
     if not quota_result.allowed:
@@ -160,11 +160,10 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
             error_msg = str(e)
             logger.warning("MiMo unexpected error, falling back: %s", e)
 
-    # Fallback 生成
+    # Fallback 生成（未消耗 LLM 资源，不扣减配额；仅记录事件用于审计）
     result = build_fallback_prompt(prompt_data)
     elapsed_ms = int((time.monotonic() - start_time) * 1000)
 
-    await increment_quota(ip, fingerprint or None, cookie or None)
     await persist_quota_usage(
         request_id, ip, fingerprint or None, cookie or None,
         "/api/generate-prompt", "fallback",
@@ -179,7 +178,7 @@ async def generate_prompt(req: GeneratePromptRequest, request: Request):
         "request_id": request_id,
         "quota": {
             "limit": quota_result.limit,
-            "remaining": max(0, quota_result.remaining - 1),
+            "remaining": quota_result.remaining,
             "reset_at": quota_result.reset_at,
         },
         "main_prompt": result["main_prompt"],
