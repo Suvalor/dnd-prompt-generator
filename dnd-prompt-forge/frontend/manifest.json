@@ -1,0 +1,21 @@
+{
+  "name": "DND Prompt Forge",
+  "short_name": "Prompt Forge",
+  "description": "Free DND character prompt generator. Turn race, class, style and backstory into copy-ready AI image prompts.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4EEDF",
+  "theme_color": "#D4A017",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/assets/logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
