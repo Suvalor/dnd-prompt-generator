@@ -7,13 +7,6 @@ const FOOTER_TOOLS = [
   { label: 'NPC prompts', id: 'npc' },
   { label: 'Scene prompts', id: 'scene' },
 ];
-const FOOTER_GUIDES = [
-  { label: 'Fantasy character prompts', href: '/fantasy-character-prompt-generator' },
-  { label: 'Tiefling warlock', href: '/tiefling-warlock-prompt-generator' },
-  { label: 'Elf ranger', href: '/elf-ranger-prompt-generator' },
-  { label: 'Dragonborn paladin token', href: '/dragonborn-paladin-token-prompt' },
-  { label: 'Haunted tavern scene', href: '/dnd-tavern-scene-prompt' },
-];
 const FOOTER_COMPANY = [
   { label: 'About', id: 'about' },
   { label: 'Contact', id: 'contact' },
@@ -31,10 +24,6 @@ const Footer = ({ onNav }) => (
       <div className="fcol">
         <h4>Generators</h4>
         <ul>{FOOTER_TOOLS.map(t => <li key={t.id}><a onClick={() => onNav(t.id)}>{t.label}</a></li>)}</ul>
-      </div>
-      <div className="fcol">
-        <h4>Examples</h4>
-        <ul>{FOOTER_GUIDES.map(t => <li key={t.href}><a href={t.href}>{t.label}</a></li>)}</ul>
       </div>
       <div className="fcol">
         <h4>Site</h4>

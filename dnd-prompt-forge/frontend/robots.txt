@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dndpromptforge.com/sitemap.xml
+Sitemap: https://dnd.whatai.me/sitemap.xml

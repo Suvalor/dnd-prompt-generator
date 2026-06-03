@@ -148,7 +148,6 @@ function App() {
       <HowItWorks />
       <Limitations />
       <FAQ />
-      <InternalLinks />
     </React.Fragment>
   );
 

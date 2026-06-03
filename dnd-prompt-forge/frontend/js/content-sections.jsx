@@ -31,7 +31,6 @@ const Examples = () => {
                 <div className="ex-excerpt">{e.excerpt}</div>
                 <div className="ex-foot">
                   <Button variant="secondary" size="sm" iconLeft="wand-2" onClick={() => useExample(e.fill)}>Use this example</Button>
-                  <a href={e.route}>Guide →</a>
                 </div>
               </article>
             </React.Fragment>
@@ -142,32 +141,4 @@ const FAQ = () => {
   );
 };
 
-/* --- Internal links --- */
-const LINKS = [
-  { label: 'DND character prompt generator', href: '/dnd-character-prompt-generator' },
-  { label: 'DND token prompt generator', href: '/dnd-token-prompt-generator' },
-  { label: 'DND monster prompt generator', href: '/dnd-monster-prompt-generator' },
-  { label: 'DND NPC prompt generator', href: '/dnd-npc-prompt-generator' },
-  { label: 'DND scene prompt generator', href: '/dnd-scene-prompt-generator' },
-  { label: 'Fantasy character prompt generator', href: '/fantasy-character-prompt-generator' },
-  { label: 'Tiefling warlock prompt generator', href: '/tiefling-warlock-prompt-generator' },
-  { label: 'Elf ranger prompt generator', href: '/elf-ranger-prompt-generator' },
-  { label: 'Dragonborn paladin token prompt', href: '/dragonborn-paladin-token-prompt' },
-  { label: 'DND tavern scene prompt', href: '/dnd-tavern-scene-prompt' },
-];
-const InternalLinks = () => (
-  <div className="band alt">
-    <div className="wrap section">
-      <SectionHead kicker="Explore" title="More DND prompt generators" />
-      <div className="links-grid">
-        {LINKS.map(l => (
-          <a key={l.href} href={l.href}>
-            <Icon name="arrow-up-right" size={15} />{l.label}
-          </a>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-Object.assign(window, { Examples, PromptGuide, HowItWorks, Limitations, FAQ, InternalLinks });
+Object.assign(window, { Examples, PromptGuide, HowItWorks, Limitations, FAQ });

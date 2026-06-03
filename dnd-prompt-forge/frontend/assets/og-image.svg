@@ -57,6 +57,6 @@
 
   <!-- 底部 URL -->
   <text x="600" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#D4A017" opacity="0.5">
-    dndpromptforge.com
+    dnd.whatai.me
   </text>
 </svg>

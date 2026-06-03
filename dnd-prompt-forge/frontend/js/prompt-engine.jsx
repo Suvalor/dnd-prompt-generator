@@ -170,19 +170,19 @@
 
   // Prefilled gallery / example data
   const examples = [
-    { id: 'tiefling-warlock', type: 'portrait', badge: 'Portrait', name: 'Tiefling Warlock', route: '/tiefling-warlock-prompt-generator',
+    { id: 'tiefling-warlock', type: 'portrait', badge: 'Portrait', name: 'Tiefling Warlock',
       excerpt: 'portrait of a tiefling warlock, crimson skin, curled obsidian horns, violet eyes…',
       fill: { type:'portrait', race:'Tiefling', klass:'Warlock', desc:'pact of the chain, cocky, infernal heritage, soul-lantern', style:'painterly', mood:'brooding', model:'midjourney', palette:'crimson and violet', magic:'eldritch' } },
-    { id: 'elf-ranger', type: 'fullbody', badge: 'Full body', name: 'Elf Ranger', route: '/elf-ranger-prompt-generator',
+    { id: 'elf-ranger', type: 'fullbody', badge: 'Full body', name: 'Elf Ranger',
       excerpt: 'full-body wood elf ranger, layered leather and cloak, longbow drawn, forest…',
       fill: { type:'fullbody', race:'Wood elf', klass:'Ranger', desc:'weathered scout, hooded cloak, mid-stride', style:'realism', mood:'gritty', model:'midjourney', armor:'studded leather', weapon:'a recurve longbow', palette:'mossy green and umber' } },
-    { id: 'dragonborn-paladin', type: 'token', badge: 'Token', name: 'Dragonborn Paladin', route: '/dragonborn-paladin-token-prompt',
+    { id: 'dragonborn-paladin', type: 'token', badge: 'Token', name: 'Dragonborn Paladin',
       excerpt: 'top-down token, bronze dragonborn paladin, gleaming plate, centered…',
       fill: { type:'token', race:'Bronze dragonborn', klass:'Paladin', desc:'radiant oath, shield raised', style:'painterly', mood:'heroic', model:'general', armor:'gilded plate armor', weapon:'a warhammer' } },
-    { id: 'goblin-merchant', type: 'npc', badge: 'NPC', name: 'Goblin Merchant', route: '/dnd-npc-prompt-generator',
+    { id: 'goblin-merchant', type: 'npc', badge: 'NPC', name: 'Goblin Merchant',
       excerpt: 'NPC portrait of a shrewd goblin merchant, overloaded backpack, gold tooth…',
       fill: { type:'npc', race:'Goblin', klass:'Merchant', desc:'shrewd, gold tooth, overloaded wares backpack, sly grin', style:'storybook', mood:'gritty', model:'chatgpt' } },
-    { id: 'haunted-tavern', type: 'scene', badge: 'Scene', name: 'Haunted Tavern', route: '/dnd-tavern-scene-prompt',
+    { id: 'haunted-tavern', type: 'scene', badge: 'Scene', name: 'Haunted Tavern',
       excerpt: 'wide haunted tavern interior, overturned chairs, ghostly candlelight, fog…',
       fill: { type:'scene', race:'Haunted tavern', klass:'', desc:'overturned chairs, flickering ghostly candlelight, creeping fog, abandoned hearth', style:'grimdark', mood:'menacing', model:'midjourney', palette:'desaturated teal and amber' } },
   ];
