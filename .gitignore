@@ -40,3 +40,4 @@ venv/
 .vscode/
 .idea/
 .github/
+package-lock.json

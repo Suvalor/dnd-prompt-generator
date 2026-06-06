@@ -7,6 +7,7 @@ RUN npm install
 
 COPY frontend/ ./
 RUN npm run build
+RUN grep -q "ca-pub-9123849728110588" /app/frontend/dist/index.html
 
 FROM nginx:1.27-alpine
 
