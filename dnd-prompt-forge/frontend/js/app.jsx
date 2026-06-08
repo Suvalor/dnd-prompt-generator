@@ -161,12 +161,15 @@ function App() {
     default: body = Home;
   }
 
-  return (
-    <ToastHost>
-      <Header route={route} onNav={handleNav} theme={t.dark ? 'dark' : 'light'}
-        onToggleTheme={() => setTweak('dark', !t.dark)} />
-      {body}
-      <Footer onNav={handleNav} />
+	  return (
+	    <ToastHost>
+      <a className="skip-link" href="#main-content">Skip to main content</a>
+	      <Header route={route} onNav={handleNav} theme={t.dark ? 'dark' : 'light'}
+	        onToggleTheme={() => setTweak('dark', !t.dark)} />
+      <main id="main-content" tabIndex="-1">
+        {body}
+      </main>
+	      <Footer onNav={handleNav} />
 
       <TweaksPanel>
         <TweakSection label="Workbench" />

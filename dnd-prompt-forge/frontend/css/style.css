@@ -110,6 +110,16 @@ a{color:var(--brass-fg);text-decoration:none;}
 ::selection{background:var(--brass-soft);color:var(--ink);}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px;}
 .tnum{font-variant-numeric:tabular-nums;}
+.skip-link{
+  position:fixed;top:8px;left:20px;z-index:1000;
+  padding:10px 14px;border-radius:var(--r-md);
+  background:var(--ink);color:var(--bg);
+  font:var(--t-small);font-weight:700;
+  transform:translateY(-160%);
+  transition:transform var(--dur) var(--ease);
+}
+.skip-link:focus{transform:translateY(0);}
+#main-content:focus{outline:none;}
 
 /* ============================================================
    LAYOUT
