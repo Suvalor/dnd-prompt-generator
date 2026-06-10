@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Excel 比例转换工具</title>
+  <meta name="description" content="粘贴 Excel 数据，保持行列结构并按比例转换数字。" />
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: #f4f6f8;
+      color: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 30%),
+        #f4f6f8;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 38px);
+      letter-spacing: -0.03em;
+    }
+
+    .header-note {
+      margin: 8px 0 0;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .workspace {
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+    }
+
+    .source-panel {
+      min-height: auto;
+    }
+
+    .lists-panel {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow: visible;
+    }
+
+    .list-column {
+      min-width: 0;
+      padding: 20px;
+    }
+
+    .list-column + .list-column {
+      border-left: 1px solid #e2e8f0;
+    }
+
+    .list-column-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 28px;
+      margin-bottom: 10px;
+    }
+
+    .list-column-title {
+      margin: 0;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .output-panel {
+      min-height: 420px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 68px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .panel-meta {
+      color: #94a3b8;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .panel-body {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      padding: 20px;
+    }
+
+    .section-label {
+      display: block;
+      margin-bottom: 10px;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .paste-area {
+      display: block;
+      width: 100%;
+      min-height: 260px;
+      padding: 14px;
+      resize: vertical;
+      color: #0f172a;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      line-height: 1.6;
+      tab-size: 4;
+    }
+
+    .paste-area:focus {
+      outline: 3px solid rgba(37, 99, 235, 0.14);
+      border-color: #2563eb;
+    }
+
+    .hint {
+      margin: 9px 0 18px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .table-shell {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th,
+    td {
+      height: 38px;
+      padding: 8px 10px;
+      text-align: left;
+      overflow-wrap: anywhere;
+      border-right: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th:first-child,
+    td:first-child {
+      width: 50%;
+    }
+
+    .paired-table {
+      table-layout: auto;
+    }
+
+    .paired-table th:first-child,
+    .paired-table td:first-child {
+      width: auto;
+    }
+
+    .paired-table th:not(:first-child),
+    .paired-table td:not(:first-child) {
+      width: 1%;
+      white-space: nowrap;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      color: #475569;
+      background: #f1f5f9;
+      font-weight: 700;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .formula-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .formula-list {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .formula-cell {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      white-space: nowrap;
+    }
+
+    .formula-members {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .member-ratio {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 0;
+    }
+
+    .member-name {
+      max-width: 90px;
+      overflow: hidden;
+      color: #0f172a;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ratio-input {
+      width: 64px;
+      height: 30px;
+      padding: 0 7px;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ratio-input:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.16);
+      border-color: #2563eb;
+    }
+
+    .formula-total {
+      color: #16a34a;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .primary-button,
+    .secondary-button {
+      width: 100%;
+      height: 44px;
+      border-radius: 9px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .primary-button {
+      color: white;
+      background: #2563eb;
+    }
+
+    .primary-button:hover {
+      background: #1d4ed8;
+    }
+
+    .primary-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    .secondary-button {
+      color: #334155;
+      background: #e2e8f0;
+    }
+
+    .secondary-button:hover {
+      background: #cbd5e1;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .summary-item {
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+
+    .summary-value {
+      display: block;
+      color: #0f172a;
+      font-size: 20px;
+      font-weight: 750;
+    }
+
+    .summary-name {
+      display: block;
+      margin-top: 2px;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .empty-state {
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      padding: 30px;
+      color: #94a3b8;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 980px) {
+      .lists-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .list-column + .list-column {
+        border-top: 1px solid #e2e8f0;
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 18px;
+      }
+
+      .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Spreadsheet Transformer</p>
+        <h1>Excel 数据比例转换</h1>
+        <p class="header-note">从 Excel 复制数据并粘贴，数字按比例转换，行列结构保持不变。</p>
+      </div>
+    </header>
+
+    <section class="workspace" aria-label="Excel 数据转换工作区">
+      <article class="panel source-panel">
+        <header class="panel-header">
+          <h2 class="panel-title">输入源</h2>
+          <span class="panel-meta" id="inputMeta">0 行 · 0 列</span>
+        </header>
+        <div class="panel-body">
+          <label class="section-label" for="sourceInput">粘贴 Excel 数据</label>
+          <textarea
+            class="paste-area"
+            id="sourceInput"
+            spellcheck="false"
+            placeholder="在 Excel 中复制单元格区域，然后粘贴到这里"
+          ></textarea>
+          <p class="hint">按 Tab 识别列、按换行识别行。公式单元格会使用 Excel 当前显示的计算结果。</p>
+        </div>
+      </article>
+
+      <article class="panel lists-panel">
+        <section class="list-column" aria-labelledby="input-list-title">
+          <div class="list-column-header">
+            <h2 class="list-column-title" id="input-list-title">输入源 · 列表格式</h2>
+            <span class="panel-meta" id="inputListMeta">0 行 · 0 列</span>
+          </div>
+          <div id="inputPreview" class="empty-state">粘贴 Excel 数据后，此处显示行列预览。</div>
+        </section>
+
+        <section class="list-column" aria-labelledby="formula-list-title">
+          <div class="list-column-header">
+            <h2 class="list-column-title" id="formula-list-title">转换公式 · 列表格式</h2>
+            <span class="panel-meta" id="formulaMeta">0 行待分配</span>
+          </div>
+          <div class="formula-stack">
+            <div id="formulaList" class="empty-state">粘贴数据后，此处生成逐行分配公式。</div>
+            <p class="hint">第一列按“/”拆分。默认平均分配；修改任意一项后，其余项自动平均分配剩余比例。</p>
+            <button class="primary-button" id="convertButton" type="button">生成汇总结果</button>
+            <button class="secondary-button" id="resetButton" type="button">清空重置</button>
+          </div>
+        </section>
+      </article>
+
+      <article class="panel output-panel">
+        <header class="panel-header">
+          <h2 class="panel-title">输出结果</h2>
+          <span class="panel-meta" id="outputMeta">等待转换</span>
+        </header>
+        <div class="panel-body">
+          <span class="section-label">汇总输出结果</span>
+          <div class="summary">
+            <div class="summary-item">
+              <strong class="summary-value" id="rowCount">0</strong>
+              <span class="summary-name">数据行</span>
+            </div>
+            <div class="summary-item">
+              <strong class="summary-value" id="columnCount">0</strong>
+              <span class="summary-name">数据列</span>
+            </div>
+            <div class="summary-item">
+              <strong class="summary-value" id="numberCount">0</strong>
+              <span class="summary-name">已转换数字</span>
+            </div>
+          </div>
+          <div id="outputPreview" class="empty-state">完成转换后，此处显示输出结果。</div>
+          <button class="primary-button" id="copyButton" type="button" style="margin-top: 16px;" disabled>
+            复制输出结果
+          </button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const sourceInput = document.getElementById('sourceInput');
+    const inputPreview = document.getElementById('inputPreview');
+    const formulaList = document.getElementById('formulaList');
+    const formulaMeta = document.getElementById('formulaMeta');
+    const outputPreview = document.getElementById('outputPreview');
+    const inputMeta = document.getElementById('inputMeta');
+    const inputListMeta = document.getElementById('inputListMeta');
+    const outputMeta = document.getElementById('outputMeta');
+    const copyButton = document.getElementById('copyButton');
+    let outputRows = [];
+    let formulaRows = [];
+
+    function parseClipboardTable(value) {
+      const normalized = value.replace(/\r\n?/g, '\n').replace(/\n$/, '');
+      if (!normalized) return [];
+
+      const rows = normalized.split('\n').map((row) => row.split('\t'));
+      const maxColumns = Math.max(...rows.map((row) => row.length));
+      return rows.map((row) => [
+        ...row,
+        ...Array(Math.max(0, maxColumns - row.length)).fill('')
+      ]);
+    }
+
+    function isNumericCell(value) {
+      const normalized = value.trim().replace(/,/g, '');
+      return normalized !== '' && Number.isFinite(Number(normalized));
+    }
+
+    function formatNumber(value) {
+      if (Number.isInteger(value)) return String(value);
+      return String(Number(value.toFixed(10)));
+    }
+
+    function splitNames(value) {
+      return value
+        .split('/')
+        .map((name) => name.trim())
+        .filter(Boolean);
+    }
+
+    function equalRatios(count) {
+      if (!count) return [];
+      const ratio = 1 / count;
+      return Array.from({ length: count }, () => ratio);
+    }
+
+    function createFormulaRows(rows) {
+      return rows.map((row) => {
+        const names = splitNames(row[0] || '');
+        return {
+          source: row,
+          names,
+          ratios: equalRatios(names.length)
+        };
+      });
+    }
+
+    function buildTable(rows) {
+      if (!rows.length) return null;
+
+      const shell = document.createElement('div');
+      shell.className = 'table-shell';
+      const table = document.createElement('table');
+      table.className = 'paired-table input-data-table';
+      const head = document.createElement('thead');
+      const headRow = document.createElement('tr');
+
+      rows[0].forEach((_, index) => {
+        const cell = document.createElement('th');
+        cell.scope = 'col';
+        cell.textContent = String.fromCharCode(65 + index);
+        headRow.appendChild(cell);
+      });
+
+      head.appendChild(headRow);
+      table.appendChild(head);
+
+      const body = document.createElement('tbody');
+      rows.forEach((row) => {
+        const tableRow = document.createElement('tr');
+        row.forEach((value) => {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          tableRow.appendChild(cell);
+        });
+        body.appendChild(tableRow);
+      });
+
+      table.appendChild(body);
+      shell.appendChild(table);
+      return shell;
+    }
+
+    function renderPreview(container, rows, emptyText) {
+      container.className = '';
+      container.replaceChildren();
+      const table = buildTable(rows);
+
+      if (table) {
+        container.appendChild(table);
+      } else {
+        container.className = 'empty-state';
+        container.textContent = emptyText;
+      }
+    }
+
+    function updateInputPreview() {
+      const rows = parseClipboardTable(sourceInput.value);
+      const columns = rows[0]?.length || 0;
+      inputMeta.textContent = `${rows.length} 行 · ${columns} 列`;
+      inputListMeta.textContent = `${rows.length} 行 · ${columns} 列`;
+      renderPreview(inputPreview, rows, '粘贴 Excel 数据后，此处显示行列预览。');
+      formulaRows = createFormulaRows(rows);
+      renderFormulaRows();
+      clearOutput();
+    }
+
+    function renderFormulaRows() {
+      formulaList.replaceChildren();
+      const validRows = formulaRows.filter((row) => row.names.length);
+      formulaMeta.textContent = `${validRows.length} 行待分配`;
+
+      if (!validRows.length) {
+        formulaList.className = 'empty-state';
+        formulaList.textContent = '粘贴数据后，此处生成逐行分配公式。';
+        return;
+      }
+
+      formulaList.className = 'formula-list';
+      const table = document.createElement('table');
+      table.className = 'paired-table formula-data-table';
+      const head = document.createElement('thead');
+      const headRow = document.createElement('tr');
+      const maxColumns = Math.max(...validRows.map((row) => row.source.length));
+
+      Array.from({ length: maxColumns }, (_, index) => {
+        const cell = document.createElement('th');
+        cell.scope = 'col';
+        cell.textContent = String.fromCharCode(65 + index);
+        headRow.appendChild(cell);
+      });
+
+      head.appendChild(headRow);
+      table.appendChild(head);
+      const body = document.createElement('tbody');
+
+      formulaRows.forEach((formulaRow, rowIndex) => {
+        const row = document.createElement('tr');
+        const formulaCell = document.createElement('td');
+        const formulaContent = document.createElement('div');
+        formulaContent.className = 'formula-cell';
+        const total = document.createElement('span');
+        total.className = 'formula-total';
+        total.textContent = '合计 = 1';
+
+        const members = document.createElement('div');
+        members.className = 'formula-members';
+        if (!formulaRow.names.length) {
+          const emptyName = document.createElement('span');
+          emptyName.className = 'member-name';
+          emptyName.textContent = '未识别';
+          members.appendChild(emptyName);
+        }
+        formulaRow.names.forEach((name, memberIndex) => {
+          const member = document.createElement('label');
+          member.className = 'member-ratio';
+
+          const nameText = document.createElement('span');
+          nameText.className = 'member-name';
+          nameText.textContent = name;
+
+          const input = document.createElement('input');
+          input.className = 'ratio-input';
+          input.type = 'number';
+          input.min = '0';
+          input.max = '1';
+          input.step = '0.01';
+          input.value = formatNumber(formulaRow.ratios[memberIndex]);
+          input.setAttribute('aria-label', `第 ${rowIndex + 1} 行 ${name} 的比例`);
+          input.addEventListener('change', () => {
+            rebalanceRatios(rowIndex, memberIndex, input.value);
+          });
+
+          member.append(nameText, input);
+          members.appendChild(member);
+        });
+
+        formulaContent.append(members, total);
+        formulaCell.appendChild(formulaContent);
+        row.appendChild(formulaCell);
+
+        formulaRow.source.slice(1).forEach((value) => {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          row.appendChild(cell);
+        });
+
+        for (let index = formulaRow.source.length; index < maxColumns; index += 1) {
+          row.appendChild(document.createElement('td'));
+        }
+
+        body.appendChild(row);
+      });
+
+      table.appendChild(body);
+      formulaList.appendChild(table);
+      scheduleRowHeightSync();
+    }
+
+    function syncPairedRowHeights() {
+      const inputRows = inputPreview.querySelectorAll('tbody tr');
+      const formulaTableRows = formulaList.querySelectorAll('tbody tr');
+      const rowCount = Math.min(inputRows.length, formulaTableRows.length);
+
+      inputRows.forEach((row) => {
+        row.style.height = '';
+      });
+      formulaTableRows.forEach((row) => {
+        row.style.height = '';
+      });
+
+      for (let index = 0; index < rowCount; index += 1) {
+        const height = Math.max(
+          inputRows[index].getBoundingClientRect().height,
+          formulaTableRows[index].getBoundingClientRect().height
+        );
+        inputRows[index].style.height = `${height}px`;
+        formulaTableRows[index].style.height = `${height}px`;
+      }
+    }
+
+    function scheduleRowHeightSync() {
+      window.requestAnimationFrame(syncPairedRowHeights);
+    }
+
+    function rebalanceRatios(rowIndex, changedIndex, rawValue) {
+      const row = formulaRows[rowIndex];
+      if (!row) return;
+
+      const changedValue = Math.min(1, Math.max(0, Number(rawValue) || 0));
+      const remainingCount = row.ratios.length - 1;
+      const remainingValue = remainingCount ? (1 - changedValue) / remainingCount : 0;
+      row.ratios = row.ratios.map((_, index) => (
+        index === changedIndex ? changedValue : remainingValue
+      ));
+      renderFormulaRows();
+      clearOutput();
+    }
+
+    function clearOutput() {
+      outputRows = [];
+      outputMeta.textContent = '等待转换';
+      document.getElementById('rowCount').textContent = '0';
+      document.getElementById('columnCount').textContent = '0';
+      document.getElementById('numberCount').textContent = '0';
+      copyButton.disabled = true;
+      renderPreview(outputPreview, [], '完成转换后，此处显示输出结果。');
+    }
+
+    function convertData() {
+      if (!formulaRows.length) {
+        sourceInput.focus();
+        return;
+      }
+
+      const summary = new Map();
+      let maxColumns = 1;
+
+      formulaRows.forEach((formulaRow) => {
+        formulaRow.names.forEach((name, memberIndex) => {
+          const ratio = formulaRow.ratios[memberIndex];
+          const allocated = formulaRow.source.slice(1).map((cell) => {
+            if (!isNumericCell(cell)) return cell;
+            return Number(cell.trim().replace(/,/g, '')) * ratio;
+          });
+          maxColumns = Math.max(maxColumns, allocated.length + 1);
+
+          if (!summary.has(name)) {
+            summary.set(name, Array.from({ length: allocated.length }, () => ''));
+          }
+
+          const current = summary.get(name);
+          allocated.forEach((value, index) => {
+            if (typeof value === 'number') {
+              current[index] = (typeof current[index] === 'number' ? current[index] : 0) + value;
+            } else if (!current[index]) {
+              current[index] = value;
+            }
+          });
+        });
+      });
+
+      outputRows = Array.from(summary, ([name, values]) => [
+        name,
+        ...values.map((value) => typeof value === 'number' ? formatNumber(value) : value)
+      ]);
+      const convertedNumbers = outputRows.reduce((count, row) => (
+        count + row.slice(1).filter(isNumericCell).length
+      ), 0);
+
+      renderPreview(outputPreview, outputRows, '完成转换后，此处显示输出结果。');
+      document.getElementById('rowCount').textContent = outputRows.length;
+      document.getElementById('columnCount').textContent = maxColumns;
+      document.getElementById('numberCount').textContent = convertedNumbers;
+      outputMeta.textContent = `${outputRows.length} 行 · ${maxColumns} 列`;
+      copyButton.disabled = false;
+    }
+
+    async function copyOutput() {
+      if (!outputRows.length) return;
+      const text = outputRows.map((row) => row.join('\t')).join('\n');
+      await navigator.clipboard.writeText(text);
+      const originalText = copyButton.textContent;
+      copyButton.textContent = '已复制';
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1200);
+    }
+
+    function resetPage() {
+      sourceInput.value = '';
+      formulaRows = [];
+      outputRows = [];
+      inputMeta.textContent = '0 行 · 0 列';
+      inputListMeta.textContent = '0 行 · 0 列';
+      formulaMeta.textContent = '0 行待分配';
+      outputMeta.textContent = '等待转换';
+      document.getElementById('rowCount').textContent = '0';
+      document.getElementById('columnCount').textContent = '0';
+      document.getElementById('numberCount').textContent = '0';
+      copyButton.disabled = true;
+      renderPreview(inputPreview, [], '粘贴 Excel 数据后，此处显示行列预览。');
+      formulaList.className = 'empty-state';
+      formulaList.textContent = '粘贴数据后，此处生成逐行分配公式。';
+      renderPreview(outputPreview, [], '完成转换后，此处显示输出结果。');
+      sourceInput.focus();
+    }
+
+    sourceInput.addEventListener('input', updateInputPreview);
+    window.addEventListener('resize', scheduleRowHeightSync);
+    document.getElementById('convertButton').addEventListener('click', convertData);
+    document.getElementById('resetButton').addEventListener('click', resetPage);
+    copyButton.addEventListener('click', copyOutput);
+  </script>
+</body>
+</html>

@@ -13,6 +13,9 @@ const FOOTER_COMPANY = [
   { label: 'Privacy', id: 'privacy' },
   { label: 'Terms', id: 'terms' },
 ];
+const FOOTER_EXTRA_TOOLS = [
+  { label: 'Excel Ratio Converter', href: '/pages/excel-ratio-converter.html' },
+];
 
 const Footer = ({ onNav }) => (
   <footer className="footer">
@@ -28,6 +31,10 @@ const Footer = ({ onNav }) => (
       <div className="fcol">
         <h4>Site</h4>
         <ul>{FOOTER_COMPANY.map(t => <li key={t.id}><a onClick={() => onNav(t.id)}>{t.label}</a></li>)}</ul>
+      </div>
+      <div className="fcol">
+        <h4>Extra tools</h4>
+        <ul>{FOOTER_EXTRA_TOOLS.map(t => <li key={t.href}><a href={t.href}>{t.label}</a></li>)}</ul>
       </div>
     </div>
     <div className="legal">
