@@ -681,7 +681,7 @@
           input.step = '0.01';
           input.value = formatNumber(formulaRow.ratios[memberIndex]);
           input.setAttribute('aria-label', `第 ${rowIndex + 1} 行 ${name} 的比例`);
-          input.addEventListener('change', () => {
+          input.addEventListener('input', () => {
             rebalanceRatios(rowIndex, memberIndex, input.value);
           });
 
@@ -747,7 +747,15 @@
       row.ratios = row.ratios.map((_, index) => (
         index === changedIndex ? changedValue : remainingValue
       ));
-      renderFormulaRows();
+
+      const tableRow = formulaList.querySelectorAll('tbody tr')[rowIndex];
+      const inputs = tableRow?.querySelectorAll('.ratio-input') || [];
+      inputs.forEach((input, index) => {
+        if (index !== changedIndex) {
+          input.value = formatNumber(row.ratios[index]);
+        }
+      });
+
       clearOutput();
     }
 
