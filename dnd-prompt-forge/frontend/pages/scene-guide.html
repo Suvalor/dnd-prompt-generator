@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DND Fantasy Scene Prompt Guide | DND Prompt Forge</title>
+  <meta name="description" content="Learn how to compose AI image prompts for DND fantasy scenes — establishing shots, depth layers, encounter hooks, atmospheric lighting, and model-specific tips for location art." />
+  <link rel="canonical" href="https://dnd.whatai.me/scene-guide" />
+  <meta property="og:title" content="DND Fantasy Scene Prompt Guide | DND Prompt Forge" />
+  <meta property="og:description" content="Learn how to compose AI image prompts for DND fantasy scenes — establishing shots, depth layers, and atmospheric lighting for location art." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://dnd.whatai.me/scene-guide" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9123849728110588"
+    crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "DND Fantasy Scene Prompt Guide",
+    "description": "A practical guide to writing AI image prompts for Dungeons & Dragons fantasy scenes — covering establishing shots, depth layers, encounter hooks, and atmospheric lighting for location art.",
+    "author": { "@type": "Organization", "name": "DND Prompt Forge" },
+    "publisher": { "@type": "Organization", "name": "DND Prompt Forge", "url": "https://dnd.whatai.me" },
+    "datePublished": "2026-06-14",
+    "mainEntityOfPage": "https://dnd.whatai.me/scene-guide"
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap" style="padding-top: var(--s8);">
+    <div class="prose">
+      <div class="guide-header">
+        <a href="/" class="guide-back">
+          <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+          Back to generator
+        </a>
+      </div>
+      <h1>DND Fantasy Scene Prompt Guide</h1>
+      <div class="updated">Guide &middot; last updated June 2026</div>
+      <p class="lede">Scene prompts are the broadest and most complex prompt type. Where a portrait is one face and a token is one silhouette, a scene is a full environment with depth, lighting, atmosphere, and narrative potential. Getting a scene prompt right means your players see the tavern, the dungeon, or the battlefield before you describe it. Getting it wrong means a generic landscape that could be anywhere. This guide covers how to prompt for scenes that feel like places your party could actually visit.</p>
+
+      <!-- Section 1: When to use -->
+      <h2>When to use fantasy scene prompts</h2>
+      <p>Use scene prompts when you need an <strong>establishing shot or location illustration</strong> — a tavern exterior, a dungeon corridor, a mountain pass, a throne room, a forest clearing. Scenes set the stage for encounters; they are the "where" before the "who" and the "what."</p>
+      <p>Do not use scene prompts when a character is the focus. A dragon perched on a mountain is a monster prompt, not a scene. A tavern with a bard performing is a scene with a secondary character. If the central figure is more important than the environment, use the character or monster prompt type and add a simple background.</p>
+      <p>The practical rule: if removing all characters from the image would still leave a useful illustration, it is a scene. If removing the characters would leave an empty room, it is a character portrait with a background.</p>
+
+      <!-- Section 2: Composition decisions -->
+      <h2>Composition decisions and trade-offs</h2>
+      <p>The most important decision in a scene prompt is the <strong>depth layering</strong>. A flat scene — "a forest" — produces a pretty picture with no spatial logic. A layered scene — "a forest clearing, fallen log in the foreground, mossy boulders midground, ancient trees fading into mist background" — produces an image with a sense of place and scale. Depth layers are what make a scene prompt produce an illustration you can set an encounter in, rather than a wallpaper you can only look at.</p>
+      <div class="guide-callout">
+        <strong>Three-layer rule:</strong> Every scene prompt should specify at least three depth layers — foreground detail, midground focal point, and background atmosphere. If you cannot think of three layers, the location is not defined enough to prompt for. Go back to your session notes.
+      </div>
+      <p><strong>Lighting and time of day</strong> is the second critical decision. "A dungeon corridor" looks completely different depending on whether you say "lit by torchlight with warm shadows" or "dimly illuminated by scattered bioluminescent fungi." The time of day also determines the emotional register — dawn conveys hope, dusk conveys closure, midnight conveys danger, noon conveys safety. Never leave lighting unspecified unless you want the model to choose randomly.</p>
+      <p><strong>Presence of characters</strong> is the third axis. A scene with no characters is an establishing shot — pure atmosphere. A scene with tiny silhouetted figures conveys scale and activity without focusing on any individual. A scene with a single prominent figure crosses into "portrait with background" territory. Decide whether characters are present before writing the prompt; adding them as an afterthought usually produces awkward scale mismatches.</p>
+      <p><strong>Weather and atmosphere</strong> is often overlooked but transforms the mood. Rain, fog, snow, smoke, dust — these particles fill the air between the viewer and the scene, adding depth and mood for free. A dry scene reads as clinical; a weather-affected scene reads as lived-in. Always specify at least one atmospheric element.</p>
+
+      <!-- Section 3: Before/after examples -->
+      <h2>Before and after examples</h2>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>a tavern, inside, wooden tables, fireplace, warm, fantasy art</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>wide establishing shot of a medieval tavern interior, rough-hewn timber beams overhead, stone hearth with a crackling fire on the left wall casting warm orange light, scattered wooden tables with carved chairs and half-empty tankards in the midground, a worn oak bar counter along the back wall with bottles on a shelf behind it, staircase ascending to a shadowy second floor on the right, amber candlelight from iron chandeliers, hearth smoke curling into the rafters, a hunched figure silhouetted at the far corner table, dark fantasy illustration, atmospheric lighting, lived-in detail</pre>
+        </div>
+      </div>
+      <p>The "before" prompt describes a generic tavern. The model has seen a thousand taverns and will produce the average of all of them. The "after" prompt specifies foreground (tables), midground (bar counter), background (staircase), lighting (hearth fire, chandeliers), atmosphere (smoke in rafters), and a single character presence (silhouette) — six specific visual decisions that make <em>this</em> tavern unique.</p>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>ancient ruins in a jungle, overgrown, mysterious, dramatic lighting, detailed</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>wide establishing shot of crumbling stone ruins in a tropical jungle, moss-covered broken columns and a collapsed archway in the foreground, a vine-choked stone altar as the midground focal point, dense canopy and shafts of golden afternoon light filtering through the trees in the background, hanging vines and ferns draped over every surface, thin mist rising from the warm stone, a tiny explorer figure standing before the altar for scale, emerald and gold color palette, fantasy environment illustration, volumetric light, lush atmosphere</pre>
+        </div>
+      </div>
+      <p>The "before" prompt relies on mood words ("mysterious," "dramatic") that are too abstract for the model to render specifically. The "after" prompt translates mood into concrete visual elements — "thin mist rising" for mystery, "shafts of golden afternoon light" for drama, "tiny explorer figure" for scale. Every mood keyword should have a corresponding concrete visual description.</p>
+
+      <!-- Section 4: Common failures -->
+      <h2>Common failure patterns and corrections</h2>
+      <div class="guide-warning">
+        <strong>Failure 1: The empty room.</strong> Scene prompts that describe architecture without specifying contents produce images of bare rooms — a stone corridor with no furniture, a tavern with no tables, a forest with no underbrush. The model treats "interior" as a geometry problem, not a storytelling one.
+      </div>
+      <div class="guide-code">Correction: For every architectural element you describe, add at least one content element. "Stone corridor" becomes "stone corridor with rusted wall sconces and a discarded suit of chainmail on the floor." Content elements tell the model the room is lived-in, not a blueprint.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 2: Flat perspective.</strong> When all elements in a scene prompt are given equal weight, the model renders them all at the same apparent depth — a "stacked" image with no receding planes. The result looks like a theater backdrop, not a three-dimensional space.
+      </div>
+      <div class="guide-code">Correction: Use explicit depth markers. Start with "foreground," then "midground," then "background." Add "receding into the distance" or "vanishing point" to reinforce perspective. The model responds strongly to spatial ordering cues in the prompt.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 3: Mood-word substitution.</strong> Writers often substitute abstract mood words for concrete visuals: "ominous" instead of "dark clouds overhead," "serene" instead of "still water reflecting the sky." AI models cannot render abstract moods — they render specific visual features.
+      </div>
+      <div class="guide-code">Correction: For every mood adjective in your prompt, write the concrete visual it implies. "Ominous" becomes "low clouds, dark water, no visible horizon." "Serene" becomes "flat calm water, pastel sky, soft diffuse light." If you cannot express the mood as a concrete visual, the model cannot render it.</div>
+
+      <!-- Section 5: Model-specific guidance -->
+      <h2>Model-specific guidance</h2>
+      <h3>Midjourney</h3>
+      <p>Midjourney is the strongest model for scene art — its painterly style naturally produces atmospheric environments. Use <code>--ar 16:9</code> or <code>--ar 21:9</code> for cinematic wide shots. Add <code>--v 6.1</code> or later for the best spatial coherence. Midjourney's main weakness is text rendering — if your scene includes signs, books, or inscriptions, they will be garbled. Describe text elements as "worn sign with illegible text" to avoid garbled output.</p>
+      <h3>ChatGPT / DALL-E</h3>
+      <p>DALL-E 3 produces cleaner, more geometric scene art — closer to a concept art board than an oil painting. This is ideal for battle maps and architectural reference but less atmospheric for session handouts. DALL-E 3 handles text better than Midjourney but still struggles with more than two or three words. Use DALL-E 3 when you need a clean, readable environment layout; use Midjourney when you need mood and atmosphere.</p>
+      <h3>Stable Diffusion (SDXL / SD3)</h3>
+      <p>Stable Diffusion is the fastest model for scene generation and produces the most detailed output when guided correctly. Structure your prompt with spatial tags: <code>wide shot, environment, [location], foreground [element], midground [element], background [element], [lighting], [weather], [atmosphere], fantasy landscape, highly detailed</code>. Use the negative prompt: <code>character portrait, face, close-up, blurry, low contrast, flat colors</code>. ControlNet with a depth map or edge map can enforce perspective consistency for repeated views of the same location.</p>
+
+      <!-- Section 6: Reviewed template -->
+      <h2>Reviewed prompt template</h2>
+      <div class="guide-template">wide establishing shot of [location], [foreground detail with 1-2 specific objects], [midground focal point: the main architectural or natural feature], [background atmosphere: sky, canopy, or distant landscape], [lighting source and quality], [weather or atmospheric element], [character presence: silhouette, small group, or "no characters"], [color palette], fantasy environment illustration, [perspective cue: vanishing point / receding planes / volumetric light], lived-in detail</div>
+      <p>The template mandates depth layers before style. Character presence is a separate decision, not a default. The "lived-in detail" keyword at the end pushes the model away from empty-room output. As with other templates, order matters — foreground and midground come before atmosphere and style.</p>
+
+      <!-- Section 7: FAQ -->
+      <h2>Frequently asked questions</h2>
+      <div class="guide-faq">
+        <div class="guide-faq-q">How do I show a specific room layout (e.g., for a battle map)?</div>
+        <div class="guide-faq-a">AI image models cannot produce accurate top-down battle maps — they do not understand grid-aligned geometry. Generate an establishing shot instead and use it as a visual reference while drawing the map yourself, or use it as a handout while describing the tactical layout verbally. If you need a literal map, a dedicated map-making tool (Inkarnate, DungeonFog, Dungeondraft) will always outperform AI image generation.</div>
+
+        <div class="guide-faq-q">Can I generate the same scene from different angles?</div>
+        <div class="guide-faq-a">Not consistently. AI models do not maintain 3D spatial memory between generations. You can specify a different viewpoint in each prompt ("view from the entrance" vs. "view from the balcony") but the resulting images will not be architecturally consistent. For multi-angle consistency, generate a top-down or isometric view first, then describe specific camera angles that match that layout.</div>
+
+        <div class="guide-faq-q">Should I include encounter details (enemies, traps, NPCs) in the scene?</div>
+        <div class="guide-faq-a">Include encounter elements only if they are meant to be visible to the characters when they enter the scene. A trapped floor that is hidden should not appear in the prompt — it would spoil the encounter. A dragon perched on a hoard that the party will fight should appear because they see it immediately. When in doubt, generate a "pristine" version of the scene and a separate "encounter" version.</div>
+
+        <div class="guide-faq-q">Why does my outdoor scene always look like a painting?</div>
+        <div class="guide-faq-a">Because AI models are trained predominantly on illustrated and painted landscape art. If you want a photographic look, specify "photograph, real location, natural lighting, no stylization" — but be aware that combining photorealism with fantasy elements (floating castles, magical forests) often produces uncanny results. Fantasy scenes benefit from a stylized treatment. Embrace the illustration look.</div>
+      </div>
+
+      <!-- CTA -->
+      <div class="guide-cta">
+        <a href="/?type=scene" class="btn primary">Try the fantasy scene prompt generator</a>
+      </div>
+
+      <!-- Related guides -->
+      <h2>Related guides</h2>
+      <div class="guide-related">
+        <a href="/character-portrait-guide">Character portrait prompt guide</a>
+        <a href="/token-guide">VTT token prompt guide</a>
+        <a href="/monster-guide">Monster prompt guide</a>
+        <a href="/npc-guide">NPC portrait prompt guide</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

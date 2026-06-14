@@ -41,3 +41,4 @@ venv/
 .idea/
 .github/
 package-lock.json
+.claude/

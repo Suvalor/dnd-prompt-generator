@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DND VTT Token Prompt Guide | DND Prompt Forge</title>
+  <meta name="description" content="Learn how to compose top-down VTT token prompts for DND characters — clean silhouettes, transparent backgrounds, and export-ready framing for Roll20 and Foundry." />
+  <link rel="canonical" href="https://dnd.whatai.me/token-guide" />
+  <meta property="og:title" content="DND VTT Token Prompt Guide | DND Prompt Forge" />
+  <meta property="og:description" content="Learn how to compose top-down VTT token prompts for DND characters — clean silhouettes and export-ready framing." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://dnd.whatai.me/token-guide" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9123849728110588"
+    crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "DND VTT Token Prompt Guide",
+    "description": "A practical guide to writing AI image prompts for Dungeons & Dragons VTT tokens — covering composition, silhouettes, backgrounds, and export tips.",
+    "author": { "@type": "Organization", "name": "DND Prompt Forge" },
+    "publisher": { "@type": "Organization", "name": "DND Prompt Forge", "url": "https://dnd.whatai.me" },
+    "datePublished": "2026-06-14",
+    "mainEntityOfPage": "https://dnd.whatai.me/token-guide"
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap" style="padding-top: var(--s8);">
+    <div class="prose">
+      <div class="guide-header">
+        <a href="/" class="guide-back">
+          <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+          Back to generator
+        </a>
+      </div>
+      <h1>DND VTT Token Prompt Guide</h1>
+      <div class="updated">Guide &middot; last updated June 2026</div>
+      <p class="lede">Tokens are the most utilitarian prompt type in DND art generation. They are not meant to be beautiful — they are meant to be readable. A good token lets your players tell which figure on the map is the goblin, which is the paladin, and which is the warlord at 400% zoom on a 1080p screen. This guide covers how to prompt for tokens that actually work on a virtual tabletop.</p>
+
+      <!-- Section 1: When to use -->
+      <h2>When to use token prompts</h2>
+      <p>Use token prompts whenever you need a <strong>top-down or 3/4 overhead view</strong> of a character or creature for placement on a virtual tabletop like Roll20, Foundry VTT, or MapTool. Tokens are the visual shorthand that identifies figures on a battle map — they are small, centered, and designed to be recognizable at 40-80 pixels.</p>
+      <p>Do not use token prompts when you want to show a character in full detail. A token prompt produces a simple, centered silhouette — it cannot show a character's face, expression, or complex costume layers with any fidelity. If you need a portrait for a character sheet, use the portrait prompt type. If you need a battle map illustration, use the scene prompt type.</p>
+      <p>The practical test: if the image will be displayed at less than 100 pixels wide on a grid, it is a token. If it will be displayed larger than that, it is a portrait, full-body, or scene.</p>
+
+      <!-- Section 2: Composition decisions -->
+      <h2>Composition decisions and trade-offs</h2>
+      <p>The defining constraint of a token is <strong>size</strong>. At 64x64 pixels (a standard Roll20 grid cell), fine details vanish. The prompt must emphasize features that survive extreme downsampling: silhouette shape, color blocking, and a single distinctive element (a hat, horns, a cape) that makes the figure identifiable from adjacent tokens.</p>
+      <div class="guide-callout">
+        <strong>Silhouette rule:</strong> If you cannot tell what class a character is from their outline alone — a flowing robe for a wizard, a shield silhouette for a paladin, horns for a tiefling — the token prompt has failed. Add silhouette-defining keywords before any other detail.
+      </div>
+      <p><strong>View angle</strong> is the first and most critical decision. "Top-down view" produces a bird's-eye silhouette that works perfectly on grid maps. "3/4 overhead view" adds a slight angle that reveals the face and front of the costume at the cost of some grid alignment. "Isometric view" produces a 3D-style token that looks great in isolation but aligns poorly with flat 2D maps. Pick top-down for standard VTT use; pick 3/4 if you are building tokens for a specific map style that uses angled art.</p>
+      <p><strong>Background handling</strong> is the second critical decision. "Transparent background" is ideal for VTT tokens because it allows the map to show through. "Simple dark background" works if your VTT platform does not support transparency or if you prefer tokens with a solid backing circle. "No background" is ambiguous — some models interpret this as "white background," others as "no background elements." Specify exactly what you want.</p>
+      <p><strong>Level of detail</strong> is the third axis. More detail in the prompt produces more detail in the output, but detail below the pixel threshold of your VTT is wasted. A token that will be 64px wide does not benefit from "intricate filigree on the breastplate" — that detail becomes noise at display size. Prioritize <strong>shape and color</strong> over texture and fine detail.</p>
+
+      <!-- Section 3: Before/after examples -->
+      <h2>Before and after examples</h2>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>a dwarf fighter token for roll20, top down, with a shield and axe, fantasy style</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>top-down view token of a dwarf fighter, centered single figure on transparent background, squat broad silhouette, round shield on the left arm painted with a copper hammer emblem, battleaxe held vertically in the right hand, iron helmet with a short nose-guard, reddish-brown beard framing the chin, 1:1 square framing, clean readable outline, flat color blocking, VTT token art, no shadow beneath the figure</pre>
+        </div>
+      </div>
+      <p>The "before" prompt uses the word "token" which is ambiguous — the model may produce a coin-like object instead of a character figure. The "after" prompt specifies the exact view angle, background, and the key silhouette-defining features (shield, axe, helmet shape) that make the dwarf identifiable at small size. "Flat color blocking" tells the model to prioritize bold color areas over fine gradients, which produces tokens that read clearly at 64px.</p>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>dragonborn paladin token, white scales, glowing sword, holy symbol</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>3/4 overhead view token of a dragonborn paladin, centered figure on transparent background, white-scaled draconic head with a short snout and brow ridges, heavy plate armor with a golden sunburst holy symbol on the chest, a glowing longsword held pointing forward, sweeping tail curling behind, bright warm lighting from above, bold silhouette, clean edges, VTT token illustration, 1:1 aspect ratio</pre>
+        </div>
+      </div>
+      <p>The "before" prompt is a keyword list that omits the view angle and background entirely. The model has to guess how to present a "dragonborn paladin" — it might produce a full portrait, a side view, or a creature illustration. The "after" prompt locks in the view, background, and silhouette, ensuring the output is usable as a token.</p>
+
+      <!-- Section 4: Common failures -->
+      <h2>Common failure patterns and corrections</h2>
+      <div class="guide-warning">
+        <strong>Failure 1: Portrait-style output instead of token.</strong> When a prompt does not specify a view angle, the model defaults to a portrait or front-facing stance. This produces a nice-looking character image that is useless on a grid map — it is too tall, too detailed, and oriented incorrectly.
+      </div>
+      <div class="guide-code">Correction: Always include "top-down view" or "3/4 overhead view" as the first phrase in your token prompt. This is the single most important keyword for this prompt type. Without it, nothing else matters.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 2: Over-detailed tokens.</strong> Prompts with "intricate details," "highly detailed armor," and "realistic texture" produce tokens that look great at full resolution but become muddy noise at VTT display size. The detail is wasted and actually hurts readability.
+      </div>
+      <div class="guide-code">Correction: Replace detail-oriented keywords with shape-oriented ones. "Clean readable outline" and "flat color blocking" produce tokens that scale down well. Add "bold silhouette" to reinforce that shape matters more than texture.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 3: Shadow and perspective artifacts.</strong> A shadow beneath the token figure looks natural in isolation but creates visual noise on a map, especially when tokens overlap. Perspective rendering (the token figure casting a shadow to one side) breaks the flat-grid aesthetic of VTT maps.
+      </div>
+      <div class="guide-code">Correction: Add "no shadow beneath the figure" and "flat orthographic projection" to your prompt. These keywords suppress the model's tendency to add naturalistic lighting effects that clash with map grids.</div>
+
+      <!-- Section 5: Model-specific guidance -->
+      <h2>Model-specific guidance</h2>
+      <h3>Midjourney</h3>
+      <p>Midjourney struggles with top-down views because its training data heavily favors portraits and landscapes. Use <code>--ar 1:1</code> for square tokens. Add <code>--style raw</code> to reduce Midjourney's stylistic gloss, which makes tokens harder to read at small sizes. Reinforce the top-down instruction by saying "bird's-eye overhead view" instead of just "top-down" — Midjourney responds better to evocative descriptions than technical terms.</p>
+      <h3>ChatGPT / DALL-E</h3>
+      <p>DALL-E 3 is the best model for VTT tokens because it follows instructions precisely and produces clean, readable silhouettes. Be explicit: "The image must be a top-down overhead view showing a single centered figure on a transparent background." DALL-E 3 handles transparency requests reasonably well, though it may produce a white background instead. Post-process the white background to transparent using any image editor.</p>
+      <h3>Stable Diffusion (SDXL / SD3)</h3>
+      <p>Stable Diffusion can produce excellent tokens with the right tag structure. Lead with: <code>top-down view, centered figure, transparent background, VTT token, 1:1 framing</code>. Use the negative prompt aggressively: <code>side view, portrait, face visible, detailed background, shadow, gradient, photorealistic</code>. These negatives block the model's tendency to produce portrait-style output. ControlNet with a depth map can enforce the overhead angle if your setup supports it.</p>
+
+      <!-- Section 6: Reviewed template -->
+      <h2>Reviewed prompt template</h2>
+      <div class="guide-template">[view angle] view token of a [race] [class], centered single figure on [background type], [primary silhouette shape], [color-blocking description for armor/costume], [distinctive element: weapon, shield, horns, cape, tail], [secondary silhouette feature], [head or helmet detail], [lighting: overhead/flat/none], clean readable outline, bold silhouette, flat color blocking, 1:1 square framing, VTT token illustration, no shadow beneath the figure</div>
+      <p>The template prioritizes view angle, silhouette, and background before any character detail. This order ensures the model processes the structural constraints first. Character-specific details (race, class, weapon) come in the middle. Style and formatting instructions anchor the end.</p>
+
+      <!-- Section 7: FAQ -->
+      <h2>Frequently asked questions</h2>
+      <div class="guide-faq">
+        <div class="guide-faq-q">What size should I generate tokens at?</div>
+        <div class="guide-faq-a">Generate tokens at 512x512 or 1024x1024 pixels, then downscale to your VTT's grid size (typically 64x64 or 70x70). High-resolution generation gives the model room to place features correctly, and the downscaling process naturally simplifies detail — which is exactly what a token needs. Generating directly at 64x64 produces blurry, unusable output.</div>
+
+        <div class="guide-faq-q">Can I use a portrait image as a token?</div>
+        <div class="guide-faq-a">Technically yes, but it will look wrong. A portrait is oriented vertically and shows a face, while a token is oriented from above and shows a silhouette. A portrait-as-token will appear as a tall rectangle on the grid, misaligned with the square cells, and the face will be unreadable at token display size. Use the token prompt type for proper VTT art.</div>
+
+        <div class="guide-faq-q">Why does my token have a white background instead of transparent?</div>
+        <div class="guide-faq-a">Most image models cannot produce true PNG transparency — they render backgrounds as solid colors. If you specified "transparent background" and got white, use a post-processing tool (Photoshop, GIMP, or a free online background remover) to convert the white to transparency. This is standard practice for VTT token creation.</div>
+
+        <div class="guide-faq-q">Should tokens for monsters look different from character tokens?</div>
+        <div class="guide-faq-a">Yes. Monster tokens benefit from emphasizing threat cues — larger silhouette, darker colors, angular shapes. Character tokens benefit from being approachable — rounded shapes, clear role indicators (shield, robe, bow). The token guide template works for both; just adjust the silhouette keywords to match the intent.</div>
+      </div>
+
+      <!-- CTA -->
+      <div class="guide-cta">
+        <a href="/?type=token" class="btn primary">Try the VTT token prompt generator</a>
+      </div>
+
+      <!-- Related guides -->
+      <h2>Related guides</h2>
+      <div class="guide-related">
+        <a href="/character-portrait-guide">Character portrait prompt guide</a>
+        <a href="/npc-guide">NPC portrait prompt guide</a>
+        <a href="/monster-guide">Monster prompt guide</a>
+        <a href="/scene-guide">Fantasy scene prompt guide</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

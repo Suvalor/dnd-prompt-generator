@@ -148,6 +148,7 @@ function App() {
       <HowItWorks />
       <Limitations />
       <FAQ />
+      <GuideCards />
     </React.Fragment>
   );
 

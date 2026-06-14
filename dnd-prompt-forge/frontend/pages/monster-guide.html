@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DND Monster Prompt Guide | DND Prompt Forge</title>
+  <meta name="description" content="Learn how to write AI image prompts for DND monsters and creatures — threatening poses, anatomical clarity, scale cues, and model-specific tips for creature art." />
+  <link rel="canonical" href="https://dnd.whatai.me/monster-guide" />
+  <meta property="og:title" content="DND Monster Prompt Guide | DND Prompt Forge" />
+  <meta property="og:description" content="Learn how to write AI image prompts for DND monsters and creatures — threatening poses, anatomical clarity, and scale cues." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://dnd.whatai.me/monster-guide" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9123849728110588"
+    crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "DND Monster Prompt Guide",
+    "description": "A practical guide to writing AI image prompts for Dungeons & Dragons monsters — covering pose, anatomy, scale cues, and model-specific creature art tips.",
+    "author": { "@type": "Organization", "name": "DND Prompt Forge" },
+    "publisher": { "@type": "Organization", "name": "DND Prompt Forge", "url": "https://dnd.whatai.me" },
+    "datePublished": "2026-06-14",
+    "mainEntityOfPage": "https://dnd.whatai.me/monster-guide"
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap" style="padding-top: var(--s8);">
+    <div class="prose">
+      <div class="guide-header">
+        <a href="/" class="guide-back">
+          <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+          Back to generator
+        </a>
+      </div>
+      <h1>DND Monster Prompt Guide</h1>
+      <div class="updated">Guide &middot; last updated June 2026</div>
+      <p class="lede">Monster prompts are the hardest type to get right. A character portrait has a clear template — head, shoulders, costume. A monster might be a writhing mass of tentacles, a towering draconic beast, or a tiny fey creature with impossible anatomy. This guide covers how to prompt for monsters that look threatening, anatomically coherent, and true to the creature you are trying to depict.</p>
+
+      <!-- Section 1: When to use -->
+      <h2>When to use monster prompts</h2>
+      <p>Use monster prompts when you need a <strong>creature illustration</strong> — something for a bestiary, a boss reveal, a random encounter handout, or a session cliffhanger. Monster prompts are for anything that is not a humanoid character: beasts, aberrations, undead, dragons, elementals, constructs, oozes, and any creature whose anatomy departs from the standard humanoid form.</p>
+      <p>Monster prompts overlap with NPC prompts when the creature is humanoid but not a standard race — a mind flayer, for example, is humanoid in shape but has tentacles instead of a mouth. If the creature has a face that conveys personality, the NPC prompt type may serve better. If the creature is primarily a threat to be fought, the monster type produces more imposing results.</p>
+      <p>The practical distinction: if you want the viewer to feel <em>intrigued</em> by the creature, use NPC. If you want the viewer to feel <em>threatened</em>, use monster.</p>
+
+      <!-- Section 2: Composition decisions -->
+      <h2>Composition decisions and trade-offs</h2>
+      <p>The most important decision in a monster prompt is the <strong>pose and action</strong>. Static "standing" monsters look like museum dioramas — technically accurate but emotionally flat. A monster mid-attack, mid-roar, or mid-emergence from darkness is dramatically more engaging. However, action poses risk anatomical errors because the model has to infer how the creature's body moves. A static pose is safer but less impressive.</p>
+      <div class="guide-callout">
+        <strong>Action vs. accuracy trade-off:</strong> If you need the monster to look exactly as described in the Monster Manual — every limb correct, every feature accounted for — use a static pose. If you need the monster to feel dangerous and alive, use an action pose and accept minor anatomical imperfections.
+      </div>
+      <p><strong>Scale indication</strong> is the second key decision. Without a reference object, a beholder could be the size of a basketball or the size of a house. Adding a "small humanoid figure in the foreground for scale" anchors the viewer's perception. However, adding a scale reference introduces a second character that the model may render incorrectly or that may distract from the monster itself.</p>
+      <p><strong>Environment framing</strong> is the third axis. Monsters in a void look like cutouts — clean but contextless. Monsters in their lair look more natural and threatening, but the environment competes for the model's rendering budget. For a bestiary illustration, use a simple dark background. For a session cliffhanger, use the lair or encounter environment.</p>
+
+      <!-- Section 3: Before/after examples -->
+      <h2>Before and after examples</h2>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>a beholder, floating, eye stalks, dnd monster, dark background, detailed</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>full-body illustration of a beholder, large central eye glowing pale blue, ten eyestalks writhing above the spherical body, each stalk tipped with a small glowing eye, mottled gray-purple skin with chitinous plates, wide toothy maw gaping open in a roar, hovering three feet above a stone dungeon floor, small dwarven skeleton at the base for scale, dark cavern background with faint bioluminescent fungi on the walls, dramatic under-lighting from the central eye, fantasy creature illustration, threatening pose, bestiary art style</pre>
+        </div>
+      </div>
+      <p>The "before" prompt names the creature but gives no compositional guidance. The model has to guess the angle, lighting, environment, and pose. The "after" prompt specifies the body plan, the action (roaring), the environment, the scale reference, and the lighting — giving the model everything it needs to produce a coherent, threatening image.</p>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>ancient red dragon, breathing fire, on a mountain, epic, fantasy art</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>full-body illustration of an ancient red dragon, immense serpentine body coiled on a volcanic mountain peak, crimson scales with blackened edges, vast bat-like wings spread wide against a smoke-filled sky, twin horns curving back from the skull, amber slit-pupil eyes narrowed in fury, torrent of orange flame erupting from the open jaws, a tiny watchtower crumbling beneath one claw for scale, undercast of lava-glow on the belly, dark storm clouds behind, fantasy creature illustration, epic composition, bestiary art</pre>
+        </div>
+      </div>
+      <p>The "before" prompt is a classic "epic" keyword dump. The model will produce a generic dragon in a generic mountain setting. The "after" prompt specifies the exact pose (coiled, wings spread), the specific action (fire breath), the scale reference (watchtower), and the lighting (lava-glow, storm clouds) — these details transform a generic dragon into <em>this</em> dragon.</p>
+
+      <!-- Section 4: Common failures -->
+      <h2>Common failure patterns and corrections</h2>
+      <div class="guide-warning">
+        <strong>Failure 1: Anatomical chaos on multi-limbed creatures.</strong> Creatures with more than four limbs — behirs, krakens, phase spiders — often gain or lose limbs in AI output. The model interpolates between its training data, and "six arms" frequently becomes five or seven.
+      </div>
+      <div class="guide-code">Correction: State the exact limb count explicitly in the prompt: "six tentacles," "eight legs." Reinforce with "exactly six tentacles visible" to reduce ambiguity. If the limb count is critical, generate multiple images and select the one with the correct anatomy. Post-processing can add or remove limbs if needed.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 2: The "friendly monster" problem.</strong> Without explicit threat cues, AI models tend to make monsters look cute or neutral. An owlbear becomes a fluffy owl-bear hybrid; a gelatinous cube becomes a shiny blue jello cube. This is because the model's training data includes many cartoon and toy versions of these creatures.
+      </div>
+      <div class="guide-code">Correction: Add explicit threat keywords: "menacing," "threatening," "mid-roar," "bared teeth," "predatory stance." Specify "dark fantasy illustration" rather than "fantasy art" to push the model away from cute interpretations. Avoid adjectives like "cute," "adorable," or "fluffy" unless you <em>want</em> a non-threatening creature.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 3: Feature blending across body regions.</strong> When a prompt describes a creature with distinct body sections (a centaur's human torso and horse body, a merfolk's human upper body and fish tail), the model may blend features across the boundary — putting scales on the human chest or hair on the fish tail.
+      </div>
+      <div class="guide-code">Correction: Describe each body region separately and explicitly: "human torso from the waist up with pale skin and scale-free chest; fish tail from the waist down with iridescent blue-green scales." The explicit boundary description ("from the waist up" / "from the waist down") reduces feature bleed.</div>
+
+      <!-- Section 5: Model-specific guidance -->
+      <h2>Model-specific guidance</h2>
+      <h3>Midjourney</h3>
+      <p>Midjourney excels at atmospheric monster art — the model's painterly style naturally produces dramatic, moody creatures. Use <code>--ar 16:9</code> for landscape-orientation monster illustrations. Add <code>--v 6.1</code> or later for the best anatomical coherence. Midjourney's main weakness is limb count accuracy — always verify the output and regenerate if limbs are wrong.</p>
+      <h3>ChatGPT / DALL-E</h3>
+      <p>DALL-E 3 follows anatomical instructions more precisely than Midjourney but produces less atmospheric output. If you need a monster that looks like it belongs in an official DND sourcebook, DALL-E 3 is the safer choice. Be explicit about limb counts and body regions. DALL-E 3 may refuse to generate certain creatures if the prompt triggers content filters — avoid words like "gore," "viscera," or "dismembered" and use "menacing," "fierce," or "intimidating" instead.</p>
+      <h3>Stable Diffusion (SDXL / SD3)</h3>
+      <p>Stable Diffusion produces the most detailed monster art but requires the most prompt engineering. Lead with creature tags: <code>monster, creature, bestiary art, [specific creature type]</code>. Use the negative prompt: <code>human, humanoid face, cute, cartoon, chibi, low quality, blurry</code>. For multi-limbed creatures, consider generating the creature in separate passes (body, then limbs) and compositing in post — SD's limb accuracy is the weakest of the three major models.</p>
+
+      <!-- Section 6: Reviewed template -->
+      <h2>Reviewed prompt template</h2>
+      <div class="guide-template">full-body illustration of a [creature name/type], [body plan: serpentine/bipedal/quadrupedal/amorphous], [skin/covering description], [primary feature: horns/wings/tentacles/teeth — with count], [action: mid-roar/mid-attack/hovering/stalking], [secondary feature], [environment or "dark void background"], [scale reference if applicable], [lighting direction and color], fantasy creature illustration, [threat level: menacing/threatening/feral], bestiary art style</div>
+      <p>Creature name and body plan come first because they define the overall shape. Features and actions follow. The environment is listed late because it is the lowest priority for a monster prompt — the creature itself is the star.</p>
+
+      <!-- Section 7: FAQ -->
+      <h2>Frequently asked questions</h2>
+      <div class="guide-faq">
+        <div class="guide-faq-q">How do I prompt for a creature that is not in any Monster Manual?</div>
+        <div class="guide-faq-a">Describe it as a combination of known creatures with specific differences. "A creature with the body of a panther, the wings of a bat, and a head that is a mass of writhing serpents instead of a face" is more effective than "a gorgon panther" because the model does not know what a "gorgon panther" is. Concrete visual descriptions always beat invented names.</div>
+
+        <div class="guide-faq-q">Why does my dragon always have two legs instead of four?</div>
+        <div class="guide-faq-a">The word "dragon" is ambiguous — in Western mythology, dragons have four legs and wings (wyverns have two legs and wings). AI models trained on diverse art often default to wyverns because they are more common in popular culture. Specify "four-legged dragon" or "western dragon with four legs and two wings" to disambiguate.</div>
+
+        <div class="guide-faq-q">Can I make a monster look like a specific DND edition's art style?</div>
+        <div class="guide-faq-a">You can reference art styles that are in the model's training data. "In the style of Wayne Reynolds" or "in the style of Todd Lockwood" will produce output influenced by those artists' DND work. However, the model cannot reproduce exact illustrations. If you need a specific Monster Manual illustration, the only option is to commission a human artist.</div>
+
+        <div class="guide-faq-q">How do I show a monster's special abilities visually?</div>
+        <div class="guide-faq-a">Describe the visual manifestation of the ability: "a beholder's anti-magic cone visible as a shimmering distortion in the air before it," "a gelatinous cube's partially dissolved skeleton visible through the transparent body," "a fire elemental leaving scorched footprints on the stone floor." These descriptions give the model concrete visual cues rather than abstract game mechanics.</div>
+      </div>
+
+      <!-- CTA -->
+      <div class="guide-cta">
+        <a href="/?type=monster" class="btn primary">Try the monster prompt generator</a>
+      </div>
+
+      <!-- Related guides -->
+      <h2>Related guides</h2>
+      <div class="guide-related">
+        <a href="/character-portrait-guide">Character portrait prompt guide</a>
+        <a href="/token-guide">VTT token prompt guide</a>
+        <a href="/npc-guide">NPC portrait prompt guide</a>
+        <a href="/scene-guide">Fantasy scene prompt guide</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

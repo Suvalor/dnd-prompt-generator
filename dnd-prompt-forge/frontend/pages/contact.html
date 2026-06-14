@@ -14,8 +14,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9123849728110588"
-    crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="wrap" style="padding-top: var(--s8);">
@@ -23,27 +21,22 @@
       <h1>Contact</h1>
       <div class="updated">We usually reply within a couple of days.</div>
       <p class="lede">Feedback on the prompts, a bug, or a prompt type you wish existed? Send it over.</p>
-      <form style="display: flex; flex-direction: column; gap: var(--s4); margin-top: var(--s5);">
-        <div class="row2">
-          <div class="field">
-            <label for="c-name">Name <span class="req">*</span></label>
-            <input id="c-name" class="ctl" placeholder="Your name" required />
-          </div>
-          <div class="field">
-            <label for="c-email">Email <span class="req">*</span></label>
-            <input id="c-email" type="email" class="ctl" placeholder="you@example.com" required />
-          </div>
-        </div>
-        <div class="field">
-          <label for="c-msg">Message <span class="req">*</span></label>
-          <textarea id="c-msg" class="ctl" rows="5" placeholder="What's on your mind?" required></textarea>
+
+      <div class="contact-method">
+        <div class="contact-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         </div>
         <div>
-          <button type="submit" class="btn primary">Send message</button>
+          <h2>Email us</h2>
+          <a href="mailto:support@dnd.whatai.me" class="contact-email">
+            support@dnd.whatai.me
+          </a>
+          <p class="contact-note">For prompt feedback, bug reports, or feature ideas. We read every message.</p>
         </div>
-      </form>
+      </div>
+
       <div style="margin-top: var(--s6);">
-        <a href="../" class="btn secondary">Back to generator</a>
+        <a href="/" class="btn secondary">Back to generator</a>
       </div>
     </div>
   </div>

@@ -7,6 +7,13 @@ const FOOTER_TOOLS = [
   { label: 'NPC prompts', id: 'npc' },
   { label: 'Scene prompts', id: 'scene' },
 ];
+const FOOTER_GUIDES = [
+  { label: 'Character guide', href: '/character-portrait-guide' },
+  { label: 'Token guide', href: '/token-guide' },
+  { label: 'Monster guide', href: '/monster-guide' },
+  { label: 'NPC guide', href: '/npc-guide' },
+  { label: 'Scene guide', href: '/scene-guide' },
+];
 const FOOTER_COMPANY = [
   { label: 'About', id: 'about' },
   { label: 'Contact', id: 'contact' },
@@ -14,7 +21,7 @@ const FOOTER_COMPANY = [
   { label: 'Terms', id: 'terms' },
 ];
 const FOOTER_EXTRA_TOOLS = [
-  { label: 'Excel Ratio Converter', href: '/pages/excel-ratio-converter.html' },
+  { label: 'Excel Ratio Converter', href: '/excel-ratio-converter' },
 ];
 
 const Footer = ({ onNav }) => (
@@ -29,6 +36,10 @@ const Footer = ({ onNav }) => (
         <ul>{FOOTER_TOOLS.map(t => <li key={t.id}><a onClick={() => onNav(t.id)}>{t.label}</a></li>)}</ul>
       </div>
       <div className="fcol">
+        <h4>Guides</h4>
+        <ul>{FOOTER_GUIDES.map(g => <li key={g.href}><a href={g.href}>{g.label}</a></li>)}</ul>
+      </div>
+      <div className="fcol">
         <h4>Site</h4>
         <ul>{FOOTER_COMPANY.map(t => <li key={t.id}><a onClick={() => onNav(t.id)}>{t.label}</a></li>)}</ul>
       </div>
@@ -38,7 +49,7 @@ const Footer = ({ onNav }) => (
       </div>
     </div>
     <div className="legal">
-      <span>© 2026 DND Prompt Forge. Prompts are generated text, not images.</span>
+      <span>&copy; 2026 DND Prompt Forge. Prompts are generated text, not images.</span>
       <span>Not affiliated with or endorsed by the owners of the D&D trademark.</span>
     </div>
   </footer>

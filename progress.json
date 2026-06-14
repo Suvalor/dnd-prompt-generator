@@ -1,97 +1,113 @@
 {
-  "project": "Frontend-Backend Integration — Wire the Generator to the API",
+  "project": "DND Prompt Forge",
   "task_level": "L2",
-  "requirement": "前端接入后端API，打通业务链路：前端API Client、浏览器指纹、Generate按钮改造、字段映射、quota fail-closed、部署配置更新、业务联通测试。核心目标：前端Generate按钮调用后端LLM而非仅本地生成，后端不可用时本地兜底。",
-  "source_task_document": null,
-  "task_document_status": null,
+  "requirement": "修复 AdSense 低碳内容拒审问题：从非内容页面移除 AdSense、修复 Contact 假表单、创建5个DND内容指南页面",
+  "source_task_document": "docs/20260613-adsense-low-value-content-remediation.md",
+  "task_document_status": "completed",
   "current_phase": 7,
-  "created_at": "2026-06-02T08:00:00Z",
-  "updated_at": "2026-06-03T12:00:00Z",
+  "created_at": "2026-06-14T00:00:00Z",
+  "updated_at": "2026-06-14T12:00:00Z",
   "phases": {
     "1": {
-      "name": "PM需求沟通+PRD落盘",
+      "name": "PM需求沟通+定级",
       "agent": "pm",
       "status": "completed",
-      "deliverables": ["requirements.md"],
-      "notes": "PM完成三问确认+PRD编写"
+      "deliverables": [],
+      "started_at": "2026-06-14T00:00:00Z",
+      "completed_at": "2026-06-14T00:10:00Z",
+      "notes": "L2定级；用户确认：Contact用support@dnd.whatai.me、Privacy延后、Auto ads尚未暂停；价值审查后范围扩展+5个指南页"
     },
     "1.5": {
       "name": "价值审查",
       "agent": "gemini-thinking-protocol",
       "status": "completed",
-      "verdict": "PASS",
-      "deliverables": ["docs/cognition/value-review.md"],
-      "notes": "VERDICT: PASS — 核心问题是数据管道断裂而非后端能力缺失"
+      "verdict": "PASS（用户采纳更简方案+内容页）",
+      "deliverables": ["docs/cognition/value-review-adsense.md"],
+      "started_at": "2026-06-14T00:10:00Z",
+      "completed_at": "2026-06-14T00:20:00Z",
+      "notes": "硬熔断→用户选择采纳更简方案+内容页→PASS"
     },
     "2": {
       "name": "设计+架构",
       "agent": "product-designer ∥ architect",
       "status": "completed",
-      "deliverables": ["docs/design/design-spec.md", "docs/architecture/architecture-spec.md"],
-      "notes": "并行完成；4个ADR+4个API契约+字段映射+3层fallback+mode badge+quota display+UI状态矩阵"
+      "deliverables": ["docs/architecture/adsense-remediation-spec.md", "docs/design/adsense-remediation-design.md"],
+      "started_at": "2026-06-14T00:20:00Z",
+      "completed_at": "2026-06-14T01:00:00Z",
+      "notes": "并行完成；architect 产出 2 ADR + Sprint 规范；product-designer 产出 UI 规格 + 指南模板"
     },
     "3": {
-      "name": "Sprint迭代编码",
+      "name": "Sprint编码",
       "agent": "developer",
       "status": "completed",
-      "deliverables": ["frontend/js/api-client.jsx", "frontend/js/generator.jsx", "frontend/js/app.jsx", "frontend/index.html", "frontend/css/style.css", "deploy/nginx.conf", ".env.example", "docker-compose.yml"],
-      "notes": "Sprint1+2+3全部完成；验收阻塞问题已修复"
+      "deliverables": ["pages/about.html", "pages/contact.html", "pages/privacy.html", "pages/terms.html", "pages/character-portrait-guide.html", "pages/token-guide.html", "pages/monster-guide.html", "pages/npc-guide.html", "pages/scene-guide.html", "js/prose-pages.jsx", "js/content-sections.jsx", "js/app.jsx", "js/footer.jsx", "scripts/verify-build.mjs", "deploy/nginx.conf", "sitemap.xml", "css/style.css"],
+      "started_at": "2026-06-14T01:00:00Z",
+      "completed_at": "2026-06-14T06:00:00Z",
+      "notes": "Sprint 1: AdSense移除+Contact修复+verify-build重写；Sprint 2: 5个指南页+Nginx路由+导航+Sitemap扩展"
     },
     "4": {
       "name": "代码审查",
       "agent": "code-reviewer",
       "status": "completed",
-      "deliverables": [],
-      "notes": "第二轮审查 APPROVED；5/5 修复项验证通过"
+      "deliverables": ["review_report"],
+      "started_at": "2026-06-14T04:00:00Z",
+      "completed_at": "2026-06-14T05:30:00Z",
+      "notes": "Sprint 1: 1轮REJECTED(2 CRITICAL+5 MAJOR)→修复→2轮PASSED；Sprint 2: 1轮REJECTED(2 CRITICAL+5 MAJOR)→修复→2轮PASSED；3项技术债"
     },
     "5": {
       "name": "业务验收",
       "agent": "business-tester",
       "status": "completed",
-      "deliverables": ["backend/tests/test_business_acceptance.py", "backend/tests/test_sprint3_acceptance.py"],
-      "notes": "APPROVED；132 测试全部通过（48核心+74业务验收+10 Sprint3专项）"
+      "deliverables": ["验收报告"],
+      "started_at": "2026-06-14T05:30:00Z",
+      "completed_at": "2026-06-14T06:00:00Z",
+      "notes": "67/67断言通过，22/22验收标准通过"
     }
   },
   "sprints": [
     {
       "id": 1,
       "status": "completed",
-      "scope": "P0业务闭环核心",
-      "review_status": "passed",
-      "test_status": "passed"
-    },
-    {
-      "id": 2,
-      "status": "completed",
-      "scope": "P1部署配置",
-      "review_status": "passed",
-      "test_status": null
-    },
-    {
-      "id": 3,
-      "status": "completed",
-      "scope": "验收阻塞修复：quota fail-closed + ALLOWED_ORIGINS配置分离 + 测试路径修复",
+      "scope": "P0 AdSense移除+Contact修复+verify-build重写",
       "tasks": {
         "completed": [
-          "修复 generate.py quota 异常处理：fail-open -> fail-closed",
-          "修复 docker-compose.yml：本地/线上 ALLOWED_ORIGINS 配置分离",
-          "修复 test_business_acceptance.py：硬编码路径改为相对路径",
-          "修复 .gitignore：添加后端测试目录排除规则",
-          "验证修复：132 测试全部通过"
+          "从4个法律页面移除AdSense脚本",
+          "Contact静态页面改造（假表单→support@dnd.whatai.me）",
+          "Contact React组件改造（移除表单状态，添加邮箱按钮）",
+          "verify-build.mjs重写（adsenseRequired + adsenseForbidden）"
         ],
         "failed": [],
         "pending": []
       },
       "review_status": "passed",
-      "test_status": "passed"
+      "test_status": "approved"
+    },
+    {
+      "id": 2,
+      "status": "completed",
+      "scope": "5个指南页面+Nginx路由+导航+Sitemap扩展",
+      "tasks": {
+        "completed": [
+          "创建5个DND指南页面（character/token/monster/npc/scene）",
+          "Nginx添加15个location块（5路由+5 trailing slash 301+5 pages 301）",
+          "Sitemap从6扩展为11个URL（添加lastmod）",
+          "首页GuideCards组件（5张卡片+aria-label）",
+          "页脚Guides区块（FOOTER_GUIDES+Excel clean URL）",
+          "verify-build.mjs扩展7项结构验证",
+          "CSS新增guide-card样式"
+        ],
+        "failed": [],
+        "pending": []
+      },
+      "review_status": "passed",
+      "test_status": "approved"
     }
   ],
   "skipped_commands": [],
   "blockers": [],
   "tech_debt": [
-    "m-01: fetchWithTimeout响应流超时（低风险）",
-    "m-02: FORGE.TYPES.indexOf对象数组（不影响核心闭环）",
-    "m-03: console.warn在生产代码中（MVP可接受）",
-    "m-04: 8个测试文件未被git staged（建议提交前git add）"
+    "C-01: 零测试覆盖 → verify-build.mjs 结构检查部分覆盖",
+    "M-03: 无 UI 截图证据 → business-tester Docker 验证覆盖",
+    "M-05: skip-link/main landmark 无障碍改进"
   ]
 }

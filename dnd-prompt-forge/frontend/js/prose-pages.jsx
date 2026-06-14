@@ -4,13 +4,13 @@ const About = () => (
   <div className="prose">
     <h1>About DND Prompt Forge</h1>
     <div className="updated">Independent tool · last updated June 2026</div>
-    <p className="lede">DND Prompt Forge is a small, free utility that turns a character idea into a clean, copy-ready AI image prompt. It’s built for dungeon masters and players who want good art prompts without wrestling with prompt syntax.</p>
+    <p className="lede">DND Prompt Forge is a small, free utility that turns a character idea into a clean, copy-ready AI image prompt. It's built for dungeon masters and players who want good art prompts without wrestling with prompt syntax.</p>
     <h2>What it does</h2>
     <p>You describe a character, creature or scene — race, class, a line of flavor, a visual style — and the Forge assembles a structured prompt: a main prompt, a short version, and a negative prompt, plus style notes and usage tips. Pick a target model and it tunes the wording to match.</p>
-    <h2>What it doesn’t do</h2>
-    <p>It doesn’t generate images, store your characters, or require an account. Prompts are produced in your browser and meant to be pasted into an image model of your choice. Nothing you type is needed to use the tool, and there’s no sign-up wall.</p>
+    <h2>What it doesn't do</h2>
+    <p>It doesn't generate images, store your characters, or require an account. Prompts are produced in your browser and meant to be pasted into an image model of your choice. Nothing you type is needed to use the tool, and there's no sign-up wall.</p>
     <h2>Why we built it</h2>
-    <p>Good tabletop art starts with a good prompt. Most generators bury the useful part under marketing. The Forge keeps the working surface first: open the page, fill a short form, copy your prompt. That’s the whole product.</p>
+    <p>Good tabletop art starts with a good prompt. Most generators bury the useful part under marketing. The Forge keeps the working surface first: open the page, fill a short form, copy your prompt. That's the whole product.</p>
   </div>
 );
 
@@ -38,7 +38,7 @@ const Terms = () => (
     <h2>The tool</h2>
     <p>DND Prompt Forge generates text prompts only. It does not generate, host, or distribute images. The quality and content of any image you create elsewhere is your responsibility and subject to the terms of the image model you use.</p>
     <h2>Acceptable use</h2>
-    <p>Don’t use the tool to produce prompts that infringe intellectual property, impersonate real people, or create unlawful content. Avoid copyrighted character names and any claim of official artwork.</p>
+    <p>Don't use the tool to produce prompts that infringe intellectual property, impersonate real people, or create unlawful content. Avoid copyrighted character names and any claim of official artwork.</p>
     <h2>Trademarks</h2>
     <p>“D&D” and “Dungeons & Dragons” are trademarks of their respective owner. This site is independent and is not affiliated with, sponsored by, or endorsed by the trademark owner.</p>
     <h2>No warranty</h2>
@@ -46,56 +46,27 @@ const Terms = () => (
   </div>
 );
 
-const Contact = () => {
-  const toast = useToast();
-  const [v, setV] = React.useState({ name: '', email: '', message: '' });
-  const [errs, setErrs] = React.useState({});
-  const [sent, setSent] = React.useState(false);
-  const submit = (e) => {
-    e.preventDefault();
-    const er = {};
-    if (!v.name.trim()) er.name = 'Please add your name.';
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email)) er.email = 'Enter a valid email address.';
-    if (!v.message.trim()) er.message = 'Tell us what’s up.';
-    setErrs(er);
-    if (Object.keys(er).length === 0) { setSent(true); toast('Message sent'); }
-  };
-  if (sent) return (
-    <div className="prose">
-      <h1>Contact</h1>
-      <div className="banner ok" style={{ marginBottom: 0 }}>
-        <Icon name="check" size={17} /><div><strong>Thanks — your message is on its way.</strong> We read every note and reply when one’s needed.</div>
-      </div>
+const Contact = () => (
+  <div className="prose">
+    <h1>Contact</h1>
+    <div className="updated">We usually reply within a couple of days.</div>
+    <p className="lede">Feedback on the prompts, a bug, or a prompt type you wish existed? Drop us a line.</p>
+    <div style={{ marginTop: 'var(--s5)' }}>
+      <Button variant="primary" iconLeft="mail" onClick={() => window.location.href = 'mailto:support@dnd.whatai.me'}>
+        support@dnd.whatai.me
+      </Button>
     </div>
-  );
-  return (
-    <div className="prose">
-      <h1>Contact</h1>
-      <div className="updated">We usually reply within a couple of days.</div>
-      <p className="lede">Feedback on the prompts, a bug, or a prompt type you wish existed? Send it over.</p>
-      <form onSubmit={submit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s4)', marginTop: 'var(--s5)' }}>
-        <div className="row2">
-          <Field label="Name" required htmlFor="c-name" error={errs.name}>
-            <input id="c-name" className={`ctl ${errs.name ? 'bad' : ''}`} value={v.name} onChange={e => setV({ ...v, name: e.target.value })} />
-          </Field>
-          <Field label="Email" required htmlFor="c-email" error={errs.email}>
-            <input id="c-email" type="email" className={`ctl ${errs.email ? 'bad' : ''}`} value={v.email} onChange={e => setV({ ...v, email: e.target.value })} />
-          </Field>
-        </div>
-        <Field label="Message" required htmlFor="c-msg" error={errs.message}>
-          <textarea id="c-msg" className={`ctl ${errs.message ? 'bad' : ''}`} rows={5} value={v.message} onChange={e => setV({ ...v, message: e.target.value })} />
-        </Field>
-        <div><Button variant="primary" iconLeft="send" type="submit">Send message</Button></div>
-      </form>
-    </div>
-  );
-};
+    <p style={{ marginTop: 'var(--s5)', color: 'var(--ink-3)', fontSize: 14 }}>
+      For prompt feedback, you can also use the feedback button inside the generator after any result.
+    </p>
+  </div>
+);
 
 const NotFound = ({ onNav }) => (
   <div className="nf">
     <div className="d20">20</div>
     <h1>You rolled a natural 404</h1>
-    <p>This page wandered off the map. The encounter you’re looking for isn’t here — but the prompt forge is still hot.</p>
+    <p>This page wandered off the map. The encounter you're looking for isn't here — but the prompt forge is still hot.</p>
     <Button variant="primary" iconLeft="arrow-left" onClick={() => onNav('home')}>Back to the generator</Button>
   </div>
 );

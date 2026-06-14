@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DND NPC Portrait Prompt Guide | DND Prompt Forge</title>
+  <meta name="description" content="Learn how to write AI image prompts for DND NPCs — role-defining traits, memorable details, approachable framing, and quick generation tips for in-world characters." />
+  <link rel="canonical" href="https://dnd.whatai.me/npc-guide" />
+  <meta property="og:title" content="DND NPC Portrait Prompt Guide | DND Prompt Forge" />
+  <meta property="og:description" content="Learn how to write AI image prompts for DND NPCs — role-defining traits, memorable details, and quick generation tips." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://dnd.whatai.me/npc-guide" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9123849728110588"
+    crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "DND NPC Portrait Prompt Guide",
+    "description": "A practical guide to writing AI image prompts for Dungeons & Dragons NPCs — covering role-defining traits, memorable details, and quick in-world NPC generation.",
+    "author": { "@type": "Organization", "name": "DND Prompt Forge" },
+    "publisher": { "@type": "Organization", "name": "DND Prompt Forge", "url": "https://dnd.whatai.me" },
+    "datePublished": "2026-06-14",
+    "mainEntityOfPage": "https://dnd.whatai.me/npc-guide"
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap" style="padding-top: var(--s8);">
+    <div class="prose">
+      <div class="guide-header">
+        <a href="/" class="guide-back">
+          <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+          Back to generator
+        </a>
+      </div>
+      <h1>DND NPC Portrait Prompt Guide</h1>
+      <div class="updated">Guide &middot; last updated June 2026</div>
+      <p class="lede">NPCs are the faces your players remember between sessions — the shopkeeper who always has a rumor, the guard captain with the scar, the mysterious patron in the corner booth. NPC prompts differ from character portraits in one key way: the NPC must communicate their <strong>role</strong> at a glance. A blacksmith should look like a blacksmith before you read the caption. This guide covers how to prompt for NPCs that are memorable, role-appropriate, and quick to generate.</p>
+
+      <!-- Section 1: When to use -->
+      <h2>When to use NPC prompts</h2>
+      <p>Use NPC prompts when you need a portrait of a <strong>named or recurring non-player character</strong> — someone the party will interact with more than once. Shopkeepers, quest givers, faction leaders, rival adventurers, mentors, and informants are all NPC prompt candidates.</p>
+      <p>Do not use NPC prompts for creatures that the party will fight. A hostile NPC who is statted as a monster should use the monster prompt type — the visual goal is different (threatening vs. approachable). The gray area is a "boss NPC" — a humanoid villain the party will fight but who also has dialogue scenes. For these, generate two images: an NPC portrait for the dialogue scenes and a monster-style illustration for the combat reveal.</p>
+      <p>Do not use NPC prompts for one-off unnamed characters. If the party meets "a guard" once and never again, a verbal description at the table is faster than generating art. The time to use an NPC prompt is when the character will appear in multiple sessions or when a visual will enhance the encounter.</p>
+
+      <!-- Section 2: Composition decisions -->
+      <h2>Composition decisions and trade-offs</h2>
+      <p>The defining decision for an NPC prompt is the <strong>role indicator</strong>. Every NPC has a job or social position, and the prompt must include visual elements that communicate that role without a caption. A blacksmith needs an apron, soot, and muscular arms. A noble needs fine clothing, a signet ring, and composed posture. A street urchin needs ragged clothes, bare feet, and a wary expression. The role indicator is the single most important element in an NPC prompt — it is what separates "a person" from "the blacksmith."</p>
+      <div class="guide-callout">
+        <strong>Role-first rule:</strong> Start every NPC prompt with the character's role, not their race. "A dwarven blacksmith" tells the model to prioritize dwarven features (beard, stocky build) over blacksmith features (apron, soot, forge). "A blacksmith who is a dwarf" or "a blacksmith, dwarven" puts the role first and the race as a modifier. For NPCs, role is always more important than race for visual recognition.
+      </div>
+      <p><strong>Memorable detail</strong> is the second key decision. Every recurring NPC needs one visual element that makes them stick in the players' minds. This is not the role indicator — it is something extra. A scar, an unusual accessory, a distinctive color, a missing finger. Without a memorable detail, all your blacksmiths will look like the same blacksmith. With one, players will say "oh, that is the one with the milky eye" and instantly recall the character.</p>
+      <p><strong>Expression and posture</strong> is the third axis. NPCs are approachable — they are characters the party talks to, not monsters they flee from. The default expression should be "neutral to friendly" and the default posture should be "at ease." Specifying "welcoming smile" or "relaxed posture" prevents the model from generating an NPC who looks hostile or suspicious by default. Override this only for specific NPCs who are meant to be intimidating (a crime boss, an inquisitor).</p>
+
+      <!-- Section 3: Before/after examples -->
+      <h2>Before and after examples</h2>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>human blacksmith NPC, dwarf, fantasy, portrait</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>portrait of a blacksmith, dwarven woman, stocky build with powerful arms, thick auburn braid over one shoulder, leather apron over a soot-stained linen shirt, burn scar on the left forearm, hands resting on the handle of a forging hammer, warm forge-glow lighting from the right, simple stone workshop wall behind, approachable expression, fantasy illustration, detailed skin texture</pre>
+        </div>
+      </div>
+      <p>The "before" prompt leads with race and uses "NPC" as a keyword — the model does not know what "NPC" means visually. The "after" prompt leads with the role, specifies the memorable detail (burn scar), and sets the expression to "approachable." The lighting is tied to the role (forge-glow) rather than being generic.</p>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>elven noble lady, fancy dress, castle, elegant, detailed</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>portrait of a noble courtier, high elf woman, sharp cheekbones and arched brows, silver-white hair in an elaborate braided updo, wearing a fitted gown of deep midnight blue with silver thread embroidery, a sapphire signet ring on the right hand, one eyebrow slightly raised in mild amusement, cool north-light from a tall window, dark paneled wall behind, composed and poised posture, fantasy illustration, refined detail</pre>
+        </div>
+      </div>
+      <p>The "before" prompt is a keyword list that could produce any elven woman in a fancy dress. The "after" prompt specifies the role (courtier), the memorable detail (sapphire signet ring, one eyebrow raised), the expression (mild amusement), and the lighting (cool north-light from a window — appropriate for a castle interior).</p>
+
+      <!-- Section 4: Common failures -->
+      <h2>Common failure patterns and corrections</h2>
+      <div class="guide-warning">
+        <strong>Failure 1: The generic NPC.</strong> Without a role indicator and a memorable detail, NPC prompts produce generic "fantasy person" images — attractive, well-lit, and completely forgettable. Every NPC looks like every other NPC.
+      </div>
+      <div class="guide-code">Correction: Every NPC prompt must include (1) a role indicator (what they do), (2) a memorable detail (what makes them unique), and (3) an expression (how they react to the party). If you cannot think of a memorable detail, use a physical imperfection — scars, missing teeth, unusual eye color, a visible tattoo. Imperfections are more memorable than perfections.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 2: Over-dressed NPCs.</strong> Prompts that list every piece of clothing and jewelry produce cluttered images where no single element stands out. The NPC becomes a fashion plate instead of a character.
+      </div>
+      <div class="guide-code">Correction: Limit clothing description to two or three items that communicate the role. A blacksmith: "leather apron, soot-stained shirt." A noble: "fitted gown, signet ring." A guard: "chain shirt, city tabard." Additional clothing details dilute the role indicator and make the NPC harder to read at a glance.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 3: Inappropriate expression.</strong> AI models default to "neutral" or "serious" expressions for portrait prompts. For NPCs who are meant to be friendly or helpful, a neutral expression reads as cold or disinterested. For NPCs who are meant to be mysterious, a neutral expression reads as blank.
+      </div>
+      <div class="guide-code">Correction: Always specify an expression that matches the NPC's personality. "Welcoming smile" for shopkeepers and innkeepers. "Wry half-smile" for rogues and informants. "Stern but not unkind" for guard captains. "Bored aristocratic gaze" for nobles. The expression is what makes the NPC feel like a character rather than a mannequin.</div>
+
+      <!-- Section 5: Model-specific guidance -->
+      <h2>Model-specific guidance</h2>
+      <h3>Midjourney</h3>
+      <p>Midjourney produces the most atmospheric NPC art but tends to make all characters look slightly heroic — square jaws, perfect skin, dramatic lighting. To counter this for "ordinary" NPCs (shopkeepers, peasants), add "ordinary person, unremarkable features, everyday clothing" and use <code>--style raw</code> to reduce the heroic gloss. For important NPCs, the default Midjourney style works well.</p>
+      <h3>ChatGPT / DALL-E</h3>
+      <p>DALL-E 3 is excellent for NPC prompts because it follows role descriptions precisely. It will not add a sword to a blacksmith unless you mention one. This precision makes DALL-E 3 the best model for NPCs where accuracy matters — you get exactly what you describe. The trade-off is that DALL-E 3 output is less atmospheric than Midjourney. Add "cinematic lighting" if you want more mood without sacrificing accuracy.</p>
+      <h3>Stable Diffusion (SDXL / SD3)</h3>
+      <p>Stable Diffusion is fast for NPC generation, which matters when you need ten NPCs by session time. Use a consistent tag structure: <code>1girl/1boy, [role], [race], portrait, [clothing], [expression], [background]</code>. Use a consistent seed or LoRA for visual consistency across NPCs from the same region or faction. The negative prompt should include <code>heroic, armor, weapon, battle damage</code> unless the NPC is a combatant.</p>
+
+      <!-- Section 6: Reviewed template -->
+      <h2>Reviewed prompt template</h2>
+      <div class="guide-template">portrait of a [role], [race] [gender], [body type], [hair style and color], [role-defining clothing: 2-3 items], [memorable detail: scar/accessory/unusual feature], [expression matching personality], [lighting tied to environment or role], [simple background: one element], [posture: at ease/standing/sitting], fantasy illustration, [texture quality]</div>
+      <p>The template puts role first, race second. This ordering ensures the model prioritizes the visual role indicator over racial features. The memorable detail is placed after clothing so it does not get lost in the clothing description. Expression and posture come late but are never omitted.</p>
+
+      <!-- Section 7: FAQ -->
+      <h2>Frequently asked questions</h2>
+      <div class="guide-faq">
+        <div class="guide-faq-q">How many NPCs should I generate art for?</div>
+        <div class="guide-faq-a">Prioritize NPCs the party will interact with at least three times. For a typical campaign, this is 5-10 recurring NPCs. Generate portraits for quest givers, shopkeepers, faction leaders, and any NPC the party has adopted as a favorite. One-off encounter NPCs can be described verbally — generating art for every NPC is a time sink that does not improve the game proportionally.</div>
+
+        <div class="guide-faq-q">Can I reuse an NPC portrait for different NPCs?</div>
+        <div class="guide-faq-a">You can, but your players will notice. If two different shopkeepers have the same face, it breaks immersion. If you must reuse, change at least the hair color, clothing, and expression between uses. Better: generate a new NPC for each recurring character. The NPC prompt type is designed for quick generation — a good prompt takes 30 seconds to write and 60 seconds to generate.</div>
+
+        <div class="guide-faq-q">What if my NPC changes over the course of the campaign?</div>
+        <div class="guide-faq-a">Generate a new portrait when the NPC's appearance changes significantly — gaining a scar, changing clothes, aging. Minor changes (a new hat, a different expression) can be described verbally without new art. For major transformations (a character who was cursed, polymorphed, or resurrected), a new portrait reinforces the story moment.</div>
+
+        <div class="guide-faq-q">Should I give my NPC a name in the prompt?</div>
+        <div class="guide-faq-a">No, for the same reason as character portraits: the model does not know your homebrew names. "Eldrin the Wise" means nothing to the model. "An elderly human male sage with a long white beard and wire-rimmed spectacles" produces a useful image. Save the name for the caption you put next to the art at your table.</div>
+      </div>
+
+      <!-- CTA -->
+      <div class="guide-cta">
+        <a href="/?type=npc" class="btn primary">Try the NPC prompt generator</a>
+      </div>
+
+      <!-- Related guides -->
+      <h2>Related guides</h2>
+      <div class="guide-related">
+        <a href="/character-portrait-guide">Character portrait prompt guide</a>
+        <a href="/token-guide">VTT token prompt guide</a>
+        <a href="/monster-guide">Monster prompt guide</a>
+        <a href="/scene-guide">Fantasy scene prompt guide</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

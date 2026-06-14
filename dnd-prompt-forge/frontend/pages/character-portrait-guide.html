@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DND Character Portrait Prompt Guide | DND Prompt Forge</title>
+  <meta name="description" content="Learn when to use character portrait prompts, how to compose them, common mistakes to avoid, and model-specific tips for DND character art." />
+  <link rel="canonical" href="https://dnd.whatai.me/character-portrait-guide" />
+  <meta property="og:title" content="DND Character Portrait Prompt Guide | DND Prompt Forge" />
+  <meta property="og:description" content="Learn when to use character portrait prompts, how to compose them, and model-specific tips for DND character art." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://dnd.whatai.me/character-portrait-guide" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9123849728110588"
+    crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "DND Character Portrait Prompt Guide",
+    "description": "A practical guide to writing AI image prompts for Dungeons & Dragons character portraits — covering composition, lighting, style, and model-specific tips.",
+    "author": { "@type": "Organization", "name": "DND Prompt Forge" },
+    "publisher": { "@type": "Organization", "name": "DND Prompt Forge", "url": "https://dnd.whatai.me" },
+    "datePublished": "2026-06-14",
+    "mainEntityOfPage": "https://dnd.whatai.me/character-portrait-guide"
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap" style="padding-top: var(--s8);">
+    <div class="prose">
+      <div class="guide-header">
+        <a href="/" class="guide-back">
+          <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+          Back to generator
+        </a>
+      </div>
+      <h1>DND Character Portrait Prompt Guide</h1>
+      <div class="updated">Guide &middot; last updated June 2026</div>
+      <p class="lede">A character portrait is the most common prompt type for DND players and dungeon masters. This guide covers when a portrait is the right choice, how to compose one that actually produces usable art, and what mistakes turn a promising idea into a blurry mess.</p>
+
+      <!-- Section 1: When to use -->
+      <h2>When to use character portrait prompts</h2>
+      <p>A character portrait prompt is the right tool when you need a face-forward image of a specific character — a player character avatar, an NPC who appears repeatedly in your campaign, or a villain you want to show your table. Portraits emphasize the character's identity: facial features, expression, costume details, and the lighting that sets their mood.</p>
+      <p>Portraits are the wrong choice when you need to show the character in action or in context. If you want your rogue mid-backstab, a full-body or scene prompt will serve you better. If you need a token for a virtual tabletop, the token prompt type produces top-down silhouettes that portraits cannot replicate.</p>
+      <p>The sweet spot for a portrait is any situation where <strong>recognizing the character matters more than what they are doing</strong>. Session-zero character sheets, recurring NPC handouts, campaign wiki avatars — these are all portrait territory. One-shots where the NPC appears once and never again? A brief description at the table may be more efficient than generating art.</p>
+
+      <!-- Section 2: Composition decisions -->
+      <h2>Composition decisions and trade-offs</h2>
+      <p>The most important decision in a portrait prompt is the <strong>cropping</strong>. Head-and-shoulders framing keeps the focus on the face and expression but sacrifices armor and weapon detail. Three-quarter framing shows more of the body but reduces the emotional punch of the face. Full-body shots under a "portrait" prompt type often produce stiff, neutral poses because the model tries to fit everything in — that is what the full-body type is for.</p>
+      <div class="guide-callout">
+        <strong>Trade-off rule:</strong> If you find yourself adding "holding a sword" and "wearing plate armor" to a portrait prompt, consider switching to full-body. The portrait type optimizes for expression and facial detail; the full-body type optimizes for pose and silhouette.
+      </div>
+      <p><strong>Lighting direction</strong> is the second key decision. Dramatic side lighting (rembrandt lighting) adds mood but hides half the face. Even, soft lighting shows every detail but can look flat. For DND characters, a slight warm key light from above-left with a cool fill from the right produces the fantasy "torchlight in a dungeon" look without losing detail. Avoid specifying "rim light" or "backlit" in a portrait — these techniques silhouette the character and defeat the purpose of a portrait.</p>
+      <p><strong>Background complexity</strong> is the third axis. A simple dark background isolates the character and keeps the model focused on costume and face. An environment background adds story context but invites the model to spend tokens on scenery instead of the character. If you include a background, keep it to one or two nouns: "stone wall," "forest clearing," "throne room." Avoid full scene descriptions inside a portrait prompt.</p>
+
+      <!-- Section 3: Before/after examples -->
+      <h2>Before and after examples</h2>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>a tiefling warlock with red skin and horns, wearing dark robes, holding a staff, in a dark place, fantasy art</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>head-and-shoulders portrait of a tiefling warlock, crimson skin, curved horns sweeping back from the brow, amber eyes catching firelight, wearing tattered velvet robes over black leather, a gnarled ironwood staff rests against the shoulder, warm torchlight from upper left, dark stone crypt wall behind, painterly fantasy illustration, expressive face, detailed skin texture</pre>
+        </div>
+      </div>
+      <p>The "before" prompt is vague about framing, lighting, and background. The model has to guess what "dark place" means, and it will often guess wrong — producing a dark, muddy image. The "after" prompt specifies the cropping, the exact lighting setup, the background as a single element, and adds texture keywords ("detailed skin texture," "painterly") that push the model toward higher-quality output.</p>
+      <div class="guide-comparison">
+        <div class="guide-before">
+          <h4>Before</h4>
+          <pre>elf ranger, green cloak, bow, forest background, detailed, high quality</pre>
+        </div>
+        <div class="guide-after">
+          <h4>After</h4>
+          <pre>three-quarter portrait of a wood elf ranger, sun-weathered copper skin, pointed ears emerging from braided auburn hair, sharp green eyes scanning the treeline, wearing a hooded moss-green cloak over studded leather armor, a longbow slung across the back, dappled forest light filtering through canopy, simple backdrop of ancient oak bark, digital fantasy painting, warm natural lighting, focused expression</pre>
+        </div>
+      </div>
+      <p>The "before" prompt is a keyword list. Models treat keyword lists as a buffet — they sample from each term without prioritizing any. The "after" prompt is a sentence that flows from the character outward, giving the model a clear visual hierarchy: face first, then costume, then environment, then style.</p>
+
+      <!-- Section 4: Common failures -->
+      <h2>Common failure patterns and corrections</h2>
+      <div class="guide-warning">
+        <strong>Failure 1: The generic fantasy face.</strong> When a prompt only says "elf wizard" or "dwarf fighter," the model has no reason to make this character look different from the thousand other elf wizards it has seen. The result is a bland, average-of-all-elves face with no distinguishing features.
+      </div>
+      <div class="guide-code">Correction: Add at least one unique physical trait per prompt. "A scar across the left cheek," "one gold eye and one silver eye," "facial tattoos in druidic script." These details anchor the character in the model's output and prevent generic blending.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 2: Too many background elements.</strong> Adding "standing in a tavern with patrons, mugs on the table, a fireplace, a barmaid, a cat on the bar" to a portrait prompt causes the model to spend most of its rendering budget on the environment, shrinking the character to a small figure in a crowd.
+      </div>
+      <div class="guide-code">Correction: Limit the background to one or two elements. If the scene is important, use the scene prompt type instead. Portraits work best with "simple backdrop" or a single background noun.</div>
+
+      <div class="guide-warning">
+        <strong>Failure 3: Contradictory lighting.</strong> Specifying both "dramatic chiaroscuro" and "bright cheerful lighting" forces the model to compromise, producing flat mid-tone images that satisfy neither instruction.
+      </div>
+      <div class="guide-code">Correction: Pick one lighting direction and stick with it. If you want mood, go with "low-key lighting, strong shadows." If you want clarity, go with "soft diffused light, even illumination." Never mix.</div>
+
+      <!-- Section 5: Model-specific guidance -->
+      <h2>Model-specific guidance</h2>
+      <h3>Midjourney</h3>
+      <p>Midjourney v6+ responds well to natural-language descriptions. Add <code>--ar 3:4</code> for portrait aspect ratio — the default 1:1 square crops heads or wastes space. Use <code>--style raw</code> if you want less of the Midjourney "painterly gloss" and more direct adherence to your description. Avoid comma-separated keyword dumps; Midjourney v6 prefers complete sentences.</p>
+      <h3>ChatGPT / DALL-E</h3>
+      <p>DALL-E 3 is a language-first model. It reads your prompt as a specification, not a mood board. Be explicit about what you want, including what you do <em>not</em> want. Add "do not show hands" if you want a head-and-shoulders crop, because DALL-E tends to include hands by default. DALL-E 3 has strong content filtering — avoid words like "blood," "weapon" without context, and "violent." Instead, describe the visual: "a scarred veteran" instead of "covered in blood."</p>
+      <h3>Stable Diffusion (SDXL / SD3)</h3>
+      <p>Stable Diffusion responds strongly to comma-separated tags, which is the opposite of Midjourney's preference. Lead with the strongest visual tags: <code>1girl, tiefling, portrait, crimson skin, curved horns, dark robes, torchlit</code>. Add quality tags like <code>masterpiece, best quality, highly detailed</code> early in the prompt. Use a negative prompt to exclude common SD artifacts: <code>lowres, bad anatomy, extra fingers, blurry, watermark</code>.</p>
+
+      <!-- Section 6: Reviewed template -->
+      <h2>Reviewed prompt template</h2>
+      <div class="guide-template">[framing] portrait of a [race] [class], [skin tone] skin, [distinctive facial feature], [hair description], [eye description], wearing [costume layers from outer to inner], [weapon or held object] [resting position], [lighting direction and quality], [background element], [art style], [expression keyword], [texture keyword]</div>
+      <p>Fill each bracket with one concrete detail. Do not leave any bracket empty — an empty slot produces a generic default. The order matters: the model prioritizes the beginning of the prompt most heavily.</p>
+
+      <!-- Section 7: FAQ -->
+      <h2>Frequently asked questions</h2>
+      <div class="guide-faq">
+        <div class="guide-faq-q">Should I include the character's name in the prompt?</div>
+        <div class="guide-faq-a">No, unless the name is a real-world historical or mythological figure the model knows. AI models do not know your homebrew character "Kaelthas Sunblade" (unless it matches a Warcraft character by coincidence). Use physical descriptions instead of names. A name wastes prompt tokens on something the model cannot render.</div>
+
+        <div class="guide-faq-q">Why does my portrait look like a painting when I asked for a photo?</div>
+        <div class="guide-faq-a">Most image models are trained heavily on painted and illustrated fantasy art. The word "photo" sometimes triggers photorealism, but it can also produce uncanny-valley results when combined with fantasy races like tieflings or dragonborn. If you want a realistic look, use "cinematic still, hyperrealistic" instead of "photo." If you want an illustrated look, be explicit: "oil painting," "digital illustration," or "watercolor."</div>
+
+        <div class="guide-faq-q">Can I use the same portrait prompt for different characters?</div>
+        <div class="guide-faq-a">Only if you change the distinguishing physical features. Swapping "elf" for "dwarf" while keeping everything else the same will produce two characters in the same outfit and lighting, which may or may not be what you want. The template above is designed to force you to specify what makes each character unique.</div>
+
+        <div class="guide-faq-q">How long should a portrait prompt be?</div>
+        <div class="guide-faq-a">Aim for 40-80 words. Shorter prompts produce generic results. Longer prompts dilute emphasis across too many details. The template above produces roughly 50-70 words when all brackets are filled with single details — this isthe effective range for portrait prompts.</div>
+      </div>
+
+      <!-- CTA -->
+      <div class="guide-cta">
+        <a href="/?type=portrait" class="btn primary">Try the character portrait prompt generator</a>
+      </div>
+
+      <!-- Related guides -->
+      <h2>Related guides</h2>
+      <div class="guide-related">
+        <a href="/token-guide">VTT token prompt guide</a>
+        <a href="/npc-guide">NPC portrait prompt guide</a>
+        <a href="/monster-guide">Monster prompt guide</a>
+        <a href="/scene-guide">Fantasy scene prompt guide</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
