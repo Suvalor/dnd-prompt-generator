@@ -10,12 +10,6 @@ const adsenseClient = 'ca-pub-9123849728110588';
 /** 必须包含 AdSense 脚本的页面 */
 const adsenseRequired = [
   'dist/index.html',
-  'dist/pages/character-portrait-guide.html',
-  'dist/pages/full-body-guide.html',
-  'dist/pages/token-guide.html',
-  'dist/pages/monster-guide.html',
-  'dist/pages/npc-guide.html',
-  'dist/pages/scene-guide.html',
 ];
 
 /** 禁止包含 AdSense 脚本的页面 */
@@ -24,6 +18,13 @@ const adsenseForbidden = [
   'dist/pages/contact.html',
   'dist/pages/privacy.html',
   'dist/pages/terms.html',
+  'dist/pages/excel-ratio-converter.html',
+  'dist/pages/character-portrait-guide.html',
+  'dist/pages/full-body-guide.html',
+  'dist/pages/token-guide.html',
+  'dist/pages/monster-guide.html',
+  'dist/pages/npc-guide.html',
+  'dist/pages/scene-guide.html',
 ];
 
 /** 指南页面及其对应的 clean URL 路径 */

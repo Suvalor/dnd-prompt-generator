@@ -68,6 +68,12 @@ assert(terms && !terms.includes('pagead2.googlesyndication.com'), 'S1-4', 'terms
 const indexHtml = read('index.html');
 assert(indexHtml !== null, 'S1-5', 'index.html exists');
 assert(indexHtml && indexHtml.includes('pagead2.googlesyndication.com'), 'S1-5', 'index.html HAS AdSense');
+const excelTool = read('pages/excel-ratio-converter.html');
+assert(
+  excelTool && !excelTool.includes('pagead2.googlesyndication.com'),
+  'S1-5',
+  'excel-ratio-converter.html has NO AdSense'
+);
 
 // #6 contact.html no <form>
 assert(contact && !contact.includes('<form'), 'S1-6', 'contact.html has NO <form> element');
@@ -98,10 +104,10 @@ for (const slug of GUIDE_SLUGS) {
   assert(html !== null, 'S2-10', `${slug}.html exists`);
 }
 
-// #11 Guide pages have AdSense
+// #11 Guide pages have no AdSense; advertising is homepage-only
 for (const slug of GUIDE_SLUGS) {
   const html = read(`pages/${slug}.html`);
-  assert(html && html.includes('adsbygoogle'), 'S2-11', `${slug} has AdSense`);
+  assert(html && !html.includes('pagead2.googlesyndication.com'), 'S2-11', `${slug} has NO AdSense`);
 }
 
 // #12 Guide pages have canonical
