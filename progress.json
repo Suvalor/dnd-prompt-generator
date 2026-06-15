@@ -15,7 +15,7 @@
       "deliverables": [],
       "started_at": "2026-06-14T00:00:00Z",
       "completed_at": "2026-06-14T00:10:00Z",
-      "notes": "L2定级；用户确认：Contact用support@dnd.whatai.me、Privacy延后、Auto ads尚未暂停；价值审查后范围扩展+5个指南页"
+      "notes": "L2定级；用户确认：Contact用support@whatai.me、Privacy延后、Auto ads尚未暂停；价值审查后范围扩展+5个指南页"
     },
     "1.5": {
       "name": "价值审查",
@@ -72,7 +72,7 @@
       "tasks": {
         "completed": [
           "从4个法律页面移除AdSense脚本",
-          "Contact静态页面改造（假表单→support@dnd.whatai.me）",
+          "Contact静态页面改造（假表单→support@whatai.me）",
           "Contact React组件改造（移除表单状态，添加邮箱按钮）",
           "verify-build.mjs重写（adsenseRequired + adsenseForbidden）"
         ],

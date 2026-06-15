@@ -2,6 +2,7 @@
 
 const FOOTER_TOOLS = [
   { label: 'Character prompts', id: 'character' },
+  { label: 'Full-body prompts', id: 'fullbody' },
   { label: 'Token prompts', id: 'token' },
   { label: 'Monster prompts', id: 'monster' },
   { label: 'NPC prompts', id: 'npc' },
@@ -9,6 +10,7 @@ const FOOTER_TOOLS = [
 ];
 const FOOTER_GUIDES = [
   { label: 'Character guide', href: '/character-portrait-guide' },
+  { label: 'Full-body guide', href: '/full-body-guide' },
   { label: 'Token guide', href: '/token-guide' },
   { label: 'Monster guide', href: '/monster-guide' },
   { label: 'NPC guide', href: '/npc-guide' },

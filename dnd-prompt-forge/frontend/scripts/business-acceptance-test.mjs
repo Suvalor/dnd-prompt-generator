@@ -73,7 +73,7 @@ assert(indexHtml && indexHtml.includes('pagead2.googlesyndication.com'), 'S1-5',
 assert(contact && !contact.includes('<form'), 'S1-6', 'contact.html has NO <form> element');
 
 // #7 contact.html has email
-assert(contact && contact.includes('support@dnd.whatai.me'), 'S1-7', 'contact.html has support@dnd.whatai.me');
+assert(contact && contact.includes('support@whatai.me'), 'S1-7', 'contact.html has support@whatai.me');
 
 // #8 React Contact no form state (no useState/useToast)
 const prosePages = read('js/prose-pages.jsx');
@@ -90,7 +90,7 @@ assert(
 // ─── SPRINT 2 ────────────────────────────────────────────────────────
 console.log('\n=== SPRINT 2: Guide Pages + Sitemap + Nginx + Nav ===\n');
 
-const GUIDE_SLUGS = ['character-portrait-guide', 'token-guide', 'monster-guide', 'npc-guide', 'scene-guide'];
+const GUIDE_SLUGS = ['character-portrait-guide', 'full-body-guide', 'token-guide', 'monster-guide', 'npc-guide', 'scene-guide'];
 
 // #10 Guide pages exist
 for (const slug of GUIDE_SLUGS) {
@@ -140,10 +140,10 @@ for (const slug of GUIDE_SLUGS) {
   assert(hasRelated, 'S2-16', `${slug} has related guide links`);
 }
 
-// #17 Sitemap has 11 URLs
+// #17 Sitemap has 12 URLs
 const sitemap = read('sitemap.xml');
 const locCount = sitemap ? (sitemap.match(/<loc>/g) || []).length : 0;
-assert(locCount === 11, 'S2-17', `Sitemap has ${locCount} <loc> entries (need 11)`);
+assert(locCount === 12, 'S2-17', `Sitemap has ${locCount} <loc> entries (need 12)`);
 
 // #18 Sitemap has lastmod
 const lastmodCount = sitemap ? (sitemap.match(/<lastmod>/g) || []).length : 0;
@@ -187,7 +187,7 @@ assert(
 );
 // Count data-driven ariaLabel properties in GUIDE_PAGES array
 const ariaLabelDataCount = guideCardsSection ? (guideCardsSection.match(/ariaLabel:/g) || []).length : 0;
-assert(ariaLabelDataCount >= 5, 'S2-20', `GUIDE_PAGES data has ${ariaLabelDataCount} ariaLabel properties (need >= 5)`);
+assert(ariaLabelDataCount >= 6, 'S2-20', `GUIDE_PAGES data has ${ariaLabelDataCount} ariaLabel properties (need >= 6)`);
 
 // #21 Footer has FOOTER_GUIDES
 const footer = read('js/footer.jsx');
@@ -195,6 +195,11 @@ assert(footer !== null, 'S2-21', 'footer.jsx exists');
 assert(footer && footer.includes('FOOTER_GUIDES'), 'S2-21', 'footer.jsx contains FOOTER_GUIDES');
 // Verify the Guides column is rendered
 assert(footer && footer.includes('>Guides<'), 'S2-21', 'Footer renders Guides column heading');
+assert(
+  footer && footer.includes("id: 'fullbody'") && contentSections.includes("href: '/full-body-guide'"),
+  'S2-21',
+  'Full-body generator and guide links are present'
+);
 
 // #22 Footer Excel uses clean URL — JSX may use single or double quotes
 assert(
@@ -213,6 +218,8 @@ if (distPages) {
   assert(distIndex, 'BUILD', 'dist/index.html exists');
   const distSitemap = existsSync(join(ROOT, 'dist', 'sitemap.xml'));
   assert(distSitemap, 'BUILD', 'dist/sitemap.xml exists');
+  const distStaticCss = existsSync(join(ROOT, 'dist', 'css', 'style.css'));
+  assert(distStaticCss, 'BUILD', 'dist/css/style.css exists');
   for (const slug of GUIDE_SLUGS) {
     assert(existsSync(join(DIST_PAGES, `${slug}.html`)), 'BUILD', `dist/pages/${slug}.html exists`);
   }

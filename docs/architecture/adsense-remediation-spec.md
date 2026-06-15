@@ -59,7 +59,7 @@ The AdSense script tag to remove is:
 
 Replace the entire `<body>` content of `pages/contact.html` with email-only content:
 - Remove the `<form>` element entirely
-- Add a `mailto:support@dnd.whatai.me` link using `.btn.primary` style
+- Add a `mailto:support@whatai.me` link using `.btn.primary` style
 - Add inline SVG mail icon
 - Add hint about in-app feedback
 - Add "Back to generator" link

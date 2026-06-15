@@ -1,5 +1,5 @@
 /** 构建验证脚本：检查 AdSense 脚本 + 指南页面结构完整性 */
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,6 +11,7 @@ const adsenseClient = 'ca-pub-9123849728110588';
 const adsenseRequired = [
   'dist/index.html',
   'dist/pages/character-portrait-guide.html',
+  'dist/pages/full-body-guide.html',
   'dist/pages/token-guide.html',
   'dist/pages/monster-guide.html',
   'dist/pages/npc-guide.html',
@@ -28,6 +29,7 @@ const adsenseForbidden = [
 /** 指南页面及其对应的 clean URL 路径 */
 const guidePages = [
   { file: 'dist/pages/character-portrait-guide.html', canonicalPath: '/character-portrait-guide' },
+  { file: 'dist/pages/full-body-guide.html', canonicalPath: '/full-body-guide' },
   { file: 'dist/pages/token-guide.html', canonicalPath: '/token-guide' },
   { file: 'dist/pages/monster-guide.html', canonicalPath: '/monster-guide' },
   { file: 'dist/pages/npc-guide.html', canonicalPath: '/npc-guide' },
@@ -129,3 +131,13 @@ for (const { file, canonicalPath } of guidePages) {
 }
 
 console.log(`Verified structure for ${guidePages.length} guide pages (canonical, og:type, JSON-LD, h2>=${MIN_H2_COUNT}, CTA, related guides).`);
+
+// ---- 验证 3: 静态页面依赖的共享样式已发布 ----
+await access(path.join(root, 'dist/css/style.css'));
+for (const { file } of guidePages) {
+  const html = await readFull(file);
+  if (!html.includes('href="../css/style.css"')) {
+    throw new Error(`Static stylesheet reference is missing from ${file}`);
+  }
+}
+console.log('Verified shared static stylesheet is published for guide and prose pages.');

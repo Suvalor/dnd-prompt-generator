@@ -8,6 +8,7 @@ const dist = path.join(root, 'dist');
 
 const staticEntries = [
   'assets',
+  'css',
   'pages',
   'manifest.json',
   'robots.txt',

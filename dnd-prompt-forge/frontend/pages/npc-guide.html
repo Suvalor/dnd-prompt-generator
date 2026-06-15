@@ -104,7 +104,7 @@
       <h3>Midjourney</h3>
       <p>Midjourney produces the most atmospheric NPC art but tends to make all characters look slightly heroic — square jaws, perfect skin, dramatic lighting. To counter this for "ordinary" NPCs (shopkeepers, peasants), add "ordinary person, unremarkable features, everyday clothing" and use <code>--style raw</code> to reduce the heroic gloss. For important NPCs, the default Midjourney style works well.</p>
       <h3>ChatGPT / DALL-E</h3>
-      <p>DALL-E 3 is excellent for NPC prompts because it follows role descriptions precisely. It will not add a sword to a blacksmith unless you mention one. This precision makes DALL-E 3 the best model for NPCs where accuracy matters — you get exactly what you describe. The trade-off is that DALL-E 3 output is less atmospheric than Midjourney. Add "cinematic lighting" if you want more mood without sacrificing accuracy.</p>
+      <p>ChatGPT image generation or DALL-E can be useful for NPC prompts when clear role description and natural-language instructions matter most. Unrequested props can still appear, so state the role-defining objects and exclusions that matter. For more atmosphere, add one specific lighting or environment cue instead of relying on a broad phrase such as "cinematic."</p>
       <h3>Stable Diffusion (SDXL / SD3)</h3>
       <p>Stable Diffusion is fast for NPC generation, which matters when you need ten NPCs by session time. Use a consistent tag structure: <code>1girl/1boy, [role], [race], portrait, [clothing], [expression], [background]</code>. Use a consistent seed or LoRA for visual consistency across NPCs from the same region or faction. The negative prompt should include <code>heroic, armor, weapon, battle damage</code> unless the NPC is a combatant.</p>
 
@@ -138,6 +138,7 @@
       <h2>Related guides</h2>
       <div class="guide-related">
         <a href="/character-portrait-guide">Character portrait prompt guide</a>
+        <a href="/full-body-guide">Full-body character prompt guide</a>
         <a href="/token-guide">VTT token prompt guide</a>
         <a href="/monster-guide">Monster prompt guide</a>
         <a href="/scene-guide">Fantasy scene prompt guide</a>

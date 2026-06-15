@@ -8,7 +8,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "demoState": "auto"
 }/*EDITMODE-END*/;
 
-const TYPE_ROUTES = { character: 'portrait', token: 'token', monster: 'monster', scene: 'scene', npc: 'npc' };
+const TYPE_ROUTES = { character: 'portrait', fullbody: 'fullbody', token: 'token', monster: 'monster', scene: 'scene', npc: 'npc' };
 
 // Prefill 字段映射：URL query 参数名 -> Generator 表单字段名
 // 参考 design-spec.md 第4.2节

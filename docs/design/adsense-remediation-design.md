@@ -25,7 +25,7 @@
 | guide description | 非空，≤ 160 chars | Meta description |
 | guide canonical | `https://dnd.whatai.me/{slug}` | 唯一规范 URL |
 | guide content | 7 个必需区块，每区块 ≥ 100 words | 内容深度要求 |
-| contact email | `support@dnd.whatai.me` | 替换假表单 |
+| contact email | `support@whatai.me` | 替换假表单 |
 
 ### 1.2 业务规则
 
@@ -597,8 +597,8 @@ frontend/pages/dnd-scene-prompt-guide.html
         </div>
         <div>
           <h2>Email us</h2>
-          <a href="mailto:support@dnd.whatai.me" class="contact-email">
-            support@dnd.whatai.me
+          <a href="mailto:support@whatai.me" class="contact-email">
+            support@whatai.me
           </a>
           <p class="contact-note">For prompt feedback, bug reports, or feature ideas. We read every message.</p>
         </div>
@@ -629,8 +629,8 @@ const Contact = () => (
       </div>
       <div>
         <h2>Email us</h2>
-        <a href="mailto:support@dnd.whatai.me" className="contact-email">
-          support@dnd.whatai.me
+        <a href="mailto:support@whatai.me" className="contact-email">
+          support@whatai.me
         </a>
         <p className="contact-note">For prompt feedback, bug reports, or feature ideas. We read every message.</p>
       </div>

@@ -54,7 +54,7 @@
       <div class="guide-callout">
         <strong>Trade-off rule:</strong> If you find yourself adding "holding a sword" and "wearing plate armor" to a portrait prompt, consider switching to full-body. The portrait type optimizes for expression and facial detail; the full-body type optimizes for pose and silhouette.
       </div>
-      <p><strong>Lighting direction</strong> is the second key decision. Dramatic side lighting (rembrandt lighting) adds mood but hides half the face. Even, soft lighting shows every detail but can look flat. For DND characters, a slight warm key light from above-left with a cool fill from the right produces the fantasy "torchlight in a dungeon" look without losing detail. Avoid specifying "rim light" or "backlit" in a portrait — these techniques silhouette the character and defeat the purpose of a portrait.</p>
+      <p><strong>Lighting direction</strong> is the second key decision. Dramatic side lighting (Rembrandt lighting) adds mood but can hide part of the face. Even, soft lighting shows detail but may look flat. A slight warm key light from above-left with a cool fill from the right is one reliable starting point for a fantasy torchlight mood. Rim light and backlight can work as accents, but pair them with enough front fill to keep the face readable.</p>
       <p><strong>Background complexity</strong> is the third axis. A simple dark background isolates the character and keeps the model focused on costume and face. An environment background adds story context but invites the model to spend tokens on scenery instead of the character. If you include a background, keep it to one or two nouns: "stone wall," "forest clearing," "throne room." Avoid full scene descriptions inside a portrait prompt.</p>
 
       <!-- Section 3: Before/after examples -->
@@ -104,14 +104,14 @@
       <h3>Midjourney</h3>
       <p>Midjourney v6+ responds well to natural-language descriptions. Add <code>--ar 3:4</code> for portrait aspect ratio — the default 1:1 square crops heads or wastes space. Use <code>--style raw</code> if you want less of the Midjourney "painterly gloss" and more direct adherence to your description. Avoid comma-separated keyword dumps; Midjourney v6 prefers complete sentences.</p>
       <h3>ChatGPT / DALL-E</h3>
-      <p>DALL-E 3 is a language-first model. It reads your prompt as a specification, not a mood board. Be explicit about what you want, including what you do <em>not</em> want. Add "do not show hands" if you want a head-and-shoulders crop, because DALL-E tends to include hands by default. DALL-E 3 has strong content filtering — avoid words like "blood," "weapon" without context, and "violent." Instead, describe the visual: "a scarred veteran" instead of "covered in blood."</p>
+      <p>ChatGPT image generation and DALL-E generally respond well to clear natural-language layout instructions. For a head-and-shoulders result, specify the crop and explain which body parts should remain outside the frame. Content handling can change over time, so describe the visual purpose and context plainly rather than trying to work around a particular filter.</p>
       <h3>Stable Diffusion (SDXL / SD3)</h3>
       <p>Stable Diffusion responds strongly to comma-separated tags, which is the opposite of Midjourney's preference. Lead with the strongest visual tags: <code>1girl, tiefling, portrait, crimson skin, curved horns, dark robes, torchlit</code>. Add quality tags like <code>masterpiece, best quality, highly detailed</code> early in the prompt. Use a negative prompt to exclude common SD artifacts: <code>lowres, bad anatomy, extra fingers, blurry, watermark</code>.</p>
 
       <!-- Section 6: Reviewed template -->
       <h2>Reviewed prompt template</h2>
       <div class="guide-template">[framing] portrait of a [race] [class], [skin tone] skin, [distinctive facial feature], [hair description], [eye description], wearing [costume layers from outer to inner], [weapon or held object] [resting position], [lighting direction and quality], [background element], [art style], [expression keyword], [texture keyword]</div>
-      <p>Fill each bracket with one concrete detail. Do not leave any bracket empty — an empty slot produces a generic default. The order matters: the model prioritizes the beginning of the prompt most heavily.</p>
+      <p>Fill the relevant brackets with concrete details and remove any bracket you do not need. Models vary in how they weight prompt order, but placing framing and identity early creates a clearer hierarchy and makes the prompt easier to revise.</p>
 
       <!-- Section 7: FAQ -->
       <h2>Frequently asked questions</h2>
@@ -126,7 +126,7 @@
         <div class="guide-faq-a">Only if you change the distinguishing physical features. Swapping "elf" for "dwarf" while keeping everything else the same will produce two characters in the same outfit and lighting, which may or may not be what you want. The template above is designed to force you to specify what makes each character unique.</div>
 
         <div class="guide-faq-q">How long should a portrait prompt be?</div>
-        <div class="guide-faq-a">Aim for 40-80 words. Shorter prompts produce generic results. Longer prompts dilute emphasis across too many details. The template above produces roughly 50-70 words when all brackets are filled with single details — this isthe effective range for portrait prompts.</div>
+        <div class="guide-faq-a">A useful starting range is 40-80 words. Very short prompts leave more decisions to the model, while very long prompts can make priorities harder to read. The template above usually produces roughly 50-70 words when each selected bracket contains one detail.</div>
       </div>
 
       <!-- CTA -->
@@ -137,6 +137,7 @@
       <!-- Related guides -->
       <h2>Related guides</h2>
       <div class="guide-related">
+        <a href="/full-body-guide">Full-body character prompt guide</a>
         <a href="/token-guide">VTT token prompt guide</a>
         <a href="/npc-guide">NPC portrait prompt guide</a>
         <a href="/monster-guide">Monster prompt guide</a>

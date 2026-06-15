@@ -144,6 +144,7 @@ const FAQ = () => {
 /* --- Guide cards (link to guide pages) --- */
 const GUIDE_PAGES = [
   { icon: 'user', title: 'Character portrait prompts', excerpt: 'When to use portraits, composition choices, before/after examples, and model-specific tips for DND character art.', href: '/character-portrait-guide', ariaLabel: 'Read the character portrait prompt guide' },
+  { icon: 'person-standing', title: 'Full-body character prompts', excerpt: 'Readable poses, strong silhouettes, layered equipment, and framing that keeps the complete character in view.', href: '/full-body-guide', ariaLabel: 'Read the full-body character prompt guide' },
   { icon: 'circle-dot', title: 'VTT token prompts', excerpt: 'Top-down token composition, clean silhouettes, transparent backgrounds, and export settings for virtual tabletops.', href: '/token-guide', ariaLabel: 'Read the token prompt guide' },
   { icon: 'skull', title: 'Monster & creature prompts', excerpt: 'Scale cues, anatomy emphasis, threatening presence, and environment integration for DND monster art.', href: '/monster-guide', ariaLabel: 'Read the monster prompt guide' },
   { icon: 'users', title: 'NPC portrait prompts', excerpt: 'Role-defining traits, memorable details, approachable framing, and quick in-world NPC generation.', href: '/npc-guide', ariaLabel: 'Read the NPC prompt guide' },

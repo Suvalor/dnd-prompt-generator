@@ -95,7 +95,7 @@ AdSense 审批和 Google Safe Browsing 使用同一个 Google 基础设施。一
 
 ### Effect 1: Contact 假表单修复的表面性
 
-将 Contact 假表单替换为 `support@dnd.whatai.me` 邮箱链接，从技术上讲修好了"功能不完整"。但系统级影响需要考虑：
+将 Contact 假表单替换为 `support@whatai.me` 邮箱链接，从技术上讲修好了"功能不完整"。但系统级影响需要考虑：
 
 - **静态 HTML 的 Contact 页有表单**（`contact.html`，第 26-44 行）。改为邮箱需要改两处：静态 HTML 和 React 组件（`prose-pages.jsx`）。
 - **React SPA 的 Contact 组件**（`prose-pages.jsx`，第 49-92 行）有完整的表单状态管理和 false-submit 逻辑。改为邮箱需要重写整个 Contact 组件。

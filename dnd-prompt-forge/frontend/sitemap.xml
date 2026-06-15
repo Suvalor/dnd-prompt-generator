@@ -32,7 +32,12 @@
   </url>
   <url>
     <loc>https://dnd.whatai.me/character-portrait-guide</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-15</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dnd.whatai.me/full-body-guide</loc>
+    <lastmod>2026-06-15</lastmod>
     <priority>0.8</priority>
   </url>
   <url>

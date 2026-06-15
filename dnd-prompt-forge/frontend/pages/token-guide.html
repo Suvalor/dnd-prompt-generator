@@ -105,7 +105,7 @@
       <h3>Midjourney</h3>
       <p>Midjourney struggles with top-down views because its training data heavily favors portraits and landscapes. Use <code>--ar 1:1</code> for square tokens. Add <code>--style raw</code> to reduce Midjourney's stylistic gloss, which makes tokens harder to read at small sizes. Reinforce the top-down instruction by saying "bird's-eye overhead view" instead of just "top-down" — Midjourney responds better to evocative descriptions than technical terms.</p>
       <h3>ChatGPT / DALL-E</h3>
-      <p>DALL-E 3 is the best model for VTT tokens because it follows instructions precisely and produces clean, readable silhouettes. Be explicit: "The image must be a top-down overhead view showing a single centered figure on a transparent background." DALL-E 3 handles transparency requests reasonably well, though it may produce a white background instead. Post-process the white background to transparent using any image editor.</p>
+      <p>ChatGPT image generation or DALL-E can be a practical choice for VTT tokens when instruction-following is more important than painterly atmosphere. Be explicit: "The image must be a top-down overhead view showing a single centered figure on a plain background." Background transparency support varies, so plan to remove a solid background in an image editor when necessary.</p>
       <h3>Stable Diffusion (SDXL / SD3)</h3>
       <p>Stable Diffusion can produce excellent tokens with the right tag structure. Lead with: <code>top-down view, centered figure, transparent background, VTT token, 1:1 framing</code>. Use the negative prompt aggressively: <code>side view, portrait, face visible, detailed background, shadow, gradient, photorealistic</code>. These negatives block the model's tendency to produce portrait-style output. ControlNet with a depth map can enforce the overhead angle if your setup supports it.</p>
 
@@ -124,7 +124,7 @@
         <div class="guide-faq-a">Technically yes, but it will look wrong. A portrait is oriented vertically and shows a face, while a token is oriented from above and shows a silhouette. A portrait-as-token will appear as a tall rectangle on the grid, misaligned with the square cells, and the face will be unreadable at token display size. Use the token prompt type for proper VTT art.</div>
 
         <div class="guide-faq-q">Why does my token have a white background instead of transparent?</div>
-        <div class="guide-faq-a">Most image models cannot produce true PNG transparency — they render backgrounds as solid colors. If you specified "transparent background" and got white, use a post-processing tool (Photoshop, GIMP, or a free online background remover) to convert the white to transparency. This is standard practice for VTT token creation.</div>
+        <div class="guide-faq-a">Transparency support varies by model and export workflow. If you requested a transparent background and received white or another solid color, use an image editor or background-removal tool to create the final transparent PNG.</div>
 
         <div class="guide-faq-q">Should tokens for monsters look different from character tokens?</div>
         <div class="guide-faq-a">Yes. Monster tokens benefit from emphasizing threat cues — larger silhouette, darker colors, angular shapes. Character tokens benefit from being approachable — rounded shapes, clear role indicators (shield, robe, bow). The token guide template works for both; just adjust the silhouette keywords to match the intent.</div>
@@ -139,6 +139,7 @@
       <h2>Related guides</h2>
       <div class="guide-related">
         <a href="/character-portrait-guide">Character portrait prompt guide</a>
+        <a href="/full-body-guide">Full-body character prompt guide</a>
         <a href="/npc-guide">NPC portrait prompt guide</a>
         <a href="/monster-guide">Monster prompt guide</a>
         <a href="/scene-guide">Fantasy scene prompt guide</a>
