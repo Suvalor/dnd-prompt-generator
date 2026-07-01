@@ -67,7 +67,70 @@
   </script>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div class="wrap" style="padding-top: var(--s8); display: none;">
+      <div class="prose">
+        <h1>DND Character Prompt Generator</h1>
+        <p>Turn your race, class, style, weapon, and backstory idea into a copy-ready AI image prompt for portraits, VTT tokens, NPCs, monsters, and fantasy scenes.</p>
+        <p>No login required. Copy prompts into Midjourney, ChatGPT, Gemini, Leonardo, Stable Diffusion, or any image model.</p>
+        
+        <h2>How the DND prompt generator works</h2>
+        <ol>
+          <li><strong>Choose the prompt type:</strong> Portrait, full body, token, NPC, monster or scene — this sets the composition.</li>
+          <li><strong>Add your DND details:</strong> Race, class, a line of description, and a visual style. Open Advanced for armor, weapon and more.</li>
+          <li><strong>Copy into your image tool:</strong> Grab the main prompt and negative prompt, paste them into Midjourney, ChatGPT or any model.</li>
+        </ol>
+
+        <h2>Portraits, tokens, NPCs, monsters and scenes</h2>
+        <ul>
+          <li><strong>Portrait:</strong> Face, costume, lighting and personality. Best for character avatars and headshots where expression carries the image.</li>
+          <li><strong>Full body:</strong> Silhouette, armor, pose and weapon. Use when the whole getup matters — class fantasy and party line-ups.</li>
+          <li><strong>Token:</strong> Top-down view, centered figure, readable outline. Built for virtual tabletops — clean edges and 1:1 framing.</li>
+          <li><strong>NPC:</strong> Role, attitude and a memorable trait. Quick, in-world faces for the merchants, guards and patrons your party meets.</li>
+          <li><strong>Monster:</strong> Anatomy, threat, scale and environment. Adds a size cue so the creature reads as dangerous at a glance.</li>
+          <li><strong>Scene:</strong> Place, mood, lighting and an encounter hook. Establishing shots for locations and set-pieces, no central hero needed.</li>
+        </ul>
+
+        <h2>Limitations & model compatibility</h2>
+        <ul>
+          <li>This tool generates prompts — text you copy elsewhere. It does not create or host images.</li>
+          <li>Final image quality depends on the third-party model you paste the prompt into.</li>
+          <li>No login or account is required for the current version.</li>
+          <li>Avoid using copyrighted character names or claims of official artwork in your prompts.</li>
+          <li>D&D is a trademark of its respective owner — this site is independent and implies no affiliation.</li>
+        </ul>
+
+        <h2>DND prompt generator FAQ</h2>
+        <h3>What is a DND character prompt generator?</h3>
+        <p>It’s a free tool that takes your character details — race, class, style, gear — and writes a structured, copy-ready text prompt you can paste into an AI image model to create portraits, tokens, NPCs, monsters or scenes.</p>
+        
+        <h3>Does this tool generate images?</h3>
+        <p>No. It produces prompt text only. You copy the prompt into an image model like Midjourney or ChatGPT, which does the actual image generation.</p>
+        
+        <h3>Can I use these prompts in Midjourney or ChatGPT?</h3>
+        <p>Yes. Pick your target model in Advanced and the generator tunes the wording — for Midjourney it even adds an aspect-ratio flag. The prompts also work in Gemini, Leonardo, Stable Diffusion and general-purpose tools.</p>
+        
+        <h3>Can it create top-down VTT token prompts?</h3>
+        <p>Yes. Choose the Token type and the generator writes a centered, top-down figure with a clean readable outline and 1:1 framing, plus token-specific export notes for your virtual tabletop.</p>
+        
+        <h3>Is the DND prompt generator free?</h3>
+        <p>Yes, it’s completely free to use, with no usage caps for the prompt generator itself.</p>
+        
+        <h3>Do I need to log in?</h3>
+        <p>No. There’s no login or account required — open the page, fill the form, and copy your prompt.</p>
+
+        <h2>DND prompt guides</h2>
+        <ul>
+          <li><a href="/character-portrait-guide">Character portrait prompts</a>: When to use portraits, composition choices, before/after examples, and model-specific tips for DND character art.</li>
+          <li><a href="/full-body-guide">Full-body character prompts</a>: Readable poses, strong silhouettes, layered equipment, and framing that keeps the complete character in view.</li>
+          <li><a href="/token-guide">VTT token prompts</a>: Top-down token composition, clean silhouettes, transparent backgrounds, and export settings for virtual tabletops.</li>
+          <li><a href="/monster-guide">Monster &amp; creature prompts</a>: Scale cues, anatomy emphasis, threatening presence, and environment integration for DND monster art.</li>
+          <li><a href="/npc-guide">NPC portrait prompts</a>: Role-defining traits, memorable details, approachable framing, and quick in-world NPC generation.</li>
+          <li><a href="/scene-guide">Fantasy scene prompts</a>: Establishing shots, depth layers, encounter hooks, and atmospheric lighting for DND location art.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="/src/legacy-app.jsx"></script>
 </body>
